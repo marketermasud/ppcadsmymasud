@@ -75,15 +75,35 @@
   }
 
   .nav-links a {
+    position: relative;
     text-decoration: none;
-    font-size: 0.875rem;
-    font-weight: 500;
-    color: var(--gray-500);
+    font-size: 0.9rem;
+    font-weight: 800;
+    color: #000000;
     transition: color 0.2s;
     letter-spacing: 0.2px;
+    padding-bottom: 4px;
+  }
+
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 0;
+    height: 2px;
+    background: var(--green-500);
+    border-radius: 2px;
+    transition: width 0.25s ease;
   }
 
   .nav-links a:hover { color: var(--green-600); }
+  .nav-links a:hover::after { width: 100%; }
+
+  .nav-links li:not(:last-child) a.active {
+    color: var(--green-700);
+  }
+  .nav-links li:not(:last-child) a.active::after { width: 100%; }
 
   .nav-cta {
     background: var(--green-500);
@@ -93,6 +113,8 @@
     font-weight: 600 !important;
     transition: background 0.2s !important;
   }
+
+  .nav-cta::after { display: none; }
 
   .nav-cta:hover { background: var(--green-600) !important; color: white !important; }
 
@@ -2050,6 +2072,24 @@ const resultObserver = new IntersectionObserver((entries) => {
 }, { threshold: 0.5 });
 
 resultItems.forEach(el => resultObserver.observe(el));
+
+/* ── NAV ACTIVE LINK ON SCROLL ── */
+const navLinks = document.querySelectorAll('.nav-links a[href^="#"]:not(.nav-cta)');
+const navSections = Array.from(navLinks).map(link => document.querySelector(link.getAttribute('href'))).filter(Boolean);
+
+function updateActiveNavLink() {
+  let currentId = '';
+  navSections.forEach(sec => {
+    const rect = sec.getBoundingClientRect();
+    if (rect.top <= 120 && rect.bottom > 120) currentId = '#' + sec.id;
+  });
+  navLinks.forEach(link => {
+    link.classList.toggle('active', link.getAttribute('href') === currentId);
+  });
+}
+
+window.addEventListener('scroll', updateActiveNavLink);
+updateActiveNavLink();
 </script>
 </body>
 </html>
