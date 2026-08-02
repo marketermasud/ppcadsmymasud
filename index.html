@@ -7,6 +7,17 @@
 <title>Md Masud Rana | Google Ads Specialist</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-54D4877N');</script>
+<!-- End Google Tag Manager -->
+
+
+
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -255,7 +266,7 @@
   }
 
   .hero-stat-num {
-    font-family: var(--font-display);
+    font-family: var(--font-body);
     font-size: 1.6rem;
     font-weight: 700;
     color: var(--gray-900);
@@ -440,6 +451,311 @@
     line-height: 1.65;
   }
 
+  /* ── TRUST BAR ── */
+  .trust-bar {
+    background: var(--green-50);
+    border-top: 1px solid var(--green-100);
+    border-bottom: 1px solid var(--green-100);
+    padding: 1.4rem 2rem;
+  }
+
+  .trust-bar-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 1.75rem 2.75rem;
+  }
+
+  .trust-item {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--gray-700);
+    white-space: nowrap;
+  }
+
+  .trust-item svg {
+    color: var(--green-600);
+    flex-shrink: 0;
+  }
+
+  /* ── WHY CHOOSE ME ── */
+  .why-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.25rem;
+  }
+
+  .why-card {
+    display: flex;
+    gap: 1rem;
+    background: white;
+    border: 1px solid var(--green-100);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    transition: box-shadow 0.2s, transform 0.2s, border-color 0.2s;
+  }
+
+  .why-card:hover {
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-3px);
+    border-color: var(--green-200);
+  }
+
+  .why-num {
+    font-family: var(--font-body);
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--green-200);
+    flex-shrink: 0;
+    line-height: 1.3;
+  }
+
+  .why-title {
+    font-size: 0.98rem;
+    font-weight: 600;
+    color: var(--gray-900);
+    margin-bottom: 0.4rem;
+  }
+
+  .why-desc {
+    font-size: 0.85rem;
+    color: var(--gray-500);
+    line-height: 1.65;
+  }
+
+  /* ── PROBLEM / SOLUTION ── */
+  .ps-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.25rem;
+  }
+
+  .ps-card {
+    background: white;
+    border: 1px solid var(--green-100);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    transition: box-shadow 0.2s, transform 0.2s, border-color 0.2s;
+  }
+
+  .ps-card:hover {
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-3px);
+    border-color: var(--green-200);
+  }
+
+  .ps-problem, .ps-solution {
+    padding: 1.1rem 1.4rem;
+    display: flex;
+    gap: 0.7rem;
+    align-items: flex-start;
+  }
+
+  .ps-problem {
+    background: #fdf4f3;
+    border-bottom: 1px solid var(--green-100);
+  }
+
+  .ps-solution {
+    background: white;
+  }
+
+  .ps-icon {
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 0.05rem;
+  }
+
+  .ps-problem .ps-icon {
+    background: #fce4e1;
+    color: #c0503f;
+  }
+
+  .ps-solution .ps-icon {
+    background: var(--green-100);
+    color: var(--green-600);
+  }
+
+  .ps-label {
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    margin-bottom: 0.2rem;
+  }
+
+  .ps-problem .ps-label { color: #c0503f; }
+  .ps-solution .ps-label { color: var(--green-600); }
+
+  .ps-text {
+    font-size: 0.87rem;
+    color: var(--gray-700);
+    line-height: 1.55;
+  }
+
+  /* ── PRICING ── */
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    align-items: stretch;
+  }
+
+  .price-card {
+    background: white;
+    border: 1px solid var(--green-100);
+    border-radius: var(--radius-lg);
+    padding: 2rem 1.75rem;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    transition: box-shadow 0.2s, transform 0.2s, border-color 0.2s;
+  }
+
+  .price-card:hover {
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-3px);
+    border-color: var(--green-200);
+  }
+
+  .price-card.featured {
+    background: linear-gradient(180deg, var(--green-50), white 40%);
+    border: 1.5px solid var(--green-400);
+    box-shadow: var(--shadow);
+  }
+
+  .price-badge {
+    position: absolute;
+    top: -13px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--green-500);
+    color: white;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    padding: 0.3rem 0.9rem;
+    border-radius: 100px;
+    box-shadow: 0 4px 12px rgba(58,153,102,0.35);
+  }
+
+  .price-tier {
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--green-600);
+    margin-bottom: 0.6rem;
+  }
+
+  .price-amount {
+    font-family: var(--font-body);
+    font-size: 2.4rem;
+    font-weight: 600;
+    color: var(--gray-900);
+    line-height: 1;
+    margin-bottom: 0.15rem;
+  }
+
+  .price-amount sup {
+    font-size: 1rem;
+    font-weight: 500;
+    top: -1em;
+  }
+
+  .price-period {
+    font-size: 0.82rem;
+    color: var(--gray-500);
+    margin-bottom: 1.4rem;
+  }
+
+  .price-desc {
+    font-size: 0.85rem;
+    color: var(--gray-500);
+    line-height: 1.6;
+    margin-bottom: 1.4rem;
+    padding-bottom: 1.4rem;
+    border-bottom: 1px solid var(--green-100);
+  }
+
+  .price-features {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+    margin-bottom: 1.75rem;
+    flex-grow: 1;
+  }
+
+  .price-features li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.55rem;
+    font-size: 0.86rem;
+    color: var(--gray-700);
+    line-height: 1.5;
+  }
+
+  .price-features li svg {
+    flex-shrink: 0;
+    margin-top: 0.15rem;
+    color: var(--green-500);
+  }
+
+  .price-order-btn {
+    background: var(--gray-100);
+    color: var(--gray-900);
+    text-align: center;
+    padding: 0.75rem 1.5rem;
+    border-radius: 100px;
+    font-weight: 600;
+    font-size: 0.92rem;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s, transform 0.15s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+  }
+
+  .price-card.featured .price-order-btn,
+  .price-order-btn:hover {
+    background: var(--green-500);
+    color: white;
+    transform: translateY(-1px);
+  }
+
+  .pricing-note {
+    text-align: center;
+    font-size: 0.85rem;
+    color: var(--gray-500);
+    margin-top: 2rem;
+  }
+
+  .pricing-note a {
+    color: var(--green-600);
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  @media (max-width: 860px) {
+    .pricing-grid { grid-template-columns: 1fr; }
+    .price-card.featured { order: -1; }
+  }
+
   /* ── RESULTS ── */
   .results-section {
     background: white;
@@ -459,7 +775,7 @@
   }
 
   .result-num {
-    font-family: var(--font-display);
+    font-family: var(--font-body);
     font-size: 2.5rem;
     font-weight: 700;
     color: var(--green-600);
@@ -490,7 +806,7 @@
   }
 
   .step-number {
-    font-family: var(--font-display);
+    font-family: var(--font-body);
     font-size: 2rem;
     font-weight: 700;
     color: var(--green-100);
@@ -572,7 +888,7 @@
   }
 
   .case-metric-val {
-    font-family: var(--font-display);
+    font-family: var(--font-body);
     font-size: 1.4rem;
     font-weight: 700;
     color: var(--green-600);
@@ -912,11 +1228,20 @@
 </head>
 <body>
 
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-54D4877N"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+
+
 <!-- NAV -->
 <nav>
   <a href="#" class="nav-logo">Masud Rana</a>
   <ul class="nav-links" id="navLinks">
     <li><a href="#services">Services</a></li>
+    <li><a href="#why-me">Why Me</a></li>
+    <li><a href="#pricing">Pricing</a></li>
     <li><a href="#results">Results</a></li>
     <li><a href="#process">Process</a></li>
     <li><a href="#cases">Case Studies</a></li>
@@ -979,6 +1304,32 @@
   </div>
 </section>
 
+<!-- TRUST BAR -->
+<div class="trust-bar">
+  <div class="trust-bar-inner">
+    <div class="trust-item">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 15a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"/><path d="M8.21 13.89 7 23l5-3 5 3-1.21-9.12"/></svg>
+      Google Ads Certified
+    </div>
+    <div class="trust-item">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      5.0 Rating on Upwork, Fiverr &amp; other platform
+    </div>
+    <div class="trust-item">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+      Remote- Serving Global Clients
+    </div>
+    <div class="trust-item">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+      50+ Campaigns Managed
+    </div>
+    <div class="trust-item">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      Replies Within 30 Minutes
+    </div>
+  </div>
+</div>
+
 <div class="divider"></div>
 
 <!-- SERVICES -->
@@ -1019,6 +1370,203 @@
       <div class="service-desc">Not sure if Google Ads is the right move? I'll walk you through what's realistic, what budget you actually need, and what to expect.</div>
     </div>
   </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- WHY CHOOSE ME -->
+<section class="section" id="why-me">
+  <div class="section-label">Why Work With Me</div>
+  <h2 class="section-title">Freelancer speed,<br>agency-level results.</h2>
+  <p class="section-sub">You have plenty of options for running Google Ads. Here's what makes working with me different.</p>
+
+  <div class="why-grid">
+    <div class="why-card">
+      <div class="why-num">01</div>
+      <div>
+        <div class="why-title">Niche-Focused, Not a Generalist</div>
+        <div class="why-desc">I only run ads for local service businesses, cleaning, HVAC, plumbing, roofing, auto detailing. That focus means I already know what converts in your industry.</div>
+      </div>
+    </div>
+    <div class="why-card">
+      <div class="why-num">02</div>
+      <div>
+        <div class="why-title">You Work With Me Directly</div>
+        <div class="why-desc">No account managers, no junior staff learning on your budget. Every strategy, every optimization, every report comes from me.</div>
+      </div>
+    </div>
+    <div class="why-card">
+      <div class="why-num">03</div>
+      <div>
+        <div class="why-title">Certified &amp; Data-Driven</div>
+        <div class="why-desc">Google Ads Certified, with proper conversion tracking on every account so decisions are based on real numbers, not guesswork.</div>
+      </div>
+    </div>
+    <div class="why-card">
+      <div class="why-num">04</div>
+      <div>
+        <div class="why-title">Transparent, Plain-English Reporting</div>
+        <div class="why-desc">You'll always know your cost per lead, ROAS, and what changed and why, no jargon-filled reports or vanity metrics.</div>
+      </div>
+    </div>
+    <div class="why-card">
+      <div class="why-num">05</div>
+      <div>
+        <div class="why-title">Fast, Responsive Communication</div>
+        <div class="why-desc">Questions get answered within 24 hours over WhatsApp or email. You're never left wondering what's happening with your account.</div>
+      </div>
+    </div>
+    <div class="why-card">
+      <div class="why-num">06</div>
+      <div>
+        <div class="why-title">Freelance Pricing, Agency-Level Skill</div>
+        <div class="why-desc">You get the same expertise as a full agency team, without the overhead, retainers, or long-term lock-in contracts.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- PROBLEMS & SOLUTIONS -->
+<section class="section" id="solutions">
+  <div class="section-label">Sound Familiar?</div>
+  <h2 class="section-title">The problems local businesses<br>run into with Google Ads.</h2>
+  <p class="section-sub">If any of these sound like you, here's exactly how I fix it.</p>
+
+  <div class="ps-grid">
+
+    <div class="ps-card">
+      <div class="ps-problem">
+        <div class="ps-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>
+        <div><div class="ps-label">The Problem</div><div class="ps-text">You're spending money on ads, but real leads just aren't coming in.</div></div>
+      </div>
+      <div class="ps-solution">
+        <div class="ps-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <div><div class="ps-label">My Solution</div><div class="ps-text">I rebuild targeting, keywords, and ad copy so your budget reaches people who are actually ready to book.</div></div>
+      </div>
+    </div>
+
+    <div class="ps-card">
+      <div class="ps-problem">
+        <div class="ps-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>
+        <div><div class="ps-label">The Problem</div><div class="ps-text">Your reports are full of numbers you don't actually understand.</div></div>
+      </div>
+      <div class="ps-solution">
+        <div class="ps-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <div><div class="ps-label">My Solution</div><div class="ps-text">You get plain-English monthly reports showing what matters: leads, cost per lead, and ROAS.</div></div>
+      </div>
+    </div>
+
+    <div class="ps-card">
+      <div class="ps-problem">
+        <div class="ps-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>
+        <div><div class="ps-label">The Problem</div><div class="ps-text">Agencies are expensive, slow to respond, and pass you off to junior staff.</div></div>
+      </div>
+      <div class="ps-solution">
+        <div class="ps-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <div><div class="ps-label">My Solution</div><div class="ps-text">You work directly with me, faster turnaround, lower cost, and no middlemen.</div></div>
+      </div>
+    </div>
+
+    <div class="ps-card">
+      <div class="ps-problem">
+        <div class="ps-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>
+        <div><div class="ps-label">The Problem</div><div class="ps-text">Competitors show up before you every time someone searches nearby.</div></div>
+      </div>
+      <div class="ps-solution">
+        <div class="ps-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <div><div class="ps-label">My Solution</div><div class="ps-text">I set up Local Service Ads and geo-targeted campaigns to put you in front of nearby customers first.</div></div>
+      </div>
+    </div>
+
+    <div class="ps-card">
+      <div class="ps-problem">
+        <div class="ps-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>
+        <div><div class="ps-label">The Problem</div><div class="ps-text">You tried Google Ads before and it just didn't work.</div></div>
+      </div>
+      <div class="ps-solution">
+        <div class="ps-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <div><div class="ps-label">My Solution</div><div class="ps-text">I audit exactly what went wrong and rebuild the account with proper conversion tracking from day one.</div></div>
+      </div>
+    </div>
+
+    <div class="ps-card">
+      <div class="ps-problem">
+        <div class="ps-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>
+        <div><div class="ps-label">The Problem</div><div class="ps-text">You're not even sure Google Ads is worth it for your budget.</div></div>
+      </div>
+      <div class="ps-solution">
+        <div class="ps-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <div><div class="ps-label">My Solution</div><div class="ps-text">Book a free strategy call and I'll map out realistic numbers before you spend a single dollar.</div></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- PRICING -->
+<section class="section" id="pricing">
+  <div class="section-label">Pricing</div>
+  <h2 class="section-title">Simple packages,<br>built around your Google Ads needs.</h2>
+  <p class="section-sub">Pick the level of hands-on management that fits your business. No hidden fees, cancel anytime.</p>
+
+  <div class="pricing-grid">
+
+    <!-- BASIC -->
+    <div class="price-card">
+      <div class="price-tier">Basic</div>
+      <div class="price-amount">$299<sup>/mo</sup></div>
+      <div class="price-period">Best for a single, focused campaign</div>
+      <div class="price-desc">A clean Search campaign setup or audit, ideal if you're just getting started with Google Ads or need a smaller monthly spend managed properly.</div>
+      <ul class="price-features">
+        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> 1 Search campaign, setup or audit</li>
+        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> Keyword research & ad copy (RSAs)</li>
+        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> Conversion tracking setup</li>
+        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> Up to $3,000/mo ad spend</li>
+        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> Monthly performance report</li>
+      </ul>
+      <a href="mailto:masud.ppcconsultant@gmail.com?subject=Order%20Request%20%E2%80%94%20Basic%20Package&body=Hi%20Masud%2C%0A%0AI'd%20like%20to%20order%20the%20Basic%20package.%0A%0ABusiness%20name%3A%0AWebsite%3A%0AMonthly%20ad%20budget%3A%0A%0AThanks!" class="price-order-btn">Order Now →</a>
+    </div>
+
+    <!-- STANDARD -->
+    <div class="price-card featured">
+      <div class="price-badge">Most Popular</div>
+      <div class="price-tier">Standard</div>
+      <div class="price-amount">$499<sup>/mo</sup></div>
+      <div class="price-period">Best for growing service businesses</div>
+      <div class="price-desc">Full campaign management across Search and Performance Max, with ongoing optimization so results keep improving month over month.</div>
+      <ul class="price-features">
+        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> Search + Performance Max campaigns</li>
+        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> Bi-weekly bid & search term optimization</li>
+        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> Conversion tracking + GA4 setup</li>
+        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> Up to $10,000/mo ad spend</li>
+        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> Monthly report + strategy call</li>
+      </ul>
+      <a href="mailto:masud.ppcconsultant@gmail.com?subject=Order%20Request%20%E2%80%94%20Standard%20Package&body=Hi%20Masud%2C%0A%0AI'd%20like%20to%20order%20the%20Standard%20package.%0A%0ABusiness%20name%3A%0AWebsite%3A%0AMonthly%20ad%20budget%3A%0A%0AThanks!" class="price-order-btn">Order Now →</a>
+    </div>
+
+    <!-- PREMIUM -->
+    <div class="price-card">
+      <div class="price-tier">Premium</div>
+      <div class="price-amount">$799<sup>/mo</sup></div>
+      <div class="price-period">Best for multi-location or high-spend accounts</div>
+      <div class="price-desc">Full-service Google Ads management across every relevant channel, with weekly optimization and priority, direct support.</div>
+      <ul class="price-features">
+        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> Search + Performance Max + Local Service Ads</li>
+        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> Weekly optimization & A/B ad testing</li>
+        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> Custom dashboard + GTM setup</li>
+        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> Unlimited ad spend managed</li>
+        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> Priority WhatsApp support + weekly reports</li>
+      </ul>
+      <a href="mailto:masud.ppcconsultant@gmail.com?subject=Order%20Request%20%E2%80%94%20Premium%20Package&body=Hi%20Masud%2C%0A%0AI'd%20like%20to%20order%20the%20Premium%20package.%0A%0ABusiness%20name%3A%0AWebsite%3A%0AMonthly%20ad%20budget%3A%0A%0AThanks!" class="price-order-btn">Order Now →</a>
+    </div>
+
+  </div>
+
+  <p class="pricing-note">Need something custom? <a href="mailto:masud.ppcconsultant@gmail.com?subject=Custom%20Google%20Ads%20Package%20Inquiry">Email me directly</a> and let's talk about your goals.</p>
 </section>
 
 <div class="divider"></div>
