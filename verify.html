@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Invoice Verification — PPC Ads by Masud</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<style>
+  :root{
+    --blue:#4285F4; --red:#EA4335; --yellow:#FBBC05; --green:#34A853;
+    --navy:#0B1F3A; --ink:#1a2332; --muted:#6b7685; --line:#e3e8ef; --panel:#f4f7fb;
+  }
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+  html{-webkit-text-size-adjust:100%;}
+  body{
+    margin:0; min-height:100vh; min-height:100dvh;
+    font-family:'Inter',-apple-system,sans-serif; color:var(--ink);
+    background:linear-gradient(160deg,#0B1F3A 0%, #14335e 45%, #1c4a86 100%);
+    display:flex; align-items:center; justify-content:center;
+    padding:24px 16px;
+  }
+  h1,h2,.brandfont{font-family:'Poppins',sans-serif;}
+  .card{
+    width:100%; max-width:440px; background:#fff; border-radius:18px;
+    box-shadow:0 25px 60px rgba(0,0,0,.35); overflow:hidden;
+  }
+  .card-header{
+    background:linear-gradient(135deg, var(--navy), #14335e);
+    padding:26px 22px; text-align:center; position:relative;
+  }
+  .card-header::after{
+    content:""; position:absolute; left:0; right:0; bottom:0; height:5px;
+    background:linear-gradient(90deg, var(--blue) 0 25%, var(--red) 25% 50%, var(--yellow) 50% 75%, var(--green) 75% 100%);
+  }
+  .logo-circle{
+    width:56px; height:56px; border-radius:50%; background:#fff; margin:0 auto 10px;
+    display:flex; align-items:center; justify-content:center; font-weight:800; color:var(--navy);
+    font-family:'Poppins',sans-serif; font-size:18px; box-shadow:0 0 0 3px rgba(255,255,255,.2);
+  }
+  .card-header h1{color:#fff; font-size:16.5px; margin:0; font-weight:700;}
+  .card-header p{color:#c9d6ee; font-size:11.5px; margin:4px 0 0;}
+  .body{padding:26px 22px 28px;}
+
+  .state{text-align:center; padding:16px 0;}
+  .state .icon{font-size:42px; margin-bottom:10px;}
+  .state h2{font-size:16px; margin:0 0 6px;}
+  .state p{font-size:13px; color:var(--muted); margin:0; line-height:1.6; word-break:break-word;}
+
+  .result-badge{
+    display:flex; align-items:center; gap:10px; padding:14px 14px; border-radius:12px;
+    margin-bottom:18px; font-weight:700; font-size:13.5px; line-height:1.4;
+  }
+  .result-badge.ok{background:rgba(52,168,83,.1); color:#1c7a3b; border:1px solid rgba(52,168,83,.3);}
+  .result-badge .dot{width:10px; height:10px; border-radius:50%; background:var(--green); flex-shrink:0;}
+
+  .status-pill{
+    display:inline-block; font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:.06em;
+    padding:5px 12px; border-radius:20px;
+  }
+  .status-pill.paid{background:rgba(52,168,83,.15); color:#1c7a3b;}
+  .status-pill.unpaid{background:rgba(234,67,53,.14); color:#b5302a;}
+
+  .info-table{width:100%; border-collapse:collapse; font-size:13.5px; margin-top:14px;}
+  .info-table tr{border-bottom:1px solid var(--line);}
+  .info-table tr:last-child{border-bottom:none;}
+  .info-table td{padding:10px 2px; vertical-align:middle;}
+  .info-table td.k{color:var(--muted); font-weight:600; width:38%;}
+  .info-table td.v{font-weight:700; color:var(--ink); text-align:right; word-break:break-word;}
+
+  .footer-note{
+    margin-top:20px; padding-top:14px; border-top:1px dashed var(--line);
+    font-size:11px; color:var(--muted); text-align:center; line-height:1.6;
+  }
+  .footer-note b{color:var(--blue); word-break:break-word;}
+
+  .spinner{
+    width:32px; height:32px; border:3px solid #e3e8ef; border-top-color:var(--blue);
+    border-radius:50%; margin:0 auto 14px; animation:spin 0.8s linear infinite;
+  }
+  @keyframes spin{to{transform:rotate(360deg);}}
+
+  /* ---- Small phones ---- */
+  @media (max-width:380px){
+    .card-header{padding:22px 16px;}
+    .body{padding:20px 16px 24px;}
+    .info-table{font-size:12.5px;}
+    .state h2{font-size:15px;}
+    .state p{font-size:12.5px;}
+  }
+
+  /* Respect safe-area insets on notch devices when wrapped in an app */
+  @supports (padding: max(0px)){
+    body{
+      padding-left:max(16px, env(safe-area-inset-left));
+      padding-right:max(16px, env(safe-area-inset-right));
+      padding-top:max(24px, env(safe-area-inset-top));
+      padding-bottom:max(24px, env(safe-area-inset-bottom));
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="card">
+  <div class="card-header">
+    <div class="logo-circle">M</div>
+    <h1>PPC Ads by Masud</h1>
+    <p>Google Ads Expert · Invoice Verification</p>
+  </div>
+  <div class="body" id="body">
+    <div class="state" id="loadingState">
+      <div class="spinner"></div>
+      <h2>Checking invoice…</h2>
+      <p>Please wait a moment.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+/* This config must match the SAME Firebase project used by the invoice
+   generator tool, so this page can read the invoices it saves. */
+const firebaseConfig = {
+  apiKey: "AIzaSyCWtobSJBiUXmdgQli0Ve1oM-h1myl4ObE",
+  authDomain: "masudppcinvoice.firebaseapp.com",
+  projectId: "masudppcinvoice",
+  storageBucket: "masudppcinvoice.firebasestorage.app",
+  messagingSenderId: "88902990829",
+  appId: "1:88902990829:web:c4a284fa28544f5bfe85e4"
+};
+
+let db = null;
+let firebaseEnabled = false;
+try{
+  if(typeof firebase !== 'undefined' && firebaseConfig.apiKey && firebaseConfig.apiKey.indexOf('YOUR_') !== 0){
+    firebase.initializeApp(firebaseConfig);
+    db = firebase.firestore();
+    firebaseEnabled = true;
+  }
+}catch(e){ console.warn('Firebase not initialized:', e); }
+
+const bodyEl = document.getElementById('body');
+
+function renderNoParam(){
+  bodyEl.innerHTML = `
+    <div class="state">
+      <div class="icon">🔍</div>
+      <h2>No invoice number provided</h2>
+      <p>Scan the QR code printed on a PPC Ads by Masud invoice, or open a link in the form:<br><b>masudppc.com/verify.html?inv=INVOICE_NUMBER</b></p>
+    </div>`;
+}
+function renderNotConfigured(){
+  bodyEl.innerHTML = `
+    <div class="state">
+      <div class="icon">⚙️</div>
+      <h2>Verification temporarily unavailable</h2>
+      <p>This page could not connect to the invoice database. Please check your internet connection and try again, or contact PPC Ads by Masud directly to confirm.</p>
+    </div>`;
+}
+function renderNotFound(inv){
+  bodyEl.innerHTML = `
+    <div class="state">
+      <div class="icon">❌</div>
+      <h2>Invoice not found</h2>
+      <p>We couldn't verify <b>#${escapeHtml(inv)}</b>. This invoice may not exist, may not have been finalized yet, or the number may be incorrect. If you received this as a real invoice from PPC Ads by Masud, please contact us to confirm.</p>
+    </div>`;
+}
+function escapeHtml(s){
+  const d = document.createElement('div'); d.textContent = s; return d.innerHTML;
+}
+
+function renderFound(inv, data){
+  const paid = !!data.paid;
+  const statusHtml = paid
+    ? `<span class="status-pill paid">✔ Paid</span>`
+    : `<span class="status-pill unpaid">⏳ Unpaid</span>`;
+
+  let subtotal = 0;
+  (data.items||[]).forEach(it=>{
+    const q = parseFloat(it.qty)||0, p = parseFloat(it.price)||0;
+    subtotal += q*p;
+  });
+  const discount = parseFloat(data.discount)||0;
+  const grand = Math.max(subtotal - discount, 0);
+  const curSymbols = {USD:'$',EUR:'€',GBP:'£',AED:'AED ',SAR:'SAR ',QAR:'QAR ',BDT:'৳',INR:'₹',PKR:'₨',CAD:'C$',AUD:'A$',NZD:'NZ$',SGD:'S$',MYR:'RM',JPY:'¥',CNY:'¥',ZAR:'R',EGP:'E£',NGN:'₦',KES:'KSh',CHF:'CHF ',SEK:'kr',NOK:'kr',DKK:'kr',TRY:'₺',THB:'฿',PHP:'₱',IDR:'Rp',VND:'₫',BRL:'R$',MXN:'MX$',KWD:'KD',OMR:'OMR '};
+  const sym = curSymbols[data.currency] || '';
+  const amountStr = sym + grand.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+
+  const savedDate = data.savedAt ? new Date(data.savedAt).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}) : '—';
+  const paidDate = data.paidDateStr || '—';
+
+  bodyEl.innerHTML = `
+    <div class="result-badge ok"><span class="dot"></span> This is a genuine invoice issued by PPC Ads by Masud</div>
+    <table class="info-table">
+      <tr><td class="k">Invoice #</td><td class="v">${escapeHtml(inv)}</td></tr>
+      <tr><td class="k">Status</td><td class="v">${statusHtml}</td></tr>
+      <tr><td class="k">Amount</td><td class="v">${amountStr}</td></tr>
+      <tr><td class="k">Issued</td><td class="v">${savedDate}</td></tr>
+      ${paid ? `<tr><td class="k">Paid On</td><td class="v">${paidDate}</td></tr>` : ''}
+      <tr><td class="k">Issued By</td><td class="v">MD. Masud Rana</td></tr>
+    </table>
+    <div class="footer-note">
+      For privacy, client contact details are not shown on this public page.<br>
+      Questions about this invoice? Email <b>masud.ppcconsultant@gmail.com</b>
+    </div>
+  `;
+}
+
+async function run(){
+  const params = new URLSearchParams(window.location.search);
+  const inv = (params.get('inv')||'').trim();
+  if(!inv){ renderNoParam(); return; }
+  if(!firebaseEnabled){ renderNotConfigured(); return; }
+  try{
+    const doc = await db.collection('invoices').doc(inv).get();
+    if(doc.exists){ renderFound(inv, doc.data()); }
+    else{ renderNotFound(inv); }
+  }catch(e){
+    console.warn('Verify lookup failed:', e);
+    renderNotConfigured();
+  }
+}
+run();
+</script>
+</body>
+</html>
