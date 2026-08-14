@@ -77,6 +77,29 @@
   }
   .footer-note b{color:var(--blue); word-break:break-word;}
 
+  .checked-at{
+    text-align:center; font-size:10.5px; color:#9aa5b3; margin-top:14px;
+    display:flex; align-items:center; justify-content:center; gap:5px;
+  }
+  .checked-at::before{
+    content:""; width:6px; height:6px; border-radius:50%; background:var(--green);
+    display:inline-block; box-shadow:0 0 0 3px rgba(52,168,83,.18);
+  }
+
+  .action-row{margin-top:16px; text-align:center;}
+  .print-btn{
+    font-family:'Inter',sans-serif; font-size:12.5px; font-weight:700;
+    background:var(--navy); color:#fff; border:none; padding:10px 18px;
+    border-radius:9px; cursor:pointer;
+  }
+  .print-btn:hover{background:#14335e;}
+
+  @media print{
+    body{background:#fff; padding:0; display:block;}
+    .card{box-shadow:none; max-width:100%;}
+    .action-row{display:none;}
+  }
+
   .spinner{
     width:32px; height:32px; border:3px solid #e3e8ef; border-top-color:var(--blue);
     border-radius:50%; margin:0 auto 14px; animation:spin 0.8s linear infinite;
@@ -172,6 +195,12 @@ function escapeHtml(s){
   const d = document.createElement('div'); d.textContent = s; return d.innerHTML;
 }
 
+function plainText(html){
+  const d = document.createElement('div');
+  d.innerHTML = html || '';
+  return (d.textContent || '').trim();
+}
+
 function renderFound(inv, data){
   const paid = !!data.paid;
   const statusHtml = paid
@@ -192,19 +221,36 @@ function renderFound(inv, data){
   const savedDate = data.savedAt ? new Date(data.savedAt).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}) : '—';
   const paidDate = data.paidDateStr || '—';
 
+  const infoVs = data.infoVs || [];
+  const clientName = plainText(infoVs[0]);
+  const clientBusiness = plainText(infoVs[1]);
+  const clientAddress = plainText(infoVs[2]);
+  const billingFor = plainText(infoVs[6]);
+
+  const checkedAt = new Date().toLocaleString('en-GB',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'});
+
+  let rows = '';
+  rows += `<tr><td class="k">Invoice #</td><td class="v">${escapeHtml(inv)}</td></tr>`;
+  if(clientName) rows += `<tr><td class="k">Billed To</td><td class="v">${escapeHtml(clientName)}</td></tr>`;
+  if(clientBusiness) rows += `<tr><td class="k">Business</td><td class="v">${escapeHtml(clientBusiness)}</td></tr>`;
+  if(clientAddress) rows += `<tr><td class="k">Address</td><td class="v">${escapeHtml(clientAddress)}</td></tr>`;
+  rows += `<tr><td class="k">Status</td><td class="v">${statusHtml}</td></tr>`;
+  rows += `<tr><td class="k">Amount</td><td class="v">${amountStr}</td></tr>`;
+  if(billingFor) rows += `<tr><td class="k">Billing Period</td><td class="v">${escapeHtml(billingFor)}</td></tr>`;
+  rows += `<tr><td class="k">Issued</td><td class="v">${savedDate}</td></tr>`;
+  if(paid) rows += `<tr><td class="k">Paid On</td><td class="v">${paidDate}</td></tr>`;
+  rows += `<tr><td class="k">Issued By</td><td class="v">MD. Masud Rana</td></tr>`;
+
   bodyEl.innerHTML = `
     <div class="result-badge ok"><span class="dot"></span> This is a genuine invoice issued by PPC Ads by Masud</div>
-    <table class="info-table">
-      <tr><td class="k">Invoice #</td><td class="v">${escapeHtml(inv)}</td></tr>
-      <tr><td class="k">Status</td><td class="v">${statusHtml}</td></tr>
-      <tr><td class="k">Amount</td><td class="v">${amountStr}</td></tr>
-      <tr><td class="k">Issued</td><td class="v">${savedDate}</td></tr>
-      ${paid ? `<tr><td class="k">Paid On</td><td class="v">${paidDate}</td></tr>` : ''}
-      <tr><td class="k">Issued By</td><td class="v">MD. Masud Rana</td></tr>
-    </table>
+    <table class="info-table">${rows}</table>
+    <div class="checked-at">Verified just now — ${checkedAt}</div>
+    <div class="action-row">
+      <button class="print-btn" onclick="window.print()">🖨 Save / Print This Verification</button>
+    </div>
     <div class="footer-note">
-      For privacy, client contact details are not shown on this public page.<br>
-      Questions about this invoice? Email <b>masud.ppcconsultant@gmail.com</b>
+      Questions or concerns about this invoice? Email <b>masud.ppcconsultant@gmail.com</b><br>
+      or WhatsApp <b>+880 1767 571765</b>.
     </div>
   `;
 }
