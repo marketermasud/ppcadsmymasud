@@ -16,6 +16,45 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
+
+<!-- OFFER STYLES (অফার শেষ হলে এই পুরো <style> ব্লকটা মুছে দিতে পারো) -->
+<style>
+.offer-banner {
+  max-width: 720px;
+  margin: 0 auto 28px;
+  padding: 10px 18px;
+  text-align: center;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #b91c1c;
+  background: #fef2f2;
+  border: 1px dashed #fca5a5;
+  border-radius: 999px;
+}
+.price-old-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 2px;
+}
+.price-old {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #9ca3af;
+  text-decoration: line-through;
+  text-decoration-color: #e11d48;
+  text-decoration-thickness: 2px;
+}
+.price-save {
+  background: #fee2e2;
+  color: #b91c1c;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 3px 9px;
+  border-radius: 999px;
+  letter-spacing: 0.02em;
+}
+</style>
 </head>
 <body>
 <!-- Google Tag Manager (noscript) -->
@@ -47,12 +86,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <h2 class="section-title">Simple packages,<br>built around your Google Ads needs.</h2>
   <p class="section-sub">Pick the level of hands-on management that fits your business. No hidden fees, cancel anytime.</p>
 
+  <!-- OFFER BANNER -->
+  <div class="offer-banner">🔥 Limited Time Offer — Special discounted pricing for new clients</div>
+
   <div class="pricing-grid">
 
     <!-- BASIC -->
     <div class="price-card">
       <div class="price-tier">Basic</div>
-      <div class="price-amount">$399<sup>/mo</sup></div>
+      <div class="price-old-wrap"><span class="price-old">$399/mo</span><span class="price-save">Save $100</span></div>
+      <div class="price-amount">$299<sup>/mo</sup></div>
       <div class="price-period">Best for businesses that need a properly built Google Ads campaign</div>
       <div class="price-desc">A professional Google Ads setup designed to give your campaign the right foundation from day one, plus 10 days of free management after launch.</div>
       <ul class="price-features">
@@ -69,7 +112,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="price-card featured">
       <div class="price-badge">Most Popular</div>
       <div class="price-tier">Standard</div>
-      <div class="price-amount">$599<sup>/mo</sup></div>
+      <div class="price-old-wrap"><span class="price-old">$599/mo</span><span class="price-save">Save $150</span></div>
+      <div class="price-amount">$449<sup>/mo</sup></div>
       <div class="price-period">Best for growing service businesses</div>
       <div class="price-desc">Full campaign management across Search and Performance Max, with ongoing optimization so results keep improving month over month.</div>
       <ul class="price-features">
@@ -85,7 +129,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- PREMIUM -->
     <div class="price-card">
       <div class="price-tier">Premium</div>
-      <div class="price-amount">$799<sup>/mo</sup></div>
+      <div class="price-old-wrap"><span class="price-old">$799/mo</span><span class="price-save">Save $200</span></div>
+      <div class="price-amount">$599<sup>/mo</sup></div>
       <div class="price-period">Best for multi-location or high-spend accounts</div>
       <div class="price-desc">Full-service Google Ads management across every relevant channel, with weekly optimization and priority, direct support.</div>
       <ul class="price-features">
