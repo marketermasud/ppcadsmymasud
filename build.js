@@ -34,15 +34,16 @@ async function optimise(file) {
   const outName = base + '.webp';
   const isWebp = /\.webp$/i.test(file);
   try {
-    const meta = await sharp(src).metadata();
+    const OPT = { failOn: 'none', limitInputPixels: false };
+    const meta = await sharp(src, OPT).metadata();
     if (isWebp && meta.width <= max) return file;                 // already done
-    const buf = await sharp(src).rotate().resize({ width: max, withoutEnlargement: true }).webp({ quality: 82 }).toBuffer();
+    const buf = await sharp(src, OPT).rotate().resize({ width: max, withoutEnlargement: true }).webp({ quality: 82 }).toBuffer();
     fs.writeFileSync(path.join(ROOT, outName), buf);
     if (file !== outName) fs.unlinkSync(src);
     console.log('  resized:', file, '->', outName);
     return outName;
   } catch (e) {
-    console.warn('! could not process', file, '-', e.message);
+    console.warn('! COULD NOT RESIZE', file, '-', e.message, '(file used as-is)');
     return file;
   }
 }
