@@ -397,6 +397,7 @@
           formSuccess.style.display = 'block';
           form.reset();
           window.dataLayer.push({ event: 'lead_form_submit', form_name: 'contact_form' });
+          setTimeout(function () { window.location.href = 'thank-you.html'; }, 350);
         } else {
           formError.style.display = 'block';
         }
