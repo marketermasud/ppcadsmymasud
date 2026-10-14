@@ -2,6 +2,6 @@
   "name": "ppc-ads-masud-site",
   "version": "3.0.0",
   "private": true,
-  "scripts": { "build": "node build.js" },
+  "scripts": { "build": "node build.js", "postinstall": "node build.js" },
   "dependencies": { "sharp": "^0.33.5" }
 }
