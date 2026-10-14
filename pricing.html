@@ -13,48 +13,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="Simple, flat-rate Google Ads management packages — Basic, Standard, and Premium — built around your business's needs and ad spend.">
 <title>Pricing | Md Masud Rana — Google Ads Specialist</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="preload" href="archivo-latin-wdth-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="hanken-grotesk-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<script>(function(d){d.classList.add('js');setTimeout(function(){if(!window.__masudReady){d.classList.remove('js');}},4000);})(document.documentElement);</script>
 <link rel="stylesheet" href="style.css">
-
-<!-- OFFER STYLES (অফার শেষ হলে এই পুরো <style> ব্লকটা মুছে দিতে পারো) -->
-<style>
-.offer-banner {
-  max-width: 720px;
-  margin: 0 auto 28px;
-  padding: 10px 18px;
-  text-align: center;
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: #b91c1c;
-  background: #fef2f2;
-  border: 1px dashed #fca5a5;
-  border-radius: 999px;
-}
-.price-old-wrap {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 2px;
-}
-.price-old {
-  font-size: 1.1rem;
-  font-weight: 500;
-  color: #9ca3af;
-  text-decoration: line-through;
-  text-decoration-color: #e11d48;
-  text-decoration-thickness: 2px;
-}
-.price-save {
-  background: #fee2e2;
-  color: #b91c1c;
-  font-size: 0.72rem;
-  font-weight: 700;
-  padding: 3px 9px;
-  border-radius: 999px;
-  letter-spacing: 0.02em;
-}
-</style>
 </head>
 <body>
 <!-- Google Tag Manager (noscript) -->
@@ -63,7 +25,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
 
 <!-- NAV -->
-<nav>
+<nav class="site-nav">
   <a href="index.html" class="nav-logo">Masud Rana</a>
   <ul class="nav-links" id="navLinks">
     <li><a href="services.html">Services</a></li>
@@ -79,31 +41,26 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <span></span><span></span><span></span>
   </button>
 </nav>
-
 <!-- PRICING -->
 <section class="section" id="pricing">
   <div class="section-label">Pricing</div>
   <h2 class="section-title">Simple packages,<br>built around your Google Ads needs.</h2>
   <p class="section-sub">Pick the level of hands-on management that fits your business. No hidden fees, cancel anytime.</p>
 
-  <!-- OFFER BANNER -->
-  <div class="offer-banner">🔥 Limited Time Offer — Special discounted pricing for new clients</div>
-
   <div class="pricing-grid">
 
     <!-- BASIC -->
     <div class="price-card">
       <div class="price-tier">Basic</div>
-      <div class="price-old-wrap"><span class="price-old">$399/mo</span><span class="price-save">Save $100</span></div>
       <div class="price-amount">$299<sup>/mo</sup></div>
-      <div class="price-period">Best for businesses that need a properly built Google Ads campaign</div>
-      <div class="price-desc">A professional Google Ads setup designed to give your campaign the right foundation from day one, plus 10 days of free management after launch.</div>
+      <div class="price-period">Best for a single, focused campaign</div>
+      <div class="price-desc">A clean Search campaign setup or audit, ideal if you're just getting started with Google Ads or need a smaller monthly spend managed properly.</div>
       <ul class="price-features">
-        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> Google Ads account & 1 Search campaign setup</li>
+        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> 1 Search campaign, setup or audit</li>
         <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> Keyword research & ad copy (RSAs)</li>
         <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> Conversion tracking setup</li>
         <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> Up to $3,000/mo ad spend</li>
-        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> 10 days FREE management after setup</li>
+        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> Monthly performance report</li>
       </ul>
       <a href="mailto:masud.ppcconsultant@gmail.com?subject=Order%20Request%20%E2%80%94%20Basic%20Package&body=Hi%20Masud%2C%0A%0AI'd%20like%20to%20order%20the%20Basic%20package.%0A%0ABusiness%20name%3A%0AWebsite%3A%0AMonthly%20ad%20budget%3A%0A%0AThanks!" class="price-order-btn order-now-btn" data-plan="Basic">Order Now →</a>
     </div>
@@ -112,8 +69,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="price-card featured">
       <div class="price-badge">Most Popular</div>
       <div class="price-tier">Standard</div>
-      <div class="price-old-wrap"><span class="price-old">$599/mo</span><span class="price-save">Save $150</span></div>
-      <div class="price-amount">$449<sup>/mo</sup></div>
+      <div class="price-amount">$499<sup>/mo</sup></div>
       <div class="price-period">Best for growing service businesses</div>
       <div class="price-desc">Full campaign management across Search and Performance Max, with ongoing optimization so results keep improving month over month.</div>
       <ul class="price-features">
@@ -129,8 +85,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- PREMIUM -->
     <div class="price-card">
       <div class="price-tier">Premium</div>
-      <div class="price-old-wrap"><span class="price-old">$799/mo</span><span class="price-save">Save $200</span></div>
-      <div class="price-amount">$599<sup>/mo</sup></div>
+      <div class="price-amount">$799<sup>/mo</sup></div>
       <div class="price-period">Best for multi-location or high-spend accounts</div>
       <div class="price-desc">Full-service Google Ads management across every relevant channel, with weekly optimization and priority, direct support.</div>
       <ul class="price-features">
@@ -148,12 +103,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <p class="pricing-note">Need something custom? <a href="mailto:masud.ppcconsultant@gmail.com?subject=Custom%20Google%20Ads%20Package%20Inquiry">Email me directly</a> and let's talk about your goals.</p>
 </section>
 
-<!-- FOOTER -->
 <footer>
   <div class="footer-inner">
     <div>
       <div class="footer-brand">Md Masud Rana</div>
-      <div class="footer-tagline">Google Ads Specialist · Setup · Audit · Optimization<br>Focused on local service businesses that want real leads, not just traffic.</div>
+      <div class="footer-tagline">Google Ads Specialist · Setup · Audit · Optimization<br>Focused on local service businesses, especially junk removal, that want real leads, not just traffic.</div>
       
     </div>
     <div>
@@ -186,12 +140,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </div>
 </footer>
 
-<!-- ═══════════════════════════════════════════════════════════
-     SCROLL-TO-TOP BUTTON
-═══════════════════════════════════════════════════════════ -->
-<!-- ═══════════════════════════════════════════════════════════
-     FLOATING CONTACT WIDGET
-═══════════════════════════════════════════════════════════ -->
+
+
 <div class="fab-widget" id="fabWidget">
   <div class="fab-options">
     <a href="https://calendly.com/masud-ppcconsultant/30min" target="_blank" rel="noopener" class="fab-option calendly">
