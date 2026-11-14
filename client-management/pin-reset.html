@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0e1b33">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta name="referrer" content="no-referrer">
+<title>Reset delete PIN · Client Management</title>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Figtree:wght@400..700&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+<link href="style.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="mp-auth-wrap mp-auth-single">
+  <section class="mp-auth-panel">
+    <div class="mp-auth-card">
+      <div class="mp-auth-head">
+        <img class="mp-auth-logo-sm" style="display:block" src="icon-192.png" alt="PPC Ads by Masud">
+        <h1>Reset delete PIN</h1>
+        <div class="text-muted-mp">Client Management · PPC Ads by Masud</div>
+      </div>
+
+      <div id="prAlert" class="alert alert-danger py-2 small d-none" role="alert"></div>
+
+      <div id="prLoading" class="text-muted-mp small"><span class="spinner-border spinner-border-sm me-2"></span>Checking your reset link…</div>
+
+      <form id="prEmailForm" class="d-none" novalidate>
+        <p class="small text-muted-mp">Confirm the email address this link was sent to.</p>
+        <div class="mb-3">
+          <label class="form-label" for="prEmail">Email</label>
+          <input type="email" class="form-control" id="prEmail" autocomplete="username" required>
+        </div>
+        <button type="submit" class="btn btn-mp-primary w-100">Continue</button>
+      </form>
+
+      <form id="prPinForm" class="d-none" novalidate>
+        <p class="small text-muted-mp">Choose a new PIN of 4 to 8 digits. You will type it every time you delete something.</p>
+        <div class="mb-3">
+          <label class="form-label" for="prPin1">New PIN</label>
+          <input type="password" inputmode="numeric" autocomplete="off" maxlength="8" class="form-control mp-pin-input" id="prPin1" placeholder="••••">
+        </div>
+        <div class="mb-3">
+          <label class="form-label" for="prPin2">Type it again</label>
+          <input type="password" inputmode="numeric" autocomplete="off" maxlength="8" class="form-control mp-pin-input" id="prPin2" placeholder="••••">
+        </div>
+        <button type="submit" class="btn btn-mp-primary w-100" id="prSaveBtn">Save new PIN</button>
+      </form>
+
+      <div id="prDone" class="d-none">
+        <div class="alert alert-success small">Your new delete PIN is saved.</div>
+        <a href="index.html" class="btn btn-mp-primary w-100">Open Client Management</a>
+      </div>
+
+      <div id="prInvalid" class="d-none">
+        <p class="small text-muted-mp">This reset link is not valid any more. Links work once and expire after a while.</p>
+        <a href="settings.html#pin" class="btn btn-mp-primary w-100">Request a new link in Settings</a>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore-compat.js"></script>
+<script src="firebase-config.js"></script>
+<script src="pin.js"></script>
+<script>
+(function () {
+  const $ = id => document.getElementById(id);
+  const views = ["prLoading", "prEmailForm", "prPinForm", "prDone", "prInvalid"];
+  function show(id) { views.forEach(v => $(v).classList.toggle("d-none", v !== id)); }
+  function alertMsg(text) { $("prAlert").textContent = text || ""; $("prAlert").classList.toggle("d-none", !text); }
+
+  const href = window.location.href;
+  const live = typeof mpFirebaseAuth !== "undefined" && mpFirebaseAuth;
+  if (!live || !mpFirebaseAuth.isSignInWithEmailLink(href)) { show("prInvalid"); return; }
+
+  function complete(email) {
+    show("prLoading");
+    alertMsg("");
+    mpFirebaseAuth.signInWithEmailLink(email, href).then(result => {
+      // Only an existing account may reset the PIN.
+      if (result.additionalUserInfo && result.additionalUserInfo.isNewUser) {
+        return result.user.delete().catch(() => {}).then(() => { throw { code: "mp/not-owner" }; });
+      }
+      try { localStorage.removeItem(MPPin.RESET_EMAIL_KEY); } catch (e) { /* ignore */ }
+      window.history.replaceState({}, "", window.location.pathname);
+      show("prPinForm");
+      $("prPin1").focus();
+    }).catch(err => {
+      const code = err && err.code;
+      if (code === "auth/invalid-email" || code === "auth/user-mismatch") {
+        alertMsg("That email does not match this link. Enter the address the link was sent to.");
+        show("prEmailForm");
+      } else if (code === "mp/not-owner") {
+        alertMsg("This email is not the owner account of this app.");
+        show("prInvalid");
+      } else {
+        show("prInvalid");
+      }
+    });
+  }
+
+  let saved = null;
+  try { saved = localStorage.getItem(MPPin.RESET_EMAIL_KEY); } catch (e) { /* ignore */ }
+  if (saved) complete(saved); else show("prEmailForm");
+
+  $("prEmailForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+    const email = $("prEmail").value.trim();
+    if (!email) { alertMsg("Enter your email address."); return; }
+    complete(email);
+  });
+
+  $("prPinForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+    const a = $("prPin1").value, b = $("prPin2").value;
+    if (!MPPin.validFormat(a)) { alertMsg("The PIN must be 4 to 8 digits."); return; }
+    if (a !== b) { alertMsg("The two PINs do not match."); return; }
+    alertMsg("");
+    $("prSaveBtn").disabled = true;
+    MPPin.save(a).then(() => show("prDone")).catch(err => {
+      $("prSaveBtn").disabled = false;
+      alertMsg("Could not save the PIN: " + ((err && err.message) || "unknown error"));
+    });
+  });
+})();
+</script>
+</body>
+</html>
