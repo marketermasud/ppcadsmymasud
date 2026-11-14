@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0B1F3A">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta name="referrer" content="no-referrer">
+<title>Reset delete PIN · Invoice Studio</title>
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Figtree:wght@400..700&display=swap" rel="stylesheet">
+<link href="style.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="auth-wrap auth-single">
+  <section class="auth-panel">
+    <div class="auth-card">
+      <img class="auth-logo-sm" src="icon-192.png" alt="PPC Ads by Masud">
+      <h1>Reset delete PIN</h1>
+      <p class="muted">Invoice Studio · PPC Ads by Masud</p>
+
+      <div id="prAlert" class="alert alert-danger" hidden></div>
+      <p id="prLoading" class="muted">Checking your reset link…</p>
+
+      <form id="prEmailForm" hidden novalidate>
+        <p class="dlg-text">Confirm the email address this link was sent to.</p>
+        <label class="field"><span>Email</span><input type="email" id="prEmail" autocomplete="username" required></label>
+        <button type="submit" class="btn btn-primary btn-block">Continue</button>
+      </form>
+
+      <form id="prPinForm" hidden novalidate>
+        <p class="dlg-text">Choose a new PIN of 4 to 8 digits. You will type it every time you delete a saved invoice.</p>
+        <label class="field"><span>New PIN</span><input type="password" inputmode="numeric" autocomplete="off" maxlength="8" class="pin-input" id="prPin1" placeholder="••••"></label>
+        <label class="field"><span>Type it again</span><input type="password" inputmode="numeric" autocomplete="off" maxlength="8" class="pin-input" id="prPin2" placeholder="••••"></label>
+        <button type="submit" class="btn btn-primary btn-block" id="prSaveBtn">Save new PIN</button>
+      </form>
+
+      <div id="prDone" hidden>
+        <div class="alert alert-ok">Your new delete PIN is saved.</div>
+        <a href="./" class="btn btn-primary btn-block">Open Invoice Studio</a>
+      </div>
+
+      <div id="prInvalid" hidden>
+        <p class="dlg-text">This reset link is not valid any more. Links work once and expire after a while.</p>
+        <a href="./" class="btn btn-primary btn-block">Open Invoice Studio and request a new link</a>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div id="dlgOverlay" hidden><span id="dlgTitle"></span><button id="dlgClose"></button><div id="dlgBody"></div></div>
+<div id="toasts" hidden></div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="firebase-config.js"></script>
+<script src="ui.js"></script>
+<script src="pin.js"></script>
+<script>
+(function () {
+  const $ = id => document.getElementById(id);
+  const views = ["prLoading", "prEmailForm", "prPinForm", "prDone", "prInvalid"];
+  function show(id) { views.forEach(v => { $(v).hidden = v !== id; }); }
+  function alertMsg(text) { $("prAlert").textContent = text || ""; $("prAlert").hidden = !text; }
+
+  const href = window.location.href;
+  if (!firebaseEnabled || !fbAuth || !fbAuth.isSignInWithEmailLink(href)) { show("prInvalid"); return; }
+
+  function complete(email) {
+    show("prLoading"); alertMsg("");
+    fbAuth.signInWithEmailLink(email, href).then(result => {
+      // Only an existing account may reset the PIN.
+      if (result.additionalUserInfo && result.additionalUserInfo.isNewUser) {
+        return result.user.delete().catch(() => {}).then(() => { throw { code: "mp/not-owner" }; });
+      }
+      try { localStorage.removeItem(MPPin.RESET_EMAIL_KEY); } catch (e) { /* ignore */ }
+      window.history.replaceState({}, "", window.location.pathname);
+      show("prPinForm");
+      $("prPin1").focus();
+    }).catch(err => {
+      const code = err && err.code;
+      if (code === "auth/invalid-email" || code === "auth/user-mismatch") {
+        alertMsg("That email does not match this link. Enter the address the link was sent to.");
+        show("prEmailForm");
+      } else {
+        if (code === "mp/not-owner") alertMsg("This email is not the owner account of this app.");
+        show("prInvalid");
+      }
+    });
+  }
+
+  let saved = null;
+  try { saved = localStorage.getItem(MPPin.RESET_EMAIL_KEY); } catch (e) { /* ignore */ }
+  if (saved) complete(saved); else show("prEmailForm");
+
+  $("prEmailForm").addEventListener("submit", e => {
+    e.preventDefault();
+    const email = $("prEmail").value.trim();
+    if (!email) { alertMsg("Enter your email address."); return; }
+    complete(email);
+  });
+  $("prPinForm").addEventListener("submit", e => {
+    e.preventDefault();
+    const a = $("prPin1").value, b = $("prPin2").value;
+    if (!MPPin.validFormat(a)) { alertMsg("The PIN must be 4 to 8 digits."); return; }
+    if (a !== b) { alertMsg("The two PINs do not match."); return; }
+    alertMsg(""); $("prSaveBtn").disabled = true;
+    MPPin.save(a).then(() => show("prDone")).catch(err => { $("prSaveBtn").disabled = false; alertMsg(MPPin.saveErrorText(err)); });
+  });
+})();
+</script>
+</body>
+</html>

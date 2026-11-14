@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Invoice Studio · PPC Ads by Masud</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta name="theme-color" content="#0B1F3A">
+<meta name="application-name" content="Invoice Studio">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Invoices">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Figtree:wght@400..700&family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=Noto+Sans+Bengali:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="style.css" rel="stylesheet">
+</head>
+<body class="is-loading">
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-save" viewBox="0 0 24 24"><path d="M5 3h11l3 3v15H5zM8 3v6h7M8 21v-7h8v7"/></symbol>
+    <symbol id="i-folder" viewBox="0 0 24 24"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></symbol>
+    <symbol id="i-undo" viewBox="0 0 24 24"><path d="M9 14L4 9l5-5M4 9h10a6 6 0 0 1 0 12h-3"/></symbol>
+    <symbol id="i-print" viewBox="0 0 24 24"><path d="M7 9V3h10v6M7 17H5a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2M7 14h10v7H7z"/></symbol>
+    <symbol id="i-dots" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.6" fill="currentColor"/><circle cx="12" cy="12" r="1.6" fill="currentColor"/><circle cx="19" cy="12" r="1.6" fill="currentColor"/></symbol>
+    <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 4v11M7 11l5 5 5-5M5 20h14"/></symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24"><path d="M6 11h12v9H6zM8.5 11V8a3.5 3.5 0 0 1 7 0v3"/></symbol>
+    <symbol id="i-logout" viewBox="0 0 24 24"><path d="M10 4H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h4M15 16l4-4-4-4M19 12H9"/></symbol>
+    <symbol id="i-cloud" viewBox="0 0 24 24"><path d="M7 18a4 4 0 0 1-.6-7.96A5.5 5.5 0 0 1 17 9.5a4.25 4.25 0 0 1 .5 8.5z"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4.2-4.2"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+    <symbol id="i-trash" viewBox="0 0 24 24"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/></symbol>
+    <symbol id="i-mail" viewBox="0 0 24 24"><path d="M4 6h16v12H4zM4 7l8 6 8-6"/></symbol>
+  </defs>
+</svg>
+
+<!-- ============ Sign-in ============ -->
+<div class="auth-wrap no-print" id="loginView" hidden>
+  <section class="auth-brand" aria-hidden="true">
+    <span class="auth-ring"><img src="icon-192.png" alt=""></span>
+    <div>
+      <p class="auth-brand-title">Branded invoices, ready in a minute.</p>
+      <p class="auth-brand-sub">Invoice Studio by PPC Ads by Masud</p>
+    </div>
+    <div class="brand-bar"></div>
+  </section>
+  <section class="auth-panel">
+    <div class="auth-card">
+      <img class="auth-logo-sm" src="icon-192.png" alt="PPC Ads by Masud">
+      <h1>Sign in</h1>
+      <p class="muted">Invoice Studio · PPC Ads by Masud</p>
+      <div class="alert alert-danger" id="loginAlert" hidden></div>
+      <form id="loginForm" novalidate>
+        <label class="field"><span>Email</span>
+          <input type="email" id="loginEmail" autocomplete="username" placeholder="you@email.com" required></label>
+        <label class="field"><span>Password</span>
+          <input type="password" id="loginPassword" autocomplete="current-password" placeholder="••••••••" required></label>
+        <div class="auth-row">
+          <label class="check"><input type="checkbox" id="rememberMe" checked> Remember me</label>
+          <a href="#" id="forgotLink">Forgot password?</a>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block" id="loginBtn">Sign in</button>
+      </form>
+      <button class="btn btn-soft btn-block install-only" type="button" data-mp-install><svg class="ic" aria-hidden="true"><use href="#i-download"/></svg> Install app on this device</button>
+    </div>
+  </section>
+</div>
+
+<!-- ============ App ============ -->
+<div id="appView" hidden>
+<header class="appbar no-print">
+  <div class="appbar-brand">
+    <img src="icon-192.png" alt="" class="appbar-logo">
+    <div>
+      <div class="appbar-title">Invoice Studio</div>
+      <div class="appbar-sub">PPC Ads by Masud</div>
+    </div>
+  </div>
+
+  <div class="appbar-actions">
+    <button class="tb-btn" type="button" data-act="new" title="Start a fresh invoice"><svg class="ic" aria-hidden="true"><use href="#i-plus"/></svg><span>New</span></button>
+    <button class="tb-btn" type="button" data-act="save" title="Save this invoice"><svg class="ic" aria-hidden="true"><use href="#i-save"/></svg><span>Save</span></button>
+    <button class="tb-btn" type="button" data-act="open" title="Open a saved invoice"><svg class="ic" aria-hidden="true"><use href="#i-folder"/></svg><span>Saved invoices</span></button>
+    <span class="tb-sep"></span>
+    <button class="tb-btn tb-paid" type="button" data-act="paid"><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg><span data-role="paid-label">Mark as paid</span></button>
+    <button class="tb-btn tb-primary" type="button" data-act="print"><svg class="ic" aria-hidden="true"><use href="#i-print"/></svg><span>Print / Save PDF</span></button>
+  </div>
+
+  <button class="tb-icon" type="button" id="menuBtn" aria-label="More options" aria-haspopup="true" aria-expanded="false"><svg class="ic" aria-hidden="true"><use href="#i-dots"/></svg></button>
+  <div class="menu" id="menu" hidden>
+    <button type="button" class="install-only" data-mp-install><svg class="ic" aria-hidden="true"><use href="#i-download"/></svg> Install app</button>
+    <button type="button" id="menuPin"><svg class="ic" aria-hidden="true"><use href="#i-lock"/></svg> Delete PIN <span class="menu-note" id="menuPinState"></span></button>
+    <button type="button" id="menuLogout"><svg class="ic" aria-hidden="true"><use href="#i-logout"/></svg> Sign out</button>
+    <div class="menu-foot" id="menuUser"></div>
+  </div>
+</header>
+
+<div class="subbar no-print">
+  <label class="subbar-cur"><span>Currency</span><select id="currencySelect"></select></label>
+  <span id="statusChip" class="chip unpaid">Unpaid</span>
+  <span id="cloudChip" class="chip cloud-off" title="Cloud sync status"><svg class="ic" aria-hidden="true"><use href="#i-cloud"/></svg><span data-role="cloud-label">Local only</span></span>
+</div>
+
+<div class="stage">
+<div class="sheet" id="sheet">
+
+  <div class="inv-header">
+    <div class="idbox">
+      <img class="logo-img" src="logo.png" alt="Masud PPC logo">
+      <div>
+        <h1>PPC Ads by Masud</h1>
+        <div class="tagline">GOOGLE ADS EXPERT &nbsp;•&nbsp; DRIVE TRAFFIC &nbsp;•&nbsp; GENERATE LEADS &nbsp;•&nbsp; GROW BUSINESS</div>
+      </div>
+    </div>
+    <div class="invoicebox">
+      <div class="big">INVOICE</div>
+      <div class="num">INVOICE #<span id="invNum" contenteditable="true">2540609103</span></div>
+    </div>
+  </div>
+
+  <div class="info-grid">
+    <div class="info-col">
+      <div class="info-label">Billed To</div>
+      <div class="info-row"><span class="k">Name</span><span class="v" contenteditable="true" data-ph="Client name"></span></div>
+      <div class="info-row"><span class="k">Business</span><span class="v" contenteditable="true" data-ph="Business name"></span></div>
+      <div class="info-row"><span class="k">Address</span><span class="v" contenteditable="true" data-ph="City, Country"></span></div>
+      <div class="info-row"><span class="k">Phone</span><span class="v" contenteditable="true" data-ph="+___ ___ ____"></span></div>
+      <div class="info-row"><span class="k">Email</span><span class="v" contenteditable="true" data-ph="client@email.com"></span></div>
+    </div>
+    <div class="info-col">
+      <div class="info-label">Invoice Details</div>
+      <div class="info-row"><span class="k">Date</span><span class="v" id="invDate" contenteditable="true"></span></div>
+      <div class="info-row"><span class="k">Billing For</span><span class="v" contenteditable="true" data-ph="e.g. 16 July – 17 Aug 2026"></span></div>
+      <div class="info-row"><span class="k">Payment Via</span><span class="v" contenteditable="true" data-ph="Wise / Payoneer / Bank"></span></div>
+      <div class="info-row"><span class="k">Account/IBAN</span><span class="v" contenteditable="true" data-ph="Account details"></span></div>
+    </div>
+  </div>
+
+  <div class="from-strip">
+    <span><b>From:</b> MD. Masud Rana — PPC Ads by Masud</span>
+    <span><b>Email:</b> masud.ppcconsultant@gmail.com</span>
+    <span><b>Web:</b> masudppc.com</span>
+  </div>
+
+  <div class="items-wrap">
+    <table class="items" id="itemsTable">
+      <thead>
+        <tr>
+          <th class="num">#</th>
+          <th>Service Description</th>
+          <th class="qty">Qty</th>
+          <th class="price">Unit Price</th>
+          <th class="total">Total</th>
+          <th class="rm no-print"></th>
+        </tr>
+      </thead>
+      <tbody id="itemsBody"></tbody>
+    </table>
+    <button class="addrow-btn no-print" id="addRowBtn" type="button">+ Add service line</button>
+  </div>
+
+  <div class="mid-row">
+    <div class="qr-paid-col">
+      <div class="qr-anchor">
+        <div class="qr-caption">Verify Invoice</div>
+        <img id="qrImg" class="qr-img" src="" alt="Scan to verify">
+        <div class="qr-hint">Scan to confirm at<br><b>masudppc.com</b></div>
+      </div>
+      <div class="paid-stamp" id="paidStamp">
+        <div class="inner">
+          <div class="txt">PAID</div>
+          <div class="date" id="paidDate">--</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="totals-wrap">
+      <div class="totals">
+        <div class="row subtotal"><span class="lbl">Subtotal</span><span class="val" id="subtotalVal">0.00</span></div>
+        <div class="row"><span class="lbl">Discount</span><input type="number" id="discountInput" value="0" min="0" step="0.01"></div>
+        <div class="row grand"><span class="lbl">Grand Total</span><span class="val" id="grandVal">0.00</span></div>
+        <div class="row"><span class="lbl">Advance Paid</span><input type="number" id="advanceInput" value="0" min="0" step="0.01"></div>
+        <div class="row balance"><span class="lbl">Balance Due</span><span class="val" id="balanceVal">0.00</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bottom-grid">
+    <div>
+      <div class="notes-title">Notes / Terms</div>
+      <div class="notes-list" id="notesList">
+        <span contenteditable="true">• Google Ads spend is billed directly to Google, separate from this invoice.</span>
+        <span contenteditable="true">• Performance depends on market competition & budget — optimized continuously, not guaranteed.</span>
+        <span contenteditable="true">• Payment is due within 3 business days of the invoice date.</span>
+        <span contenteditable="true">• Service fees are non-refundable once work has started.</span>
+      </div>
+    </div>
+
+    <div class="sig-box">
+      <div class="sig-caption">Signature (Authorized)</div>
+      <div class="sig-slot" id="sigSlot">
+        <div class="sig-pending">Signature appears once marked Paid</div>
+      </div>
+      <div class="sig-line">
+        <div class="sig-name">MD. Masud Rana</div>
+        <div class="sig-role">Google Ads Specialist — PPC Ads by Masud</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="inv-footer" contenteditable="true">Every click is an opportunity, every campaign is your growth story 🚀</div>
+  <div class="colorbar-bottom"></div>
+</div>
+</div>
+
+<nav class="bottombar no-print" aria-label="Invoice actions">
+  <button type="button" data-act="new"><svg class="ic" aria-hidden="true"><use href="#i-plus"/></svg><span>New</span></button>
+  <button type="button" data-act="open"><svg class="ic" aria-hidden="true"><use href="#i-folder"/></svg><span>Invoices</span></button>
+  <button type="button" data-act="save" class="bb-main"><svg class="ic" aria-hidden="true"><use href="#i-save"/></svg><span>Save</span></button>
+  <button type="button" data-act="paid" class="bb-paid"><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg><span data-role="paid-label-short">Paid</span></button>
+  <button type="button" data-act="print"><svg class="ic" aria-hidden="true"><use href="#i-print"/></svg><span>PDF</span></button>
+</nav>
+</div>
+
+<!-- Saved invoices -->
+<div class="modal-overlay no-print" id="modalOverlay">
+  <div class="modal modal-list" role="dialog" aria-label="Saved invoices">
+    <div class="modal-head">
+      <h3>Saved invoices</h3>
+      <button type="button" class="modal-x" id="modalClose" aria-label="Close"><svg class="ic" aria-hidden="true"><use href="#i-x"/></svg></button>
+    </div>
+    <div class="modal-search"><svg class="ic" aria-hidden="true"><use href="#i-search"/></svg><input type="text" id="modalSearch" placeholder="Search by invoice number or client name"></div>
+    <div id="invListArea" class="modal-scroll"></div>
+    <div class="hint" id="modalHint">Invoices are saved on this device and backed up to your cloud account, so they open on every device you sign in on.</div>
+  </div>
+</div>
+
+<!-- Generic dialog (confirmations, PIN) -->
+<div class="modal-overlay no-print" id="dlgOverlay">
+  <div class="modal modal-dlg" role="dialog" aria-modal="true">
+    <div class="modal-head">
+      <h3 id="dlgTitle"></h3>
+      <button type="button" class="modal-x" id="dlgClose" aria-label="Close"><svg class="ic" aria-hidden="true"><use href="#i-x"/></svg></button>
+    </div>
+    <div id="dlgBody"></div>
+  </div>
+</div>
+
+<div class="toasts no-print" id="toasts" aria-live="polite"></div>
+
+<script src="pwa.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="firebase-config.js"></script>
+<script src="signature-data.js"></script>
+<script src="ui.js"></script>
+<script src="pin.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

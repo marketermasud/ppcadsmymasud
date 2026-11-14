@@ -1,0 +1,22 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Replace the address below with the email you sign in with.
+    function isOwner() {
+      return request.auth != null && request.auth.token.email == "YOUR_LOGIN_EMAIL@example.com";
+    }
+
+    match /invoices/{invoiceId} {
+      // The public verify page (QR code) looks up ONE invoice by its number.
+      allow get: if true;
+      // Listing all invoices, saving and deleting: only you, signed in.
+      allow list, create, update, delete: if isOwner();
+    }
+
+    // Delete PIN fingerprint.
+    match /settings/{docId} {
+      allow read, write: if isOwner();
+    }
+  }
+}
