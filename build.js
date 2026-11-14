@@ -11,8 +11,9 @@ const DIST = path.join(ROOT, 'dist');
 const IMG_RE = /\.(jpe?g|png|webp)$/i;
 const SITE_EXT = /\.(html|css|js|svg|woff2|txt|xml|ico|json)$/i;
 const SKIP = new Set(['build.js', 'package.json', 'package-lock.json']);
-/* Self-contained apps that live in their own folder. Copied to dist exactly as they are (no image resizing, no gallery). */
-const APP_DIRS = ['money-management'];
+/* Self-contained apps: ANY folder in the repo root that has its own index.html is copied to dist exactly as it is
+   (no image resizing, no gallery) and opens at masudppc.com/<folder-name>/. Folders starting with "." or "_" are ignored. */
+const NOT_APPS = new Set(['dist', 'node_modules']);
 const MAX_GALLERY = 1600, MAX_HERO = 1000;
 
 let sharp = null;
@@ -86,8 +87,11 @@ async function optimise(file) {
     if (!fs.statSync(p).isFile() || SKIP.has(f) || f.startsWith('.')) continue;
     if (SITE_EXT.test(f) || f === '_redirects' || imgs.includes(f)) fs.copyFileSync(p, path.join(DIST, f));
   }
-  for (const d of APP_DIRS) {
+  for (const d of fs.readdirSync(ROOT)) {
     const src = path.join(ROOT, d);
-    if (fs.existsSync(src) && fs.statSync(src).isDirectory()) { fs.cpSync(src, path.join(DIST, d), { recursive: true }); console.log('App folder copied:', d); }
+    if (NOT_APPS.has(d) || d.startsWith('.') || d.startsWith('_') || !fs.statSync(src).isDirectory()) continue;
+    if (!fs.existsSync(path.join(src, 'index.html'))) continue;
+    fs.cpSync(src, path.join(DIST, d), { recursive: true });
+    console.log('App folder copied:', d);
   }
 })().catch((e) => { console.error(e); process.exit(1); });
