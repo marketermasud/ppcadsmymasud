@@ -4,8 +4,7 @@ service cloud.firestore {
 
     // Replace the address below with the email you sign in with.
     function isOwner() {
-      return request.auth != null && request.auth.token.email == "masud.ppcconsultant@gmail.com
-";
+      return request.auth != null && request.auth.token.email == "masud.ppcconsultant@gmail.com";
     }
 
     match /invoices/{invoiceId} {

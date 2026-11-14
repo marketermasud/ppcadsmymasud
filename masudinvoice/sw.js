@@ -9,7 +9,7 @@
    When you upload changed files to GitHub, bump VERSION so
    installed copies drop their old cache.
    ========================================================= */
-const VERSION = "inv-v1";
+const VERSION = "inv-v2";
 const APP_CACHE = VERSION + "-app";
 const CDN_CACHE = VERSION + "-cdn";
 
