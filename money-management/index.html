@@ -245,10 +245,62 @@ body{overscroll-behavior-y:none;-webkit-tap-highlight-color:transparent}
 .bn-add i{transition:transform .2s ease}
 .bn-add[aria-expanded=true] i{transform:rotate(45deg)}
 .app-sidebar.open .sb-link,.app-sidebar.open .sb-group{animation:mmUp .3s ease backwards}
-#splash .spinner-border{animation-duration:.7s}
-#splash>div:last-child{animation:mmUp .5s ease both}
 @media(max-width:575.98px){.modal.fade:not(.show) .modal-dialog{transform:translateY(60px)}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important}}
+
+/* ---- Ring loaders (app opening + saving) ---- */
+@keyframes mmSpin{to{transform:rotate(360deg)}}
+@keyframes mmDash{0%{stroke-dashoffset:300}50%{stroke-dashoffset:90}100%{stroke-dashoffset:300}}
+@keyframes mmDot{0%,80%,100%{opacity:.2}40%{opacity:1}}
+@keyframes mmCheck{to{stroke-dashoffset:0}}
+@keyframes mmBeat{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
+.mm-ring{position:relative;width:170px;height:170px;display:flex;align-items:center;justify-content:center}
+.mm-ring svg{position:absolute;inset:0;width:100%;height:100%}
+.mm-ring circle,.mm-ring path{fill:none;stroke-linecap:round}
+.mm-ring .trk{stroke:var(--line);stroke-width:7}
+.mm-ring .arc{stroke:var(--brand);stroke-width:7;stroke-dasharray:327;stroke-dashoffset:300;transform-origin:60px 60px;animation:mmSpin 1.25s linear infinite,mmDash 2.2s ease-in-out infinite}
+.mm-ring .arc2{stroke:#f2bb5a;stroke-width:5;stroke-dasharray:251;animation:mmSpin 1.9s linear infinite reverse,mmDash 2.6s ease-in-out infinite}
+.mm-ring>i{font-size:3.2rem;color:var(--brand);animation:mmBeat 1.6s ease-in-out infinite}
+.mm-ring.sm{width:120px;height:120px}
+.mm-ring .chk{stroke:var(--inc);stroke-width:9;stroke-linejoin:round;stroke-dasharray:70;stroke-dashoffset:70;opacity:0}
+#splash{transition:opacity .45s ease;gap:1rem}
+#splash.out{opacity:0;pointer-events:none}
+#splash.d-none{display:none!important}
+.mm-splash-t{font-family:var(--display);font-size:1.9rem;font-weight:600;color:var(--ink);margin-top:.4rem}
+.mm-splash-s{font-size:1.05rem;color:var(--muted)}
+.mm-dots b{animation:mmDot 1.2s infinite both}.mm-dots b:nth-child(2){animation-delay:.2s}.mm-dots b:nth-child(3){animation-delay:.4s}
+#saver{position:fixed;inset:0;z-index:2900;display:flex;align-items:center;justify-content:center;background:rgba(8,10,30,.55);backdrop-filter:blur(3px);animation:mmToast .2s ease-out}
+#saver.d-none{display:none!important}
+.saver-card{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:1.6rem 2.2rem 1.3rem;display:flex;flex-direction:column;align-items:center;gap:.8rem;min-width:220px;box-shadow:0 24px 60px rgba(8,10,30,.4);animation:mmPop .25s ease-out}
+.saver-t{font-weight:700;font-size:1.1rem;color:var(--ink)}
+#saver.ok .arc{animation:none;stroke:var(--inc);stroke-dashoffset:0;transition:stroke-dashoffset .35s ease,stroke .2s}
+#saver.ok .chk{opacity:1;animation:mmCheck .4s .15s ease-out forwards}
+#saver.ok .saver-t{color:var(--inc)}
+
+/* ---- Bigger, easier-to-read phone layout ---- */
+@media(max-width:767.98px){
+  html{font-size:19px}
+  body{font-size:1rem}
+  .page{padding-left:.7rem;padding-right:.7rem}
+  .page-head h1{font-size:1.6rem}
+  .stat{padding:.85rem .9rem}
+  .stat .lbl{font-size:.86rem}.stat .val{font-size:1.45rem}.stat .sub{font-size:.82rem}
+  .tbl .sub,.txn-item .s{font-size:.84rem}
+  table.rcards td{padding:.38rem .85rem!important}
+  table.rcards td::before{font-size:.84rem}
+  .pill{font-size:.8rem}
+  .form-label{font-size:.9rem}
+  .bottom-nav>a,.bottom-nav>button,.bottom-nav .bn-add{font-size:.72rem;min-height:64px}
+  .bottom-nav>a i,.bottom-nav>button i{font-size:1.35rem}
+  .mm-ring{width:190px;height:190px}
+}
+@media(max-width:399.98px){html{font-size:18px}}
+@media(max-width:767.98px){.card-b>table.tbl{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch}}
+.auth-card .btn{white-space:normal}.auth-card .alert{overflow-wrap:anywhere}
+
+.btn-ret{color:var(--inc);border-color:color-mix(in srgb,var(--inc) 45%,var(--line));margin-right:.3rem;min-height:32px;white-space:nowrap}
+.btn-ret:hover{background:var(--inc-soft);color:var(--inc);border-color:var(--inc)}
+@media(max-width:767.98px){.btn-ret{min-height:40px}table.rcards td.actions{flex-wrap:wrap;gap:.3rem}}
 
 /* ---- Notes & reminders ---- */
 .note-day{margin-bottom:1.1rem}
@@ -274,7 +326,8 @@ body{overscroll-behavior-y:none;-webkit-tap-highlight-color:transparent}
 </head>
 <body>
 
-<div id="splash"><div class="spinner-border text-primary" role="status"></div><div>Loading your money…</div></div>
+<div id="splash" role="status" aria-live="polite"><div class="mm-ring"><svg viewBox="0 0 120 120" aria-hidden="true"><circle class="trk" cx="60" cy="60" r="52"/><circle class="arc" cx="60" cy="60" r="52"/><circle class="arc arc2" cx="60" cy="60" r="40"/></svg><i class="bi bi-wallet2"></i></div><div class="mm-splash-t">Money Manager</div><div class="mm-splash-s">Loading your money<span class="mm-dots"><b>.</b><b>.</b><b>.</b></span></div></div>
+<div id="saver" class="d-none" role="status" aria-live="polite"><div class="saver-card"><div class="mm-ring sm"><svg viewBox="0 0 120 120" aria-hidden="true"><circle class="trk" cx="60" cy="60" r="52"/><circle class="arc" cx="60" cy="60" r="52"/><path class="chk" d="M38 62 L54 78 L84 44"/></svg></div><div class="saver-t">Saving…</div></div></div>
 
 <!-- ============ AUTH ============ -->
 <div id="authView" class="d-none">
@@ -775,10 +828,20 @@ function toast(msg, type = 'success') {
   el.innerHTML = `<div class="d-flex"><div class="toast-body">${esc(msg)}</div><button class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button></div>`;
   $('#toasts').appendChild(el); const t = new bootstrap.Toast(el, { delay: type === 'danger' ? 6000 : 3500 }); el.addEventListener('hidden.bs.toast', () => el.remove()); t.show();
 }
+/* Saving ring: spins while a form is being saved, then shows a tick. Visual only. */
+const Saver = {
+  on: false, since: 0, paused: 0, MIN: 1100, OK: 850,
+  el: () => $('#saver'),
+  show(text = 'Saving…') { const e = this.el(); this.on = true; this.since = Date.now(); e.classList.remove('ok', 'd-none'); e.querySelector('.saver-t').textContent = text; },
+  pause() { if (!this.on) return false; this.paused++; this.el().classList.add('d-none'); return true; },
+  resume() { if (this.paused > 0) this.paused--; if (this.on && !this.paused) { this.since = Date.now(); this.el().classList.remove('d-none'); } },
+  fail() { this.on = false; this.paused = 0; this.el().classList.add('d-none'); },
+  async done(text = 'Saved') { if (!this.on) return; const wait = ms => new Promise(r => setTimeout(r, ms)); await wait(Math.max(0, this.MIN - (Date.now() - this.since))); const e = this.el(); e.querySelector('.saver-t').textContent = text; e.classList.add('ok'); await wait(this.OK); this.on = false; this.paused = 0; e.classList.add('d-none'); e.classList.remove('ok'); }
+};
 function modalShell(title, inner, { size = 'lg' } = {}) {
   const el = document.createElement('div'); el.className = 'modal fade'; el.tabIndex = -1;
   el.innerHTML = `<div class="modal-dialog modal-dialog-scrollable ${size === 'md' ? '' : 'modal-' + size} modal-fullscreen-sm-down"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" style="font-family:var(--display);font-weight:600">${title}</h5><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>${inner}</div></div>`;
-  $('#modalHost').appendChild(el); const m = new bootstrap.Modal(el, { backdrop: 'static', keyboard: false }); el.addEventListener('hidden.bs.modal', () => { m.dispose(); el.remove(); }); m.show(); return { el, m };
+  $('#modalHost').appendChild(el); const m = new bootstrap.Modal(el, { backdrop: 'static', keyboard: false }); const heldSaver = Saver.pause(); el.addEventListener('hidden.bs.modal', () => { m.dispose(); el.remove(); if (heldSaver) Saver.resume(); }); m.show(); return { el, m };
 }
 function confirmDlg(msg, { title = 'Please confirm', ok = 'Confirm', danger = false } = {}) {
   return new Promise(res => {
@@ -825,8 +888,8 @@ function openFormModal({ title, fields, values = {}, submitText = 'Save', size =
   form.addEventListener('submit', async e => {
     e.preventDefault();
     const btn = form.querySelector('[type=submit]'), err = form.querySelector('.form-error'); err.classList.add('d-none'); btn.disabled = true;
-    try { await onSubmit(readForm(form, fields), { form, modal: m }); m.hide(); }
-    catch (ex) { console.error(ex); err.textContent = ex.message || String(ex); err.classList.remove('d-none'); const mb = el.querySelector('.modal-body'); if (mb) mb.scrollTop = 0; btn.disabled = false; }
+    try { Saver.show(); await onSubmit(readForm(form, fields), { form, modal: m }); m.hide(); await Saver.done(); }
+    catch (ex) { Saver.fail(); console.error(ex); err.textContent = ex.message || String(ex); err.classList.remove('d-none'); const mb = el.querySelector('.modal-body'); if (mb) mb.scrollTop = 0; btn.disabled = false; }
   });
   onOpen && onOpen(form, m);
   return { el, m, form };
@@ -1272,10 +1335,31 @@ ACTIONS.sellAsset = d => {
     }
   });
 };
+ACTIONS.returnAsset = d => {
+  const a = byId(D.assets, d.id); if (!a || a.status === 'sold') return; if (needAccount()) return;
+  const book = round2(a.currentValue * a.quantity);
+  openFormModal({
+    title: 'Return money', size: 'md', submitText: 'Return money', values: { soldDate: today(), soldPrice: book },
+    note: `<p class="text-muted2 small"><b>${esc(a.name)}</b> is held against ${fmt(book, a.currency)} of your money. When that money comes back, choose the account it was received in. The amount is added to that account and taken out of your total assets. The record stays in your list as “Returned”. It is not counted as income.</p>`,
+    fields: [
+      { name: 'soldDate', label: 'Return date', type: 'date', required: true, col: 6 },
+      { name: 'soldPrice', label: `Amount returned (${a.currency})`, type: 'number', required: true, min: 0, col: 6 },
+      { name: 'soldAccountId', label: 'Money received in (account)', type: 'select', options: accountOptions(''), placeholder: 'Select account…', required: true, col: 12 }
+    ],
+    onSubmit: async vals => {
+      const acc = acct(vals.soldAccountId); if (!acc) throw new Error('Select the account that received the money.');
+      const price = round2(vals.soldPrice);
+      const rec = { ...a, status: 'sold', returned: true, soldDate: vals.soldDate, soldPrice: price, soldAccountId: acc.id, soldAccountAmount: Eng.convert(price, a.currency, acc.currency), soldGainBdt: Eng.toBDT(price - book, a.currency) };
+      const eo = effectOps(effectsOf('assets', a), effectsOf('assets', rec));
+      await commit([{ op: 'set', col: 'assets', id: a.id, data: rec }, ...eo.ops], { checks: eo.checks }); toast('Money returned. ' + fmt(price, a.currency) + ' added to ' + acc.name);
+    }
+  });
+};
 ACTIONS.reopenAsset = async d => {
   const a = byId(D.assets, d.id); if (!a) return;
-  if (!await confirmDlg('Undo this sale? The money will be taken back from the account and the asset returns to your list.', { ok: 'Undo sale', title: 'Undo sale' })) return;
-  try { const { soldDate, soldPrice, soldAccountId, soldAccountAmount, soldGainBdt, ...rest } = a; const rec = { ...rest, status: 'active' }; const eo = effectOps(effectsOf('assets', a), effectsOf('assets', rec)); await commit([{ op: 'set', col: 'assets', id: a.id, data: rec }, ...eo.ops], { checks: eo.checks }); toast('Sale reversed'); } catch (e) { toast(e.message, 'danger'); }
+  const wasRet = !!a.returned;
+  if (!await confirmDlg(wasRet ? 'Undo this return? The money will be taken back out of the account and the asset becomes active again.' : 'Undo this sale? The money will be taken back from the account and the asset returns to your list.', { ok: wasRet ? 'Undo return' : 'Undo sale', title: wasRet ? 'Undo return' : 'Undo sale' })) return;
+  try { const { soldDate, soldPrice, soldAccountId, soldAccountAmount, soldGainBdt, returned, ...rest } = a; const rec = { ...rest, status: 'active' }; const eo = effectOps(effectsOf('assets', a), effectsOf('assets', rec)); await commit([{ op: 'set', col: 'assets', id: a.id, data: rec }, ...eo.ops], { checks: eo.checks }); toast(wasRet ? 'Return reversed' : 'Sale reversed'); } catch (e) { toast(e.message, 'danger'); }
 };
 ACTIONS.delAsset = async d => {
   const a = byId(D.assets, d.id); if (!a) return;
@@ -1888,12 +1972,12 @@ function renderAssets(root) {
   const act = all.filter(a => a.status !== 'sold'), cost = act.reduce((n, a) => n + Eng.toBDT(a.purchasePrice * a.quantity, a.currency), 0), val = act.reduce((n, a) => n + Eng.toBDT(a.currentValue * a.quantity, a.currency), 0), gain = val - cost;
   const realized = all.filter(a => a.status === 'sold').reduce((n, a) => n + (+a.soldGainBdt || 0), 0);
   const rows = list.map(a => {
-    const sold = a.status === 'sold', totalV = a.currentValue * a.quantity, totalC = a.purchasePrice * a.quantity, g = sold ? a.soldPrice - totalV : totalV - totalC;
-    return `<tr><td data-label="Asset"><div class="fw-semibold">${esc(a.name)} ${sold ? pill('Sold', 'muted') : ''}</div><div class="sub">${esc(a.category)}${a.location ? ', ' + esc(a.location) : ''}</div></td><td data-label="Purchased">${fdate(a.purchaseDate)}</td><td data-label="Qty" class="num">${a.quantity}</td><td data-label="Cost" class="amt">${fmt(totalC, a.currency)}</td><td data-label="${sold ? 'Sold for' : 'Current value'}" class="amt">${sold ? fmt(a.soldPrice, a.currency) : fmt(totalV, a.currency)}${a.currency !== 'BDT' ? `<div class="sub fw-normal">${bdt(Eng.toBDT(sold ? a.soldPrice : totalV, a.currency))}</div>` : ''}</td><td data-label="${sold ? 'Gain / loss on sale' : 'Value change'}" class="amt ${sold ? (a.soldPrice - totalC >= 0 ? 'text-inc' : 'text-exp') : (g >= 0 ? 'text-inc' : 'text-exp')}">${sold ? fmt(a.soldPrice - totalC, a.currency) : (g >= 0 ? '+' : '') + fmt(g, a.currency)}</td><td class="actions text-end text-nowrap" data-label="">${a.attachment ? ib('viewAtt', 'paperclip', 'Attachment', { id: a.attachment.id }) : ''}${sold ? ib('reopenAsset', 'arrow-counterclockwise', 'Undo sale', { id: a.id }) : ib('valueAsset', 'graph-down-arrow', 'Update value / depreciation', { id: a.id }) + ib('sellAsset', 'cash-coin', 'Sell asset', { id: a.id })}${ib('editAsset', 'pencil', 'Edit', { id: a.id })}${ib('delAsset', 'trash', 'Delete', { id: a.id }, 'btn-soft text-danger')}</td></tr>`;
+    const sold = a.status === 'sold', ret = sold && !!a.returned, totalV = a.currentValue * a.quantity, totalC = a.purchasePrice * a.quantity, g = sold ? a.soldPrice - totalV : totalV - totalC;
+    return `<tr><td data-label="Asset"><div class="fw-semibold">${esc(a.name)} ${sold ? (ret ? pill('Returned', 'inc') : pill('Sold', 'muted')) : ''}</div><div class="sub">${esc(a.category)}${a.location ? ', ' + esc(a.location) : ''}${sold && a.soldDate ? `<br>${ret ? 'Money returned' : 'Sold'} on ${fdate(a.soldDate)}${acct(a.soldAccountId) ? ', into ' + esc(acct(a.soldAccountId).name) : ''}` : ''}</div></td><td data-label="Purchased">${fdate(a.purchaseDate)}</td><td data-label="Qty" class="num">${a.quantity}</td><td data-label="Cost" class="amt">${fmt(totalC, a.currency)}</td><td data-label="${ret ? 'Money returned' : sold ? 'Sold for' : 'Current value'}" class="amt">${sold ? fmt(a.soldPrice, a.currency) : fmt(totalV, a.currency)}${a.currency !== 'BDT' ? `<div class="sub fw-normal">${bdt(Eng.toBDT(sold ? a.soldPrice : totalV, a.currency))}</div>` : ''}</td><td data-label="${ret ? 'Difference from cost' : sold ? 'Gain / loss on sale' : 'Value change'}" class="amt ${sold ? (a.soldPrice - totalC >= 0 ? 'text-inc' : 'text-exp') : (g >= 0 ? 'text-inc' : 'text-exp')}">${sold ? fmt(a.soldPrice - totalC, a.currency) : (g >= 0 ? '+' : '') + fmt(g, a.currency)}</td><td class="actions text-end text-nowrap" data-label="">${a.attachment ? ib('viewAtt', 'paperclip', 'Attachment', { id: a.attachment.id }) : ''}${sold ? ib('reopenAsset', 'arrow-counterclockwise', ret ? 'Undo return' : 'Undo sale', { id: a.id }) : `<button class="btn btn-soft btn-sm btn-ret" title="Money returned to me: add it to an account" data-act="returnAsset" ${dataAttrs({ id: a.id })}><i class="bi bi-arrow-return-left me-1"></i>Return money</button>` + ib('valueAsset', 'graph-down-arrow', 'Update value / depreciation', { id: a.id }) + ib('sellAsset', 'cash-coin', 'Sell asset', { id: a.id })}${ib('editAsset', 'pencil', 'Edit', { id: a.id })}${ib('delAsset', 'trash', 'Delete', { id: a.id }, 'btn-soft text-danger')}</td></tr>`;
   }).join('');
   root.innerHTML = pageHead('Assets', 'Things you own. Current estimated value feeds your total assets and net worth.', btn('addAsset', 'Add Asset', 'plus-lg')) + `
-  <div class="row g-3 mb-3">${stat('Total asset value', bdt(val), `${act.length} active asset${act.length === 1 ? '' : 's'}`, 'var(--trf)')}${stat('Total purchase cost', bdt(cost), 'What you paid', 'var(--brand)')}${stat('Unrealized gain / loss', (gain >= 0 ? '+' : '') + bdt(gain), 'Current value minus cost', gain >= 0 ? 'var(--inc)' : 'var(--exp)')}${stat('Realized on sales', (realized >= 0 ? '+' : '') + bdt(realized), 'Sale price minus book value', realized >= 0 ? 'var(--inc)' : 'var(--exp)')}</div>
-  <div class="btn-group mb-3">${[['active', 'Active'], ['sold', 'Sold'], ['all', 'All']].map(([k, l]) => `<button class="btn btn-sm ${view === k ? 'btn-primary' : 'btn-soft'}" data-act="assetView" data-v="${k}">${l}</button>`).join('')}</div>
+  <div class="row g-3 mb-3">${stat('Total asset value', bdt(val), `${act.length} active asset${act.length === 1 ? '' : 's'}`, 'var(--trf)')}${stat('Total purchase cost', bdt(cost), 'What you paid', 'var(--brand)')}${stat('Unrealized gain / loss', (gain >= 0 ? '+' : '') + bdt(gain), 'Current value minus cost', gain >= 0 ? 'var(--inc)' : 'var(--exp)')}${stat('Realized on sales / returns', (realized >= 0 ? '+' : '') + bdt(realized), 'Amount received minus book value', realized >= 0 ? 'var(--inc)' : 'var(--exp)')}</div>
+  <div class="btn-group mb-3">${[['active', 'Active'], ['sold', 'Sold / Returned'], ['all', 'All']].map(([k, l]) => `<button class="btn btn-sm ${view === k ? 'btn-primary' : 'btn-soft'}" data-act="assetView" data-v="${k}">${l}</button>`).join('')}</div>
   <div class="card">${list.length ? `<div class="table-responsive"><table class="table tbl rcards"><thead><tr><th>Asset</th><th>Purchased</th><th>Qty</th><th class="amt">Cost</th><th class="amt">Value</th><th class="amt">Change</th><th></th></tr></thead><tbody>${rows}</tbody></table></div>` : `<div class="card-b">${emptyBox('gem', 'No assets here', 'Record a laptop, gold, property or investments. Buying an asset moves money into it and is not treated as an expense.', btn('addAsset', 'Add asset', 'plus-lg'))}</div>`}</div>`;
 }
 ACTIONS.assetView = d => { UI.assetView = d.v; refreshHook(); };
@@ -2568,7 +2652,11 @@ const AUTH_MSG = { 'auth/invalid-credential': 'The email or password is not corr
 const authMsg = e => AUTH_MSG[e.code] || e.message || String(e);
 function authAlert(msg, type = 'danger') { $('#authAlert').innerHTML = msg ? `<div class="alert alert-${type} py-2">${esc(msg)}</div>` : ''; }
 ACTIONS.authTab = d => { ['login', 'register', 'forgot'].forEach(k => $('#' + k + 'Form').classList.toggle('d-none', k !== d.tab)); authAlert(''); };
-function showAuth() { $('#splash').classList.add('d-none'); $('#appView').classList.add('d-none'); $('#authView').classList.remove('d-none'); }
+const SPLASH_MIN = 3200; let splashSince = Date.now(), splashTimer = null;
+function showSplash() { clearTimeout(splashTimer); splashSince = Date.now(); const s = $('#splash'); s.classList.remove('d-none', 'out'); }
+function hideSplash(now) { const s = $('#splash'); clearTimeout(splashTimer); if (s.classList.contains('d-none')) return; if (now) { s.classList.add('d-none'); s.classList.remove('out'); return; }
+  splashTimer = setTimeout(() => { s.classList.add('out'); splashTimer = setTimeout(() => { s.classList.add('d-none'); s.classList.remove('out'); }, 460); }, Math.max(0, SPLASH_MIN - (Date.now() - splashSince))); }
+function showAuth() { hideSplash(true); $('#appView').classList.add('d-none'); $('#authView').classList.remove('d-none'); }
 function updateUserUI() { $('#userName').textContent = State.user?.displayName || State.user?.email?.split('@')[0] || 'Account'; $('#userEmail').textContent = State.user?.email || ''; $('#sbFoot').textContent = State.mode === 'demo' ? 'Demo mode (this browser only)' : (State.user?.email || ''); $('#demoBanner').classList.toggle('d-none', State.mode !== 'demo'); }
 async function seedDefaults() {
   if (State.settings.initialized) return;
@@ -2580,7 +2668,7 @@ async function seedDefaults() {
   await commit(ops);
 }
 async function onReady() {
-  State.ready = true; $('#splash').classList.add('d-none'); $('#authView').classList.add('d-none'); $('#appView').classList.remove('d-none'); updateUserUI();
+  State.ready = true; hideSplash(); $('#authView').classList.add('d-none'); $('#appView').classList.remove('d-none'); updateUserUI();
   try { await seedDefaults(); } catch (e) { console.error(e); toast('Could not create default categories: ' + e.message, 'danger'); }
   route();
   try { await processRecurring(); } catch (e) { console.error(e); }
@@ -2594,7 +2682,7 @@ function attachFirebase(user) {
   unsubs.push(fs.onSnapshot(fs.doc(db, 'users', user.uid, 'settings', 'main'), s => { State.settings = mergeSettings(s.exists() ? s.data() : {}); dataChanged(); done('__settings'); }, err => { console.error(err); toast('Could not load settings: ' + err.message, 'danger'); done('__settings'); }));
 }
 function endSession() { unsubs.forEach(u => { try { u(); } catch (e) { } }); unsubs = []; COLS.concat('attachments').forEach(c => D[c] = []); State.settings = mergeSettings({}); State.ready = false; State.user = null; State.mode = null; destroyCharts(); }
-function startSession(user) { endSession(); State.mode = 'firebase'; State.user = { uid: user.uid, email: user.email, displayName: user.displayName }; $('#splash').classList.remove('d-none'); attachFirebase(user); }
+function startSession(user) { endSession(); State.mode = 'firebase'; State.user = { uid: user.uid, email: user.email, displayName: user.displayName }; showSplash(); attachFirebase(user); }
 ACTIONS.startDemo = () => { endSession(); State.mode = 'demo'; State.user = { uid: 'demo', email: 'demo@local', displayName: 'Demo user' }; try { const raw = localStorage.getItem(DEMO_KEY); if (raw) { const s = JSON.parse(raw); COLS.concat('attachments').forEach(c => D[c] = s.data?.[c] || []); State.settings = mergeSettings(s.settings); } } catch (e) { } dataChanged(); if (!location.hash) location.hash = '#/dashboard'; onReady(); };
 ACTIONS.logout = async () => { if (State.mode === 'firebase') { try { await FB.A.signOut(FB.auth); } catch (e) { toast(e.message, 'danger'); } } else { endSession(); showAuth(); } };
 function wireAuth() {
