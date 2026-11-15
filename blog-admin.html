@@ -192,7 +192,7 @@ button:disabled { opacity: .55; cursor: wait; }
 <script type="module">
 /* Blog admin: email + password sign-in (Firebase Auth), write/edit/publish posts (Firestore), image upload (Cloudinary).
    Who may write is decided by the Firestore rules, not by this page — see BLOG-SETUP.md. */
-import { BLOG_CONFIG as C, slugify, fmtDate, esc } from '/blog-settings.js';
+import { BLOG_CONFIG as C, slugify, fmtDate, esc, IMG_TRANSFORM, hqImages } from '/blog-settings.js';
 
 const $ = (id) => document.getElementById(id);
 const boot = $('bootMsg');
@@ -332,8 +332,8 @@ async function uploadImage(file) {
   const j = await r.json().catch(() => ({}));
   if (!r.ok || !j.secure_url) throw new Error('Image upload failed: ' + ((j.error && j.error.message) || 'HTTP ' + r.status));
   setMsg('appMsg', 'Image uploaded.', true);
-  /* Served resized and in a modern format automatically. */
-  return j.secure_url.replace('/upload/', '/upload/f_auto,q_auto,c_limit,w_1600/');
+  /* The original file is kept in full on Cloudinary; the page shows a best-quality version of it. */
+  return j.secure_url.replace('/upload/', '/upload/' + IMG_TRANSFORM + '/');
 }
 
 function showCover() {
@@ -455,8 +455,8 @@ function showError(e) {
 async function save(status) {
   const title = $('fTitle').value.trim();
   const slug = current ? current.slug : slugify($('fSlug').value || title);
-  const content = getContent();
-  const cover = $('fCover').value.trim();
+  const content = hqImages(getContent());
+  const cover = hqImages($('fCover').value.trim());
   const excerpt = $('fExcerpt').value.trim();
   try {
     if (!title) throw new Error('Add a title first.');

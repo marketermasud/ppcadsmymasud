@@ -13,7 +13,7 @@ export const BLOG_CONFIG = {
   siteUrl: "https://masudppc.com",
   /* Cloudinary (free) stores the blog images. Fill these two values in — see BLOG-SETUP.md, step 3.
      While they are empty, the admin page asks for an image link instead of uploading. */
-  cloudinary: { cloudName: "acyta3qg", uploadPreset: "ssczljcs" }
+  cloudinary: { cloudName: "", uploadPreset: "" }
 };
 
 /* ───────── Nothing below this line needs editing ───────── */
@@ -35,6 +35,13 @@ export function fmtDate(iso) {
   return d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric', timeZone: 'UTC' });
 }
 
+/* Cloudinary delivery: best quality, modern format, at most 2400px wide (sharp on phone and retina screens). */
+export const IMG_TRANSFORM = 'f_auto,q_auto:best,c_limit,w_2400';
+/* Images saved with the earlier, more compressed setting are upgraded on the fly. */
+export function hqImages(s) {
+  return String(s || '').split('/upload/f_auto,q_auto,c_limit,w_1600/').join('/upload/' + IMG_TRANSFORM + '/');
+}
+
 /* Firestore REST → plain object */
 function val(v) {
   if (!v) return '';
@@ -51,6 +58,8 @@ export function decodeDoc(doc) {
   Object.keys(f).forEach(function (k) { out[k] = val(f[k]); });
   if (!out.slug && doc && doc.name) out.slug = doc.name.split('/').pop();
   if (!Array.isArray(out.tags)) out.tags = [];
+  if (out.cover) out.cover = hqImages(out.cover);
+  if (out.content) out.content = hqImages(out.content);
   return out;
 }
 
