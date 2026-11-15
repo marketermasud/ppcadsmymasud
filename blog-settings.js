@@ -13,7 +13,7 @@ export const BLOG_CONFIG = {
   siteUrl: "https://masudppc.com",
   /* Cloudinary (free) stores the blog images. Fill these two values in — see BLOG-SETUP.md, step 3.
      While they are empty, the admin page asks for an image link instead of uploading. */
-  cloudinary: { cloudName: "", uploadPreset: "" }
+  cloudinary: { cloudName: "acyta3qg", uploadPreset: "ssczljcs" }
 };
 
 /* ───────── Nothing below this line needs editing ───────── */
