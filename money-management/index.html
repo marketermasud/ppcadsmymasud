@@ -302,6 +302,26 @@ body{overscroll-behavior-y:none;-webkit-tap-highlight-color:transparent}
 .btn-ret:hover{background:var(--inc-soft);color:var(--inc);border-color:var(--inc)}
 @media(max-width:767.98px){.btn-ret{min-height:40px}table.rcards td.actions{flex-wrap:wrap;gap:.3rem}}
 
+/* ---- Colour ---- */
+.pill-ast{background:color-mix(in srgb,#8b5cf6 16%,var(--surface));color:#7c3aed}.ico-ast{background:color-mix(in srgb,#8b5cf6 16%,var(--surface));color:#7c3aed}
+[data-bs-theme=dark] .pill-ast,[data-bs-theme=dark] .ico-ast{color:#c4b5fd}
+.tbl .sub.tm{font-weight:600;color:var(--brand)}
+@media(max-width:767.98px){table.rcards td .sub.tm{display:inline;margin-left:.5rem}}
+#splash{background:radial-gradient(circle at 50% 38%,color-mix(in srgb,#8b5cf6 20%,var(--paper)) 0,var(--paper) 58%)}
+#splash .mm-ring .arc{stroke:url(#mmG1)}#splash .mm-ring .arc2{stroke:url(#mmG1b)}
+#splash .mm-ring{filter:drop-shadow(0 10px 26px rgba(123,92,255,.35))}
+#splash .mm-ring>i{background:linear-gradient(135deg,#5b6cff,#b14bff 55%,#ff7a59);-webkit-background-clip:text;background-clip:text;color:transparent}
+.mm-splash-t{background:linear-gradient(90deg,#5b6cff,#b14bff 50%,#ff7a59);-webkit-background-clip:text;background-clip:text;color:transparent}
+#saver:not(.ok) .arc{stroke:url(#mmG2)}
+#saver.ok .saver-card{box-shadow:0 24px 60px rgba(8,10,30,.4),0 0 0 6px color-mix(in srgb,var(--inc) 22%,transparent)}
+#saver.ok .mm-ring{animation:mmBeat .5s ease}
+.stat:not(.hero){background:linear-gradient(135deg,color-mix(in srgb,var(--stat,var(--line)) 12%,var(--surface)) 0,var(--surface) 62%)}
+.stat:not(.hero) .val{color:color-mix(in srgb,var(--stat,var(--ink)) 55%,var(--ink))}
+.stat.hero{background:linear-gradient(135deg,#3344c4 0,#6a3fd6 60%,#a347d9 100%);border-color:transparent}
+[data-bs-theme=dark] .stat.hero{background:linear-gradient(135deg,#232a72 0,#43298f 60%,#6a2f93 100%);border-color:transparent}
+.acc-card{background:linear-gradient(160deg,color-mix(in srgb,var(--brand) 7%,var(--surface)) 0,var(--surface) 55%)}
+@media(max-width:991.98px){.bottom-nav .bn-add i{background:linear-gradient(135deg,#5b6cff,#b14bff);color:#fff!important}}
+
 /* ---- Notes & reminders ---- */
 .note-day{margin-bottom:1.1rem}
 .note-day-h{display:flex;justify-content:space-between;align-items:center;gap:.5rem;font-family:var(--display);font-weight:600;font-size:1.02rem;color:var(--ink);padding:.2rem .2rem .45rem;border-bottom:2px solid var(--line);margin-bottom:.6rem}
@@ -326,8 +346,8 @@ body{overscroll-behavior-y:none;-webkit-tap-highlight-color:transparent}
 </head>
 <body>
 
-<div id="splash" role="status" aria-live="polite"><div class="mm-ring"><svg viewBox="0 0 120 120" aria-hidden="true"><circle class="trk" cx="60" cy="60" r="52"/><circle class="arc" cx="60" cy="60" r="52"/><circle class="arc arc2" cx="60" cy="60" r="40"/></svg><i class="bi bi-wallet2"></i></div><div class="mm-splash-t">Money Manager</div><div class="mm-splash-s">Loading your money<span class="mm-dots"><b>.</b><b>.</b><b>.</b></span></div></div>
-<div id="saver" class="d-none" role="status" aria-live="polite"><div class="saver-card"><div class="mm-ring sm"><svg viewBox="0 0 120 120" aria-hidden="true"><circle class="trk" cx="60" cy="60" r="52"/><circle class="arc" cx="60" cy="60" r="52"/><path class="chk" d="M38 62 L54 78 L84 44"/></svg></div><div class="saver-t">Saving…</div></div></div>
+<div id="splash" role="status" aria-live="polite"><div class="mm-ring"><svg viewBox="0 0 120 120" aria-hidden="true"><defs><linearGradient id="mmG1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#5b6cff"/><stop offset=".45" stop-color="#b14bff"/><stop offset="1" stop-color="#ff7a59"/></linearGradient><linearGradient id="mmG1b" x1="1" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffd166"/><stop offset="1" stop-color="#19c37d"/></linearGradient></defs><circle class="trk" cx="60" cy="60" r="52"/><circle class="arc" cx="60" cy="60" r="52"/><circle class="arc arc2" cx="60" cy="60" r="40"/></svg><i class="bi bi-wallet2"></i></div><div class="mm-splash-t">Money Manager</div><div class="mm-splash-s">Loading your money<span class="mm-dots"><b>.</b><b>.</b><b>.</b></span></div></div>
+<div id="saver" class="d-none" role="status" aria-live="polite"><div class="saver-card"><div class="mm-ring sm"><svg viewBox="0 0 120 120" aria-hidden="true"><defs><linearGradient id="mmG2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#5b6cff"/><stop offset=".45" stop-color="#b14bff"/><stop offset="1" stop-color="#ff7a59"/></linearGradient><linearGradient id="mmG2b" x1="1" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffd166"/><stop offset="1" stop-color="#19c37d"/></linearGradient></defs><circle class="trk" cx="60" cy="60" r="52"/><circle class="arc" cx="60" cy="60" r="52"/><path class="chk" d="M38 62 L54 78 L84 44"/></svg></div><div class="saver-t">Saving…</div></div></div>
 
 <!-- ============ AUTH ============ -->
 <div id="authView" class="d-none">
@@ -621,6 +641,19 @@ function buildLedger() {
   L.sort((a, b) => a.date < b.date ? 1 : a.date > b.date ? -1 : (b.createdAt || '').localeCompare(a.createdAt || ''));
   return L;
 }
+/** Read-only log of money that moved between an account and an asset (return, sale, purchase). Built from the asset records; adds nothing to the data. */
+function assetMoves() {
+  const M = [];
+  D.assets.forEach(a => {
+    if (a.status === 'sold' && a.soldAccountId) M.push({ kind: 'asset', dir: 'in', virtual: true, id: a.id + '#in', assetId: a.id, date: a.soldDate || '', bdt: Eng.toBDT(+a.soldPrice || 0, a.currency), amount: +a.soldPrice || 0, currency: a.currency, category: a.returned ? 'Asset money returned' : 'Asset sale', sub: a.category || '', source: '', party: '', accountId: a.soldAccountId, desc: a.returned ? 'Money returned from asset, added to account' : 'Sale value moved into account', ref: '', status: '', title: (a.returned ? 'Money returned: ' : 'Asset sold: ') + a.name, createdAt: a.soldAt || a.updatedAt || '' });
+    if (a.payAccountId && +a.payAccountAmount) M.push({ kind: 'asset', dir: 'out', virtual: true, id: a.id + '#out', assetId: a.id, date: a.purchaseDate || '', bdt: Eng.toBDT((+a.purchasePrice || 0) * (+a.quantity || 1), a.currency), amount: (+a.purchasePrice || 0) * (+a.quantity || 1), currency: a.currency, category: 'Asset purchase', sub: a.category || '', source: '', party: '', accountId: a.payAccountId, desc: 'Money moved from account into asset', ref: '', status: '', title: 'Asset: ' + a.name, createdAt: a.createdAt || '' });
+  });
+  return M;
+}
+const ledgerSort = (a, b) => a.date < b.date ? 1 : a.date > b.date ? -1 : (b.createdAt || '').localeCompare(a.createdAt || '');
+/** Time an entry was added, taken from its automatic timestamp. */
+const ftime = iso_ => { if (!iso_) return ''; const d = new Date(iso_); return isNaN(d) ? '' : d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' }); };
+const addedAt = e => { if (!e.createdAt) return ''; const d = new Date(e.createdAt); if (isNaN(d)) return ''; const t = ftime(e.createdAt); return iso(d) === e.date ? t : `added ${fshort(iso(d))}, ${t}`; };
 let _lv = -1, _L = [], _Lc = [], _nv = -1, _nw = null;
 function ledger() { if (_lv !== State.ver) { _L = buildLedger(); _Lc = _L.filter(e => !(e.kind === 'income' && e.status !== 'Received')); _lv = State.ver; } return _L; }
 function Lc() { ledger(); return _Lc; }
@@ -954,8 +987,8 @@ const pageHead = (title, sub, actions = '') => `<div class="page-head"><div><h1>
 const btn = (act, label, icon, cls = 'btn-primary', data = '') => `<button class="btn ${cls}" data-act="${act}" ${data}>${icon ? `<i class="bi bi-${icon} me-1"></i>` : ''}${label}</button>`;
 const emptyBox = (icon, title, text, actions = '') => `<div class="empty"><i class="bi bi-${icon}"></i><h4>${title}</h4><p class="mb-3">${text}</p>${actions}</div>`;
 const pill = (t, c = 'muted') => `<span class="pill pill-${c}">${esc(t)}</span>`;
-const kindPill = k => k === 'income' ? pill('Income', 'inc') : k === 'expense' ? pill('Expense', 'exp') : pill('Transfer', 'trf');
-const kindIcon = k => k === 'income' ? ['arrow-down-left', 'inc'] : k === 'expense' ? ['arrow-up-right', 'exp'] : ['arrow-left-right', 'trf'];
+const kindPill = k => k === 'income' ? pill('Income', 'inc') : k === 'expense' ? pill('Expense', 'exp') : k === 'asset' ? pill('Asset', 'ast') : pill('Transfer', 'trf');
+const kindIcon = k => k === 'income' ? ['arrow-down-left', 'inc'] : k === 'expense' ? ['arrow-up-right', 'exp'] : k === 'asset' ? ['gem', 'ast'] : ['arrow-left-right', 'trf'];
 const statusPill = s => ({ Received: 'inc', Paid: 'inc', Pending: 'warn', 'Partially Paid': 'brand', Overdue: 'exp', Cancelled: 'muted' }[s] ? pill(s, { Received: 'inc', Paid: 'inc', Pending: 'warn', 'Partially Paid': 'brand', Overdue: 'exp', Cancelled: 'muted' }[s]) : '');
 const palette = () => isDark() ? PALETTE_D : PALETTE_L;
 const CH = {};
@@ -1329,7 +1362,7 @@ ACTIONS.sellAsset = d => {
     ],
     onSubmit: async vals => {
       const acc = acct(vals.soldAccountId), price = round2(vals.soldPrice);
-      const rec = { ...a, status: 'sold', soldDate: vals.soldDate, soldPrice: price, soldAccountId: acc.id, soldAccountAmount: Eng.convert(price, a.currency, acc.currency), soldGainBdt: Eng.toBDT(price - book, a.currency) };
+      const rec = { ...a, status: 'sold', soldAt: new Date().toISOString(), soldDate: vals.soldDate, soldPrice: price, soldAccountId: acc.id, soldAccountAmount: Eng.convert(price, a.currency, acc.currency), soldGainBdt: Eng.toBDT(price - book, a.currency) };
       const eo = effectOps(effectsOf('assets', a), effectsOf('assets', rec));
       await commit([{ op: 'set', col: 'assets', id: a.id, data: rec }, ...eo.ops], { checks: eo.checks }); toast('Asset sold. Value moved to ' + acc.name);
     }
@@ -1349,9 +1382,9 @@ ACTIONS.returnAsset = d => {
     onSubmit: async vals => {
       const acc = acct(vals.soldAccountId); if (!acc) throw new Error('Select the account that received the money.');
       const price = round2(vals.soldPrice);
-      const rec = { ...a, status: 'sold', returned: true, soldDate: vals.soldDate, soldPrice: price, soldAccountId: acc.id, soldAccountAmount: Eng.convert(price, a.currency, acc.currency), soldGainBdt: Eng.toBDT(price - book, a.currency) };
+      const rec = { ...a, status: 'sold', returned: true, soldAt: new Date().toISOString(), soldDate: vals.soldDate, soldPrice: price, soldAccountId: acc.id, soldAccountAmount: Eng.convert(price, a.currency, acc.currency), soldGainBdt: Eng.toBDT(price - book, a.currency) };
       const eo = effectOps(effectsOf('assets', a), effectsOf('assets', rec));
-      await commit([{ op: 'set', col: 'assets', id: a.id, data: rec }, ...eo.ops], { checks: eo.checks }); toast('Money returned. ' + fmt(price, a.currency) + ' added to ' + acc.name);
+      await commit([{ op: 'set', col: 'assets', id: a.id, data: rec }, ...eo.ops], { checks: eo.checks }); toast('Money returned. ' + fmt(price, a.currency) + ' added to ' + acc.name + '. It is listed in Transactions.');
     }
   });
 };
@@ -1359,7 +1392,7 @@ ACTIONS.reopenAsset = async d => {
   const a = byId(D.assets, d.id); if (!a) return;
   const wasRet = !!a.returned;
   if (!await confirmDlg(wasRet ? 'Undo this return? The money will be taken back out of the account and the asset becomes active again.' : 'Undo this sale? The money will be taken back from the account and the asset returns to your list.', { ok: wasRet ? 'Undo return' : 'Undo sale', title: wasRet ? 'Undo return' : 'Undo sale' })) return;
-  try { const { soldDate, soldPrice, soldAccountId, soldAccountAmount, soldGainBdt, returned, ...rest } = a; const rec = { ...rest, status: 'active' }; const eo = effectOps(effectsOf('assets', a), effectsOf('assets', rec)); await commit([{ op: 'set', col: 'assets', id: a.id, data: rec }, ...eo.ops], { checks: eo.checks }); toast(wasRet ? 'Return reversed' : 'Sale reversed'); } catch (e) { toast(e.message, 'danger'); }
+  try { const { soldDate, soldPrice, soldAccountId, soldAccountAmount, soldGainBdt, returned, soldAt, ...rest } = a; const rec = { ...rest, status: 'active' }; const eo = effectOps(effectsOf('assets', a), effectsOf('assets', rec)); await commit([{ op: 'set', col: 'assets', id: a.id, data: rec }, ...eo.ops], { checks: eo.checks }); toast(wasRet ? 'Return reversed' : 'Sale reversed'); } catch (e) { toast(e.message, 'danger'); }
 };
 ACTIONS.delAsset = async d => {
   const a = byId(D.assets, d.id); if (!a) return;
@@ -1786,10 +1819,10 @@ function periodControls(path, list = PERIODS) {
 const delta = (a, b) => b > 0 ? (a - b) / b * 100 : null;
 const stat = (label, val, sub, color, hero = '') => `<div class="col-6 col-xl-3"><div class="card stat ${hero}" style="--stat:${color}"><div class="lbl">${label}</div><div class="val num">${val}</div><div class="sub">${sub || '&nbsp;'}</div></div></div>`;
 function txnItem(e) {
-  const [ic, c] = kindIcon(e.kind), sign = e.kind === 'income' ? '+' : e.kind === 'expense' ? '-' : '';
+  const [ic, c0] = kindIcon(e.kind), isAst = e.kind === 'asset', c = isAst ? (e.dir === 'in' ? 'inc' : 'exp') : c0, sign = e.kind === 'income' || (isAst && e.dir === 'in') ? '+' : e.kind === 'expense' || isAst ? '-' : '', tm = ftime(e.createdAt);
   const title = e.kind === 'transfer' ? `${acctName(e.accountId)} → ${acctName(e.toAccountId)}` : e.title;
   const sub = e.kind === 'transfer' ? (e.desc || 'Moved between accounts') : [e.category || e.source, acctName(e.accountId)].filter(Boolean).join(', ');
-  return `<div class="txn-item"><span class="ico ico-${c}"><i class="bi bi-${ic}"></i></span><div class="min-w-0"><div class="t">${esc(title)}</div><div class="s">${esc(sub)}${sub ? ', ' : ''}${fshort(e.date)}</div></div><div class="a text-${c} num">${sign}${bdt(e.bdt)}<div class="s fw-normal">${kindPill(e.kind)}</div></div></div>`;
+  return `<div class="txn-item"><span class="ico ico-${c}"><i class="bi bi-${ic}"></i></span><div class="min-w-0"><div class="t">${esc(title)}</div><div class="s">${esc(sub)}${sub ? ', ' : ''}${fshort(e.date)}${tm ? ' · ' + tm : ''}</div></div><div class="a text-${c} num">${sign}${bdt(e.bdt)}<div class="s fw-normal">${kindPill(e.kind)}</div></div></div>`;
 }
 function collectAlerts() {
   const out = [], n = State.settings.notify, t = today();
@@ -1845,7 +1878,7 @@ function renderDashboard(root) {
   const g = s.gran === 'auto' ? autoGran(range) : s.gran, td = trendData(L, range, g);
   const exCats = sumBy(L.filter(e => e.kind === 'expense' && inRange(e, range)), e => e.category), pal = palette();
   const accs = D.accounts.map(a => ({ a, v: Eng.toBDT(a.currentBalance, a.currency) })).sort((x, y) => y.v - x.v), pos = accs.filter(x => x.v > 0), posTotal = pos.reduce((n, x) => n + x.v, 0);
-  const recent = L.filter(e => !e.virtual).slice(0, 8), ins = buildInsights(range, s.period);
+  const recent = L.filter(e => !e.virtual).concat(assetMoves()).sort(ledgerSort).slice(0, 8), ins = buildInsights(range, s.period);
   const actAssets = D.assets.filter(a => a.status !== 'sold').length;
   root.innerHTML = head + quick + alerts.map(a => `<div class="alert-strip ${a.tone}"><i class="bi bi-${a.icon}"></i><span>${esc(a.text)}</span><a class="btn btn-sm btn-soft" href="${a.href}">View</a></div>`).join('') + `
   <div class="row g-3 mb-3">
@@ -1891,7 +1924,7 @@ ACTIONS.dashGran = d => { UI.dash.gran = d.g; refreshHook(); };
 const TF_DEFAULT = kind => ({ q: '', period: 'thisMonth', from: '', to: '', min: '', max: '', type: kind === 'all' ? '' : kind, cat: '', acc: '', party: '', pm: '', group: '', status: '', page: 1 });
 function filterLedger(f) {
   const r = f.period === 'all' ? { from: '0000-01-01', to: '9999-12-31' } : getRange(f.period, f), q = f.q.toLowerCase().trim();
-  return ledger().filter(e => {
+  return ledger().concat(assetMoves()).sort(ledgerSort).filter(e => {
     if (!inRange(e, r)) return false;
     if (f.type && e.kind !== f.type) return false;
     if (f.status && e.status !== f.status) return false;
@@ -1919,7 +1952,7 @@ function renderTxns(root, kind, query) {
   root.innerHTML = pageHead(TXN_TITLES[kind], sub, acts) + `<div class="card mb-3"><div class="card-b"><div class="row g-2 align-items-end">
     ${F('q', 'Search', `<div class="input-group input-group-sm"><span class="input-group-text"><i class="bi bi-search"></i></span>${inp('q', 'search', 'Keyword, client, category, amount…')}</div>`, 'col-12 col-md-4')}
     <div class="col-12 col-md-8"><label class="form-label small mb-1">Period</label>${periodControls(path, PERIODS_X)}</div>
-    ${kind === 'all' ? F('type', 'Type', sel('type', [{ v: '', l: 'All types' }, { v: 'income', l: 'Income' }, { v: 'expense', l: 'Expense' }, { v: 'transfer', l: 'Transfer' }])) : ''}
+    ${kind === 'all' ? F('type', 'Type', sel('type', [{ v: '', l: 'All types' }, { v: 'income', l: 'Income' }, { v: 'expense', l: 'Expense' }, { v: 'transfer', l: 'Transfer' }, { v: 'asset', l: 'Asset money (return / sale / purchase)' }])) : ''}
     ${F('cat', 'Category', sel('cat', [{ v: '', l: 'All categories' }, ...cats]))}
     ${F('acc', 'Account', sel('acc', [{ v: '', l: 'All accounts' }, ...D.accounts.map(a => ({ v: a.id, l: a.name }))]))}
     ${F('pm', 'Payment method', sel('pm', [{ v: '', l: 'Any method' }, ...types]))}
@@ -1934,18 +1967,18 @@ function renderTxns(root, kind, query) {
 function renderTxnResults(kind) {
   const f = UI.tf[kind], out = $('#txnOut'); if (!out) return;
   const list = filterLedger(f), per = 25, pages = Math.max(1, Math.ceil(list.length / per)); f.page = Math.min(f.page || 1, pages);
-  const counted = list.filter(e => !(e.kind === 'income' && e.status !== 'Received')), T = { inc: 0, exp: 0, trf: 0 };
-  counted.forEach(e => { if (e.kind === 'income') T.inc += e.bdt; else if (e.kind === 'expense') T.exp += e.bdt; else T.trf += e.bdt; });
+  const counted = list.filter(e => !(e.kind === 'income' && e.status !== 'Received')), T = { inc: 0, exp: 0, trf: 0, ast: 0 }, hasAst = counted.some(e => e.kind === 'asset');
+  counted.forEach(e => { if (e.kind === 'income') T.inc += e.bdt; else if (e.kind === 'expense') T.exp += e.bdt; else if (e.kind === 'transfer') T.trf += e.bdt; else if (e.kind === 'asset') T.ast += e.dir === 'in' ? e.bdt : -e.bdt; });
   const page = list.slice((f.page - 1) * per, f.page * per);
-  const chips = `<div class="d-flex flex-wrap gap-2 mb-3 align-items-center">${f.type !== 'expense' && f.type !== 'transfer' ? `<span class="pill pill-inc fs-6">Income ${bdt(T.inc)}</span>` : ''}${f.type !== 'income' && f.type !== 'transfer' ? `<span class="pill pill-exp fs-6">Expense ${bdt(T.exp)}</span>` : ''}${!f.type ? `<span class="pill pill-brand fs-6">Net ${bdt(T.inc - T.exp)}</span>` : ''}${f.type === 'transfer' || !f.type ? `<span class="pill pill-trf fs-6">Transfers ${bdt(T.trf)}</span>` : ''}<span class="text-muted2 small">${list.length} result${list.length === 1 ? '' : 's'}</span><div class="ms-auto dropdown"><button class="btn btn-sm btn-soft dropdown-toggle" data-bs-toggle="dropdown"><i class="bi bi-download me-1"></i>Export</button><ul class="dropdown-menu dropdown-menu-end">${['csv:CSV', 'xlsx:Excel', 'pdf:PDF'].map(x => `<li><a class="dropdown-item" href="#" data-act="exportTxns" data-kind="${kind}" data-fmt="${x.split(':')[0]}">${x.split(':')[1]}</a></li>`).join('')}</ul></div></div>`;
+  const chips = `<div class="d-flex flex-wrap gap-2 mb-3 align-items-center">${f.type !== 'expense' && f.type !== 'transfer' ? `<span class="pill pill-inc fs-6">Income ${bdt(T.inc)}</span>` : ''}${f.type !== 'income' && f.type !== 'transfer' ? `<span class="pill pill-exp fs-6">Expense ${bdt(T.exp)}</span>` : ''}${!f.type ? `<span class="pill pill-brand fs-6">Net ${bdt(T.inc - T.exp)}</span>` : ''}${f.type === 'transfer' || !f.type ? `<span class="pill pill-trf fs-6">Transfers ${bdt(T.trf)}</span>` : ''}${hasAst ? `<span class="pill pill-ast fs-6">Asset money ${T.ast >= 0 ? '+' : '-'}${bdt(Math.abs(T.ast))}</span>` : ''}<span class="text-muted2 small">${list.length} result${list.length === 1 ? '' : 's'}</span><div class="ms-auto dropdown"><button class="btn btn-sm btn-soft dropdown-toggle" data-bs-toggle="dropdown"><i class="bi bi-download me-1"></i>Export</button><ul class="dropdown-menu dropdown-menu-end">${['csv:CSV', 'xlsx:Excel', 'pdf:PDF'].map(x => `<li><a class="dropdown-item" href="#" data-act="exportTxns" data-kind="${kind}" data-fmt="${x.split(':')[0]}">${x.split(':')[1]}</a></li>`).join('')}</ul></div></div>`;
   if (!list.length) { out.innerHTML = chips + `<div class="card"><div class="card-b">${emptyBox('search', 'No transactions found', 'Try a wider period or clear some filters.')}</div></div>`; return; }
   const rows = page.map(e => {
-    const [ic, c] = kindIcon(e.kind), sign = e.kind === 'income' ? '+' : e.kind === 'expense' ? '-' : '', foreign = e.currency && e.currency !== 'BDT';
+    const [ic, c0] = kindIcon(e.kind), isAst = e.kind === 'asset', c = isAst ? (e.dir === 'in' ? 'inc' : 'exp') : c0, sign = e.kind === 'income' || (isAst && e.dir === 'in') ? '+' : e.kind === 'expense' || isAst ? '-' : '', foreign = e.currency && e.currency !== 'BDT', tm = addedAt(e);
     const title = e.kind === 'transfer' ? `${esc(acctName(e.accountId))} → ${esc(acctName(e.toAccountId))}` : esc(e.title);
     const acc = e.kind === 'transfer' ? `${esc(acctName(e.accountId))} → ${esc(acctName(e.toAccountId))}` : esc(acctName(e.accountId));
     const st = e.kind === 'income' ? statusPill(e.status) : kindPill(e.kind);
-    const actions = e.virtual ? `<span class="small text-muted2">automatic</span>` : `${e.att ? ib('viewAtt', 'paperclip', 'View attachment', { id: e.att.id }) : ''}${ib('editTxn', 'pencil', 'Edit', { kind: e.kind, id: e.id })}${ib('delTxn', 'trash', 'Delete', { kind: e.kind, id: e.id }, 'btn-soft text-danger')}`;
-    return `<tr class="${e.kind === 'income' && e.status !== 'Received' ? 'opacity-75' : ''}"><td data-label="Date" class="text-nowrap">${fdate(e.date)}</td><td data-label="Transaction"><div class="fw-semibold">${e.kind === 'transfer' ? 'Transfer' : title}</div><div class="sub">${esc(e.kind === 'transfer' ? (e.desc || '') : [e.party && e.party !== e.title ? e.party : '', e.desc].filter(Boolean).join(', '))}</div></td><td data-label="Category">${esc(e.category || e.source || '')}${e.sub ? `<div class="sub">${esc(e.sub)}</div>` : ''}</td><td data-label="Account">${acc}</td><td data-label="Type">${st}${e.recurring ? ' ' + pill('Recurring', 'brand') : ''}</td><td data-label="Amount" class="amt text-${c}">${sign}${bdt(e.bdt)}${foreign ? `<div class="sub fw-normal">${fmt(e.amount, e.currency)}${e.kind === 'transfer' && e.toCurrency !== e.currency ? ' → ' + fmt(e.toAmount, e.toCurrency) : ''}</div>` : ''}</td><td data-label="" class="actions text-end text-nowrap">${actions}</td></tr>`;
+    const actions = isAst ? `<a class="btn btn-soft btn-sm" href="#/assets" onclick="MM.UI.assetView='${e.dir === 'in' ? 'sold' : 'all'}'"><i class="bi bi-gem me-1"></i>View asset</a>` : e.virtual ? `<span class="small text-muted2">automatic</span>` : `${e.att ? ib('viewAtt', 'paperclip', 'View attachment', { id: e.att.id }) : ''}${ib('editTxn', 'pencil', 'Edit', { kind: e.kind, id: e.id })}${ib('delTxn', 'trash', 'Delete', { kind: e.kind, id: e.id }, 'btn-soft text-danger')}`;
+    return `<tr class="${e.kind === 'income' && e.status !== 'Received' ? 'opacity-75' : ''}"><td data-label="Date" class="text-nowrap">${fdate(e.date)}${tm ? `<div class="sub tm"><i class="bi bi-clock me-1"></i>${tm}</div>` : ''}</td><td data-label="Transaction"><div class="fw-semibold">${e.kind === 'transfer' ? 'Transfer' : title}</div><div class="sub">${esc(e.kind === 'transfer' ? (e.desc || '') : [e.party && e.party !== e.title ? e.party : '', e.desc].filter(Boolean).join(', '))}</div></td><td data-label="Category">${esc(e.category || e.source || '')}${e.sub ? `<div class="sub">${esc(e.sub)}</div>` : ''}</td><td data-label="Account">${acc}</td><td data-label="Type">${st}${e.recurring ? ' ' + pill('Recurring', 'brand') : ''}</td><td data-label="Amount" class="amt text-${c}">${sign}${bdt(e.bdt)}${foreign ? `<div class="sub fw-normal">${fmt(e.amount, e.currency)}${e.kind === 'transfer' && e.toCurrency !== e.currency ? ' → ' + fmt(e.toAmount, e.toCurrency) : ''}</div>` : ''}</td><td data-label="" class="actions text-end text-nowrap">${actions}</td></tr>`;
   }).join('');
   const pager = pages > 1 ? `<div class="d-flex justify-content-center gap-2 mt-3 align-items-center"><button class="btn btn-sm btn-soft" data-act="tfPage" data-kind="${kind}" data-p="${f.page - 1}" ${f.page <= 1 ? 'disabled' : ''}>Previous</button><span class="small text-muted2">Page ${f.page} of ${pages}</span><button class="btn btn-sm btn-soft" data-act="tfPage" data-kind="${kind}" data-p="${f.page + 1}" ${f.page >= pages ? 'disabled' : ''}>Next</button></div>` : '';
   out.innerHTML = chips + `<div class="card"><div class="table-responsive"><table class="table tbl rcards"><thead><tr><th>Date</th><th>Transaction</th><th>Category</th><th>Account</th><th>Type</th><th class="amt">Amount</th><th></th></tr></thead><tbody>${rows}</tbody></table></div></div>` + pager;
@@ -1973,7 +2006,7 @@ function renderAssets(root) {
   const realized = all.filter(a => a.status === 'sold').reduce((n, a) => n + (+a.soldGainBdt || 0), 0);
   const rows = list.map(a => {
     const sold = a.status === 'sold', ret = sold && !!a.returned, totalV = a.currentValue * a.quantity, totalC = a.purchasePrice * a.quantity, g = sold ? a.soldPrice - totalV : totalV - totalC;
-    return `<tr><td data-label="Asset"><div class="fw-semibold">${esc(a.name)} ${sold ? (ret ? pill('Returned', 'inc') : pill('Sold', 'muted')) : ''}</div><div class="sub">${esc(a.category)}${a.location ? ', ' + esc(a.location) : ''}${sold && a.soldDate ? `<br>${ret ? 'Money returned' : 'Sold'} on ${fdate(a.soldDate)}${acct(a.soldAccountId) ? ', into ' + esc(acct(a.soldAccountId).name) : ''}` : ''}</div></td><td data-label="Purchased">${fdate(a.purchaseDate)}</td><td data-label="Qty" class="num">${a.quantity}</td><td data-label="Cost" class="amt">${fmt(totalC, a.currency)}</td><td data-label="${ret ? 'Money returned' : sold ? 'Sold for' : 'Current value'}" class="amt">${sold ? fmt(a.soldPrice, a.currency) : fmt(totalV, a.currency)}${a.currency !== 'BDT' ? `<div class="sub fw-normal">${bdt(Eng.toBDT(sold ? a.soldPrice : totalV, a.currency))}</div>` : ''}</td><td data-label="${ret ? 'Difference from cost' : sold ? 'Gain / loss on sale' : 'Value change'}" class="amt ${sold ? (a.soldPrice - totalC >= 0 ? 'text-inc' : 'text-exp') : (g >= 0 ? 'text-inc' : 'text-exp')}">${sold ? fmt(a.soldPrice - totalC, a.currency) : (g >= 0 ? '+' : '') + fmt(g, a.currency)}</td><td class="actions text-end text-nowrap" data-label="">${a.attachment ? ib('viewAtt', 'paperclip', 'Attachment', { id: a.attachment.id }) : ''}${sold ? ib('reopenAsset', 'arrow-counterclockwise', ret ? 'Undo return' : 'Undo sale', { id: a.id }) : `<button class="btn btn-soft btn-sm btn-ret" title="Money returned to me: add it to an account" data-act="returnAsset" ${dataAttrs({ id: a.id })}><i class="bi bi-arrow-return-left me-1"></i>Return money</button>` + ib('valueAsset', 'graph-down-arrow', 'Update value / depreciation', { id: a.id }) + ib('sellAsset', 'cash-coin', 'Sell asset', { id: a.id })}${ib('editAsset', 'pencil', 'Edit', { id: a.id })}${ib('delAsset', 'trash', 'Delete', { id: a.id }, 'btn-soft text-danger')}</td></tr>`;
+    return `<tr><td data-label="Asset"><div class="fw-semibold">${esc(a.name)} ${sold ? (ret ? pill('Returned', 'inc') : pill('Sold', 'muted')) : ''}</div><div class="sub">${esc(a.category)}${a.location ? ', ' + esc(a.location) : ''}${sold && a.soldDate ? `<br>${ret ? 'Money returned' : 'Sold'} on ${fdate(a.soldDate)}${a.soldAt ? ' at ' + ftime(a.soldAt) : ''}${acct(a.soldAccountId) ? ', into ' + esc(acct(a.soldAccountId).name) : ''}` : ''}</div></td><td data-label="Purchased">${fdate(a.purchaseDate)}</td><td data-label="Qty" class="num">${a.quantity}</td><td data-label="Cost" class="amt">${fmt(totalC, a.currency)}</td><td data-label="${ret ? 'Money returned' : sold ? 'Sold for' : 'Current value'}" class="amt">${sold ? fmt(a.soldPrice, a.currency) : fmt(totalV, a.currency)}${a.currency !== 'BDT' ? `<div class="sub fw-normal">${bdt(Eng.toBDT(sold ? a.soldPrice : totalV, a.currency))}</div>` : ''}</td><td data-label="${ret ? 'Difference from cost' : sold ? 'Gain / loss on sale' : 'Value change'}" class="amt ${sold ? (a.soldPrice - totalC >= 0 ? 'text-inc' : 'text-exp') : (g >= 0 ? 'text-inc' : 'text-exp')}">${sold ? fmt(a.soldPrice - totalC, a.currency) : (g >= 0 ? '+' : '') + fmt(g, a.currency)}</td><td class="actions text-end text-nowrap" data-label="">${a.attachment ? ib('viewAtt', 'paperclip', 'Attachment', { id: a.attachment.id }) : ''}${sold ? ib('reopenAsset', 'arrow-counterclockwise', ret ? 'Undo return' : 'Undo sale', { id: a.id }) : `<button class="btn btn-soft btn-sm btn-ret" title="Money returned to me: add it to an account" data-act="returnAsset" ${dataAttrs({ id: a.id })}><i class="bi bi-arrow-return-left me-1"></i>Return money</button>` + ib('valueAsset', 'graph-down-arrow', 'Update value / depreciation', { id: a.id }) + ib('sellAsset', 'cash-coin', 'Sell asset', { id: a.id })}${ib('editAsset', 'pencil', 'Edit', { id: a.id })}${ib('delAsset', 'trash', 'Delete', { id: a.id }, 'btn-soft text-danger')}</td></tr>`;
   }).join('');
   root.innerHTML = pageHead('Assets', 'Things you own. Current estimated value feeds your total assets and net worth.', btn('addAsset', 'Add Asset', 'plus-lg')) + `
   <div class="row g-3 mb-3">${stat('Total asset value', bdt(val), `${act.length} active asset${act.length === 1 ? '' : 's'}`, 'var(--trf)')}${stat('Total purchase cost', bdt(cost), 'What you paid', 'var(--brand)')}${stat('Unrealized gain / loss', (gain >= 0 ? '+' : '') + bdt(gain), 'Current value minus cost', gain >= 0 ? 'var(--inc)' : 'var(--exp)')}${stat('Realized on sales / returns', (realized >= 0 ? '+' : '') + bdt(realized), 'Amount received minus book value', realized >= 0 ? 'var(--inc)' : 'var(--exp)')}</div>
@@ -2147,7 +2180,7 @@ function exportTable(type, t) {
 function txnTable(list, title, meta) {
   const c = list.filter(e => !(e.kind === 'income' && e.status !== 'Received')); let inc = 0, exp = 0;
   c.forEach(e => { if (e.kind === 'income') inc += e.bdt; else if (e.kind === 'expense') exp += e.bdt; });
-  return { title, meta, head: ['Date', 'Transaction', 'Type', 'Category', 'Account', 'Amount (BDT)', 'Description'], rows: c.map(e => [e.date, e.kind === 'transfer' ? `${acctName(e.accountId)} → ${acctName(e.toAccountId)}` : e.title, e.kind[0].toUpperCase() + e.kind.slice(1), e.category || e.source || '', e.kind === 'transfer' ? `${acctName(e.accountId)} → ${acctName(e.toAccountId)}` : acctName(e.accountId), e.kind === 'expense' ? -e.bdt : e.bdt, e.desc || '']), foot: [['Total income', round2(inc)], ['Total expense', round2(-exp)], ['Net (income minus expense)', round2(inc - exp)]] };
+  return { title, meta, head: ['Date', 'Time added', 'Transaction', 'Type', 'Category', 'Account', 'Amount (BDT)', 'Description'], rows: c.map(e => [e.date, ftime(e.createdAt), e.kind === 'transfer' ? `${acctName(e.accountId)} → ${acctName(e.toAccountId)}` : e.title, e.kind[0].toUpperCase() + e.kind.slice(1), e.category || e.source || '', e.kind === 'transfer' ? `${acctName(e.accountId)} → ${acctName(e.toAccountId)}` : acctName(e.accountId), e.kind === 'expense' || e.dir === 'out' ? -e.bdt : e.bdt, e.desc || '']), foot: [['Total income', round2(inc)], ['Total expense', round2(-exp)], ['Net (income minus expense)', round2(inc - exp)]] };
 }
 ACTIONS.exportTxns = d => { const f = UI.tf[d.kind], r = f.period === 'all' ? null : getRange(f.period, f); exportTable(d.fmt, txnTable(filterLedger(f), TXN_TITLES[d.kind] + ' report', r ? `${fdate(r.from)} to ${fdate(r.to)}` : 'All dates')); };
 let REPORT_TABLE = null;
@@ -2704,7 +2737,7 @@ async function boot() {
   try { await initFirebase(cfg); FB.A.onAuthStateChanged(FB.auth, u => { if (u) startSession(u); else { if (State.mode !== 'demo') { endSession(); showAuth(); } } }); }
   catch (e) { console.error(e); showAuth(); authAlert('Could not load Firebase: ' + e.message + '. Check your internet connection and config, or try demo mode.'); }
 }
-window.MM = { State, D, Eng, effectsOf, effectOps, buildIncomeSave, buildExpenseSave, buildTransferSave, buildAssetSave, buildLiabilitySave, buildLoanGivenSave, buildSavingsSave, currentTotals, nw, totalsFor, getRange, prevRange, ledger, Lc, commit, ACTIONS, expectedBalance, budgetStatus, nextOcc, boot, route, dueStatus, loanDueStatus, liabOutstanding, savingsBalance, sha256Hex, buildInsights, growthSeries, trendData, seedDefaults };
+window.MM = { UI, assetMoves, State, D, Eng, effectsOf, effectOps, buildIncomeSave, buildExpenseSave, buildTransferSave, buildAssetSave, buildLiabilitySave, buildLoanGivenSave, buildSavingsSave, currentTotals, nw, totalsFor, getRange, prevRange, ledger, Lc, commit, ACTIONS, expectedBalance, budgetStatus, nextOcc, boot, route, dueStatus, loanDueStatus, liabOutstanding, savingsBalance, sha256Hex, buildInsights, growthSeries, trendData, seedDefaults };
 boot();
 if ('serviceWorker' in navigator && location.protocol === 'https:') window.addEventListener('load', () => { navigator.serviceWorker.register('sw.js').catch(e => console.warn('Service worker not registered', e)); });
 })();
