@@ -82,6 +82,7 @@ button:disabled { opacity: .55; cursor: wait; }
 .quill-wrap .ql-toolbar.ql-snow { position: sticky; top: 3.6rem; z-index: 5; background: var(--paper); border: 0; border-bottom: 1px solid var(--rule); border-radius: var(--r) var(--r) 0 0; }
 .quill-wrap .ql-container.ql-snow { border: 0; font-family: var(--f-body); font-size: 1.05rem; }
 .quill-wrap .ql-editor { min-height: 22rem; line-height: 1.7; }
+.quill-wrap .ql-editor p, .quill-wrap .ql-editor li, .quill-wrap .ql-editor blockquote { text-align: justify; hyphens: auto; }
 .quill-wrap .ql-editor h2 { font-family: var(--f-display); font-weight: 800; font-size: 1.55rem; color: var(--pine); }
 .quill-wrap .ql-editor h3 { font-family: var(--f-display); font-weight: 800; font-size: 1.25rem; color: var(--pine); }
 .quill-wrap .ql-editor img { max-width: 100%; border: 1px solid var(--rule); border-radius: 6px; }
@@ -275,6 +276,9 @@ function initEditor() {
   quill = new Quill('#editor', {
     theme: 'snow',
     placeholder: 'Write your post here…',
+    /* Only these are kept. Fonts, sizes, colours and alignment pasted from Word / Google Docs / ChatGPT are dropped,
+       so every post gets the same clean layout on the website. */
+    formats: ['header', 'bold', 'italic', 'underline', 'link', 'list', 'blockquote', 'image'],
     modules: {
       toolbar: {
         container: [[{ header: [2, 3, false] }], ['bold', 'italic', 'underline', 'link'], [{ list: 'ordered' }, { list: 'bullet' }], ['blockquote', 'image'], ['clean']],
