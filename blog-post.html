@@ -65,11 +65,11 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
 .post-body { font-size: 1.12rem; line-height: 1.75; overflow-wrap: break-word; }
 .post-body > * + * { margin-top: 1.25rem; }
-/* Even text edges on every post, however it was written or pasted: both sides line up, long words break
-   with a hyphen instead of leaving wide gaps, and pasted fonts / sizes / colours / alignment are ignored. */
+/* Even text edges on every post, however it was written or pasted: both sides line up, a word is never
+   split with a hyphen (it moves to the next line whole), and pasted fonts / sizes / colours / alignment are ignored. */
 .post-body p, .post-body li, .post-body blockquote {
   text-align: justify !important; text-justify: inter-word;
-  hyphens: auto; -webkit-hyphens: auto; overflow-wrap: break-word;
+  hyphens: none; -webkit-hyphens: none; word-break: normal; overflow-wrap: break-word;
 }
 .post-body h2, .post-body h3 { text-align: left !important; }
 .post-body p, .post-body li, .post-body span, .post-body strong, .post-body em, .post-body u {
@@ -111,7 +111,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 @media (max-width: 620px) {
   .blog-grid { grid-template-columns: 1fr; }
   .post-body { font-size: 1.06rem; }
-  .post-body li { text-align: left !important; }   /* short list lines look gappy when stretched on a phone */
+  .post-body li, .post-body blockquote { text-align: left !important; }   /* narrow lines look gappy when stretched on a phone */
   .post-cta { padding: 1.4rem; }
 }
 </style>
