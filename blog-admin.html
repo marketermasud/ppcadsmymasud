@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Blog Admin — PPC Ads by Masud</title>
+<link rel="stylesheet" href="/style.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css">
+<style>
+/* Blog admin — uses the site's design tokens from /style.css */
+body.admin { padding-top: 0; animation: none; background: var(--paper); font-size: 1rem; }
+[hidden] { display: none !important; }
+.boot { padding: 4rem 1.5rem; text-align: center; color: var(--muted); }
+
+.admin-brand { font-family: var(--f-display); font-weight: 800; font-stretch: 120%; font-size: 1.1rem; color: var(--pine); }
+.admin-brand span { margin-left: .5rem; padding: .15rem .5rem; background: var(--orange); border-radius: 3px; font-family: var(--f-body); font-size: .75rem; font-weight: 800; color: var(--ink); vertical-align: middle; }
+
+label { display: block; margin: 1.2rem 0 .4rem; font-weight: 700; font-size: .92rem; color: var(--pine); }
+input[type="text"], input[type="email"], input[type="password"], input[type="url"], textarea {
+  width: 100%; padding: .7rem .8rem; background: var(--sheet); border: 1px solid var(--rule); border-radius: var(--r);
+  font: inherit; color: var(--ink);
+}
+textarea { resize: vertical; }
+input:focus-visible, textarea:focus-visible { outline: 3px solid var(--orange); outline-offset: 1px; }
+.hint { margin-top: .35rem; font-size: .86rem; color: var(--muted); }
+.count { float: right; font-weight: 600; color: var(--muted); }
+.msg { min-height: 1.2rem; margin: .8rem 0; font-weight: 600; font-size: .95rem; color: var(--red); }
+.msg.ok { color: var(--pine-2); }
+.msg:empty { display: none; }
+
+.link-btn { background: none; border: 0; padding: .4rem .2rem; font: inherit; font-weight: 700; font-size: .92rem; color: var(--pine); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+.link-btn:hover { color: var(--orange-ink); }
+.link-btn.danger { color: var(--red); }
+.btn-line {
+  display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: .6rem 1.1rem;
+  background: var(--sheet); border: 2px solid var(--pine); border-radius: var(--r);
+  font: inherit; font-weight: 800; color: var(--pine); cursor: pointer;
+}
+.btn-line:hover { background: var(--pine); color: #fff; }
+button:disabled { opacity: .55; cursor: wait; }
+
+/* Login */
+.login { min-height: 100vh; min-height: 100dvh; display: grid; place-items: center; padding: 1.5rem; }
+.login-card { width: min(100%, 25rem); padding: 2rem; background: var(--sheet); border: 1px solid var(--rule); border-radius: 8px; }
+.login-note { margin-top: .8rem; color: var(--muted); font-size: .95rem; }
+.login-card .btn-primary { width: 100%; margin-top: .6rem; }
+.login-card .link-btn { display: block; margin: 1rem auto 0; }
+
+/* App */
+.admin-bar { position: sticky; top: 0; z-index: 20; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .6rem 1rem; padding: .8rem 1.5rem; background: var(--sheet); border-bottom: 1px solid var(--rule); }
+.admin-bar-actions { display: flex; flex-wrap: wrap; align-items: center; gap: .4rem 1rem; }
+.who { font-size: .88rem; color: var(--muted); overflow-wrap: anywhere; }
+.admin-body { display: grid; grid-template-columns: 19rem minmax(0, 1fr); gap: 1.5rem; max-width: 78rem; margin: 0 auto; padding: 1.5rem; align-items: start; }
+
+.post-list { position: sticky; top: 4.6rem; max-height: calc(100vh - 6rem); overflow-y: auto; }
+.new-btn { width: 100%; margin-bottom: 1rem; }
+.post-item { display: block; width: 100%; margin-bottom: .5rem; padding: .75rem .85rem; background: var(--sheet); border: 1px solid var(--rule); border-radius: var(--r); text-align: left; font: inherit; color: var(--ink); cursor: pointer; }
+.post-item:hover { border-color: var(--pine); }
+.post-item.is-current { border-color: var(--pine); box-shadow: inset 4px 0 0 var(--orange); }
+.post-item-title { display: block; font-weight: 700; line-height: 1.3; overflow-wrap: anywhere; }
+.post-item-meta { display: block; margin-top: .3rem; font-size: .82rem; color: var(--muted); }
+
+.badge { display: inline-block; padding: .12rem .5rem; border-radius: 3px; background: var(--mint); font-size: .75rem; font-weight: 800; color: var(--pine); }
+.badge.live { background: var(--pine); color: #fff; }
+
+.editor { padding: 1.5rem clamp(1rem, 3vw, 2rem) 2rem; background: var(--sheet); border: 1px solid var(--rule); border-radius: 8px; min-width: 0; }
+.editor-head { display: flex; align-items: center; gap: .8rem; }
+.editor-head h1 { font-family: var(--f-display); font-weight: 800; font-stretch: 110%; font-size: 1.5rem; color: var(--pine); }
+.slug-row { display: flex; align-items: center; background: var(--paper); border: 1px solid var(--rule); border-radius: var(--r); }
+.slug-row span { padding: 0 .2rem 0 .8rem; color: var(--muted); font-size: .92rem; white-space: nowrap; }
+.slug-row input { border: 0; background: transparent; padding-left: .2rem; min-width: 0; }
+.slug-row input:disabled { color: var(--muted); }
+
+.cover-row { display: grid; grid-template-columns: 11rem minmax(0, 1fr); gap: 1rem; }
+.cover-preview { aspect-ratio: 16 / 9; display: grid; place-items: center; background: var(--paper); border: 1px dashed var(--rule); border-radius: var(--r); overflow: hidden; color: var(--muted); font-size: .85rem; }
+.cover-preview img { width: 100%; height: 100%; object-fit: cover; }
+.cover-fields { display: grid; gap: .5rem; align-content: start; }
+.cover-actions { display: flex; align-items: center; gap: 1rem; }
+
+.quill-wrap { border: 1px solid var(--rule); border-radius: var(--r); background: var(--sheet); }
+.quill-wrap .ql-toolbar.ql-snow { position: sticky; top: 3.6rem; z-index: 5; background: var(--paper); border: 0; border-bottom: 1px solid var(--rule); border-radius: var(--r) var(--r) 0 0; }
+.quill-wrap .ql-container.ql-snow { border: 0; font-family: var(--f-body); font-size: 1.05rem; }
+.quill-wrap .ql-editor { min-height: 22rem; line-height: 1.7; }
+.quill-wrap .ql-editor h2 { font-family: var(--f-display); font-weight: 800; font-size: 1.55rem; color: var(--pine); }
+.quill-wrap .ql-editor h3 { font-family: var(--f-display); font-weight: 800; font-size: 1.25rem; color: var(--pine); }
+.quill-wrap .ql-editor img { max-width: 100%; border: 1px solid var(--rule); border-radius: 6px; }
+
+.form-actions { display: flex; flex-wrap: wrap; align-items: center; gap: .8rem 1rem; margin-top: 1.6rem; }
+.form-actions .danger { margin-left: auto; }
+
+@media (max-width: 860px) {
+  .admin-body { grid-template-columns: 1fr; padding: 1rem; }
+  .post-list { position: static; max-height: 16rem; }
+  .cover-row { grid-template-columns: 1fr; }
+  .cover-preview { max-width: 16rem; }
+  .quill-wrap .ql-toolbar.ql-snow { top: 0; position: static; }
+  .form-actions .danger { margin-left: 0; }
+}
+</style>
+</head>
+<body class="admin">
+
+<!-- LOGIN -->
+<main class="login" id="loginView" hidden>
+  <form class="login-card" id="loginForm" autocomplete="on">
+    <div class="admin-brand">Masud Rana <span>Blog Admin</span></div>
+    <p class="login-note">Sign in with the email and password you created in Firebase.</p>
+    <label for="loginEmail">Email</label>
+    <input id="loginEmail" type="email" autocomplete="username" required>
+    <label for="loginPass">Password</label>
+    <input id="loginPass" type="password" autocomplete="current-password" required>
+    <p class="msg" id="loginMsg" role="alert"></p>
+    <button class="btn-primary" type="submit" id="loginBtn">Sign in</button>
+    <button class="link-btn" type="button" id="resetBtn">Forgot password?</button>
+  </form>
+</main>
+
+<!-- APP -->
+<div class="app" id="appView" hidden>
+  <header class="admin-bar">
+    <div class="admin-brand">Masud Rana <span>Blog Admin</span></div>
+    <div class="admin-bar-actions">
+      <a class="link-btn" href="/blog" target="_blank" rel="noopener">View blog</a>
+      <span class="who" id="who"></span>
+      <button class="link-btn" type="button" id="logoutBtn">Sign out</button>
+    </div>
+  </header>
+
+  <div class="admin-body">
+    <aside class="post-list">
+      <button class="btn-primary new-btn" type="button" id="newBtn">+ New post</button>
+      <div id="postList"><p class="hint">Loading…</p></div>
+    </aside>
+
+    <section class="editor" id="editorPane">
+      <p class="msg" id="appMsg" role="status"></p>
+      <form id="postForm" novalidate>
+        <div class="editor-head">
+          <h1 id="formTitle">New post</h1>
+          <span class="badge" id="statusBadge">Draft</span>
+        </div>
+
+        <label for="fTitle">Title</label>
+        <input id="fTitle" type="text" maxlength="140" placeholder="e.g. How we cut cost per lead by 38% for a junk removal company">
+
+        <label for="fSlug">Post link</label>
+        <div class="slug-row"><span>masudppc.com/blog/</span><input id="fSlug" type="text" maxlength="80" placeholder="made-from-the-title"></div>
+        <p class="hint" id="slugHint">Made from the title. It cannot be changed after the first save.</p>
+
+        <label for="fExcerpt">Short summary <span class="count" id="excerptCount">0/160</span></label>
+        <textarea id="fExcerpt" rows="2" maxlength="200" placeholder="One or two sentences. Shown on the blog page, on Google and in Facebook / WhatsApp previews."></textarea>
+
+        <label>Cover image</label>
+        <div class="cover-row">
+          <div class="cover-preview" id="coverPreview"><span>No image</span></div>
+          <div class="cover-fields">
+            <input id="fCover" type="url" placeholder="Image link (filled in automatically after upload)">
+            <input id="fCoverAlt" type="text" maxlength="140" placeholder="Image description (e.g. Google Ads dashboard showing 64 leads)">
+            <div class="cover-actions">
+              <button class="btn-line" type="button" id="coverUploadBtn">Upload image</button>
+              <button class="link-btn" type="button" id="coverClearBtn">Remove</button>
+            </div>
+          </div>
+        </div>
+
+        <label for="fTags">Tags</label>
+        <input id="fTags" type="text" placeholder="Case Study, Junk Removal">
+        <p class="hint">Separate with commas. The first tag is shown on the blog card.</p>
+
+        <label>Content</label>
+        <div class="quill-wrap"><div id="editor"></div></div>
+
+        <div class="form-actions">
+          <button class="btn-primary" type="button" id="publishBtn">Publish</button>
+          <button class="btn-line" type="button" id="draftBtn">Save draft</button>
+          <a class="link-btn" id="viewLink" target="_blank" rel="noopener" hidden>Open post</a>
+          <button class="link-btn danger" type="button" id="deleteBtn" hidden>Delete</button>
+        </div>
+      </form>
+    </section>
+  </div>
+</div>
+
+<p class="boot" id="bootMsg">Loading…</p>
+<input type="file" id="filePick" accept="image/*" hidden>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
+<script type="module">
+/* Blog admin: email + password sign-in (Firebase Auth), write/edit/publish posts (Firestore), image upload (Cloudinary).
+   Who may write is decided by the Firestore rules, not by this page — see BLOG-SETUP.md. */
+import { BLOG_CONFIG as C, slugify, fmtDate, esc } from '/blog-settings.js';
+
+const $ = (id) => document.getElementById(id);
+const boot = $('bootMsg');
+
+if (typeof firebase === 'undefined' || typeof Quill === 'undefined') {
+  boot.textContent = 'Could not load the editor. Check your internet connection and refresh the page.';
+  throw new Error('libraries not loaded');
+}
+
+firebase.initializeApp(C.firebase);
+const auth = firebase.auth();
+const db = firebase.firestore();
+const col = db.collection(C.collection);
+const now = () => firebase.firestore.FieldValue.serverTimestamp();
+
+let posts = [];          // all posts (drafts + published)
+let current = null;      // the post being edited, or null for a new one
+let slugTouched = false;
+let dirty = false;
+
+/* ── Sign in / out ─────────────────────────────────────── */
+const AUTH_ERRORS = {
+  'auth/invalid-credential': 'Wrong email or password.',
+  'auth/wrong-password': 'Wrong email or password.',
+  'auth/user-not-found': 'Wrong email or password.',
+  'auth/invalid-email': 'That email address is not valid.',
+  'auth/too-many-requests': 'Too many attempts. Wait a few minutes and try again.',
+  'auth/network-request-failed': 'No internet connection.',
+  'auth/operation-not-allowed': 'Email/password sign-in is not turned on in Firebase yet (BLOG-SETUP.md, step 1).'
+};
+const authMsg = (e) => AUTH_ERRORS[e && e.code] || (e && e.message) || 'Something went wrong.';
+
+auth.onAuthStateChanged((user) => {
+  boot.hidden = true;
+  $('loginView').hidden = !!user;
+  $('appView').hidden = !user;
+  if (user) {
+    $('who').textContent = user.email || '';
+    initEditor();
+    loadPosts().then(() => newPost());
+  }
+});
+
+$('loginForm').addEventListener('submit', (ev) => {
+  ev.preventDefault();
+  const btn = $('loginBtn');
+  setMsg('loginMsg', '');
+  btn.disabled = true;
+  auth.signInWithEmailAndPassword($('loginEmail').value.trim(), $('loginPass').value)
+    .catch((e) => setMsg('loginMsg', authMsg(e)))
+    .finally(() => { btn.disabled = false; $('loginPass').value = ''; });
+});
+
+$('resetBtn').addEventListener('click', () => {
+  const email = $('loginEmail').value.trim();
+  if (!email) return setMsg('loginMsg', 'Type your email first, then press “Forgot password?”.');
+  auth.sendPasswordResetEmail(email)
+    .then(() => setMsg('loginMsg', 'If that account exists, a reset link has been sent to the email.', true))
+    .catch((e) => setMsg('loginMsg', authMsg(e)));
+});
+
+$('logoutBtn').addEventListener('click', () => {
+  if (dirty && !window.confirm('You have unsaved changes. Sign out anyway?')) return;
+  dirty = false;
+  auth.signOut();
+});
+
+window.addEventListener('beforeunload', (ev) => { if (dirty) { ev.preventDefault(); ev.returnValue = ''; } });
+
+function setMsg(id, text, ok) {
+  const el = $(id);
+  el.textContent = text || '';
+  el.classList.toggle('ok', !!ok);
+}
+
+/* ── Editor ────────────────────────────────────────────── */
+let quill = null;
+function initEditor() {
+  if (quill) return;
+  quill = new Quill('#editor', {
+    theme: 'snow',
+    placeholder: 'Write your post here…',
+    modules: {
+      toolbar: {
+        container: [[{ header: [2, 3, false] }], ['bold', 'italic', 'underline', 'link'], [{ list: 'ordered' }, { list: 'bullet' }], ['blockquote', 'image'], ['clean']],
+        handlers: { image: () => pickImage((url) => insertImage(url)) }
+      },
+      /* Pasted / dropped pictures are uploaded too, never stored inside the post itself. */
+      uploader: { handler: (range, files) => files.forEach((f) => uploadImage(f).then((url) => insertImage(url, range.index)).catch(showError)) }
+    }
+  });
+  quill.on('text-change', (d, o, source) => { if (source === 'user') dirty = true; });
+}
+function insertImage(url, index) {
+  const at = index != null ? index : (quill.getSelection(true) || { index: quill.getLength() }).index;
+  quill.insertEmbed(at, 'image', url, 'user');
+  quill.setSelection(at + 1, 0);
+}
+function getContent() {
+  if (!quill.getText().trim() && !quill.root.querySelector('img')) return '';
+  return quill.getSemanticHTML().replace(/&nbsp;/g, ' ').replace(/(<p>(<br\s*\/?>)?<\/p>)+$/, '');
+}
+function setContent(html) {
+  quill.setContents([]);
+  if (html) quill.clipboard.dangerouslyPasteHTML(0, html, 'silent');
+  quill.history.clear();
+}
+
+/* ── Images (Cloudinary) ───────────────────────────────── */
+const cloudReady = () => !!(C.cloudinary && C.cloudinary.cloudName && C.cloudinary.uploadPreset);
+
+function pickImage(done) {
+  if (!cloudReady()) {
+    const url = window.prompt('Image upload is not set up yet (BLOG-SETUP.md, step 3).\nPaste an image link instead:');
+    if (url && /^https?:\/\//i.test(url.trim())) done(url.trim());
+    else if (url) showError(new Error('That does not look like an image link (it must start with https://).'));
+    return;
+  }
+  const input = $('filePick');
+  input.value = '';
+  input.onchange = () => {
+    const f = input.files && input.files[0];
+    if (f) uploadImage(f).then(done).catch(showError);
+  };
+  input.click();
+}
+
+async function uploadImage(file) {
+  if (!cloudReady()) throw new Error('Image upload is not set up yet (BLOG-SETUP.md, step 3). Use the image button to paste a link instead.');
+  if (!/^image\//.test(file.type)) throw new Error('Only image files can be uploaded.');
+  if (file.size > 10 * 1024 * 1024) throw new Error('That image is larger than 10 MB. Please use a smaller one.');
+  setMsg('appMsg', 'Uploading image…', true);
+  const fd = new FormData();
+  fd.append('file', file);
+  fd.append('upload_preset', C.cloudinary.uploadPreset);
+  const r = await fetch('https://api.cloudinary.com/v1_1/' + encodeURIComponent(C.cloudinary.cloudName) + '/image/upload', { method: 'POST', body: fd });
+  const j = await r.json().catch(() => ({}));
+  if (!r.ok || !j.secure_url) throw new Error('Image upload failed: ' + ((j.error && j.error.message) || 'HTTP ' + r.status));
+  setMsg('appMsg', 'Image uploaded.', true);
+  /* Served resized and in a modern format automatically. */
+  return j.secure_url.replace('/upload/', '/upload/f_auto,q_auto,c_limit,w_1600/');
+}
+
+function showCover() {
+  const url = $('fCover').value.trim();
+  const box = $('coverPreview');
+  box.textContent = '';
+  if (/^https?:\/\//i.test(url)) {
+    const img = document.createElement('img');
+    img.src = url; img.alt = '';
+    box.appendChild(img);
+  } else {
+    const s = document.createElement('span');
+    s.textContent = 'No image';
+    box.appendChild(s);
+  }
+}
+$('coverUploadBtn').addEventListener('click', () => pickImage((url) => { $('fCover').value = url; dirty = true; showCover(); }));
+$('coverClearBtn').addEventListener('click', () => { $('fCover').value = ''; $('fCoverAlt').value = ''; dirty = true; showCover(); });
+$('fCover').addEventListener('input', showCover);
+
+/* ── Post list ─────────────────────────────────────────── */
+function toIso(ts) { return ts && ts.toDate ? ts.toDate().toISOString() : ''; }
+
+async function loadPosts() {
+  try {
+    const snap = await col.get();
+    posts = snap.docs.map((d) => Object.assign({ slug: d.id }, d.data()));
+    posts.sort((a, b) => (toIso(b.updatedAt) || '').localeCompare(toIso(a.updatedAt) || ''));
+    renderList();
+  } catch (e) {
+    $('postList').innerHTML = '<p class="hint">Posts could not be loaded.</p>';
+    showError(e);
+  }
+}
+
+function renderList() {
+  const box = $('postList');
+  if (!posts.length) { box.innerHTML = '<p class="hint">No posts yet. Write your first one.</p>'; return; }
+  box.innerHTML = posts.map((p) => {
+    const live = p.status === 'published';
+    return '<button type="button" class="post-item' + (current && current.slug === p.slug ? ' is-current' : '') + '" data-slug="' + esc(p.slug) + '">' +
+      '<span class="post-item-title">' + esc(p.title || '(no title)') + '</span>' +
+      '<span class="post-item-meta"><span class="badge' + (live ? ' live' : '') + '">' + (live ? 'Published' : 'Draft') + '</span> ' +
+      esc(fmtDate(toIso(live ? p.publishedAt : p.updatedAt))) + '</span></button>';
+  }).join('');
+}
+$('postList').addEventListener('click', (ev) => {
+  const btn = ev.target.closest('.post-item');
+  if (!btn) return;
+  const p = posts.find((x) => x.slug === btn.getAttribute('data-slug'));
+  if (p && leaveOk()) openPost(p);
+});
+$('newBtn').addEventListener('click', () => { if (leaveOk()) newPost(); });
+const leaveOk = () => !dirty || window.confirm('You have unsaved changes. Leave without saving?');
+
+/* ── Form ──────────────────────────────────────────────── */
+function fillForm(p) {
+  $('fTitle').value = p.title || '';
+  $('fSlug').value = p.slug || '';
+  $('fExcerpt').value = p.excerpt || '';
+  $('fCover').value = p.cover || '';
+  $('fCoverAlt').value = p.coverAlt || '';
+  $('fTags').value = (p.tags || []).join(', ');
+  setContent(p.content || '');
+  showCover();
+  countExcerpt();
+}
+function refreshState() {
+  const live = !!current && current.status === 'published';
+  $('formTitle').textContent = current ? 'Edit post' : 'New post';
+  $('statusBadge').textContent = live ? 'Published' : 'Draft';
+  $('statusBadge').classList.toggle('live', live);
+  $('fSlug').disabled = !!current;
+  $('slugHint').textContent = current ? 'The link cannot be changed after the first save.' : 'Made from the title. It cannot be changed after the first save.';
+  $('publishBtn').textContent = live ? 'Update' : 'Publish';
+  $('draftBtn').textContent = live ? 'Unpublish (back to draft)' : 'Save draft';
+  $('deleteBtn').hidden = !current;
+  $('viewLink').hidden = !live;
+  if (live) $('viewLink').href = '/blog/' + current.slug;
+  renderList();
+}
+function newPost() {
+  current = null; slugTouched = false;
+  fillForm({});
+  dirty = false;
+  setMsg('appMsg', '');
+  refreshState();
+}
+function openPost(p) {
+  current = p; slugTouched = true;
+  fillForm(p);
+  dirty = false;
+  setMsg('appMsg', '');
+  refreshState();
+  window.scrollTo({ top: 0 });
+}
+
+$('fTitle').addEventListener('input', () => { if (!current && !slugTouched) $('fSlug').value = slugify($('fTitle').value); });
+$('fSlug').addEventListener('input', () => { slugTouched = true; });
+$('fSlug').addEventListener('blur', () => { $('fSlug').value = slugify($('fSlug').value); });
+function countExcerpt() {
+  const n = $('fExcerpt').value.length;
+  $('excerptCount').textContent = n + '/160';
+  $('excerptCount').style.color = n > 160 ? 'var(--red)' : '';
+}
+$('fExcerpt').addEventListener('input', countExcerpt);
+$('postForm').addEventListener('input', () => { dirty = true; if (!$('appMsg').classList.contains('ok')) setMsg('appMsg', ''); });
+$('postForm').addEventListener('submit', (ev) => ev.preventDefault());
+
+/* ── Save / publish / delete ───────────────────────────── */
+function showError(e) {
+  let text = (e && e.message) || 'Something went wrong.';
+  if (e && e.code === 'permission-denied') text = 'This account is not allowed to manage the blog. Check the Firestore rules (BLOG-SETUP.md, step 2).';
+  if (e && e.code === 'unavailable') text = 'No internet connection. Nothing was saved.';
+  setMsg('appMsg', text);
+  $('appMsg').scrollIntoView({ block: 'nearest' });
+}
+
+async function save(status) {
+  const title = $('fTitle').value.trim();
+  const slug = current ? current.slug : slugify($('fSlug').value || title);
+  const content = getContent();
+  const cover = $('fCover').value.trim();
+  const excerpt = $('fExcerpt').value.trim();
+  try {
+    if (!title) throw new Error('Add a title first.');
+    if (!slug) throw new Error('Add a post link (letters and numbers).');
+    if (slug === 'sitemap') throw new Error('That post link is reserved. Choose a different one.');
+    if (cover && !/^https?:\/\//i.test(cover)) throw new Error('The cover image link must start with https://');
+    if (status === 'published' && !content) throw new Error('Write some content before publishing.');
+    if (status === 'published' && !excerpt) throw new Error('Add a short summary before publishing. It is what people see when the link is shared.');
+    if (/src=["']data:/i.test(content)) throw new Error('One of the pictures was pasted directly into the text. Remove it and add it with the image button instead.');
+    if (new Blob([content]).size > 900000) throw new Error('This post is too long to save in one piece. Shorten it or split it into two posts.');
+  } catch (e) { return showError(e); }
+
+  const btns = [$('publishBtn'), $('draftBtn'), $('deleteBtn')];
+  btns.forEach((b) => { b.disabled = true; });
+  setMsg('appMsg', 'Saving…', true);
+  try {
+    const ref = col.doc(slug);
+    if (!current && (await ref.get()).exists) throw new Error('A post with this link already exists. Change the post link.');
+    const data = {
+      title, slug, excerpt, cover, content,
+      coverAlt: $('fCoverAlt').value.trim(),
+      tags: $('fTags').value.split(',').map((t) => t.trim()).filter(Boolean).slice(0, 8),
+      author: 'Md Masud Rana',
+      status, updatedAt: now()
+    };
+    if (!current) data.createdAt = now();
+    if (status === 'published' && !(current && current.publishedAt)) data.publishedAt = now();
+    await ref.set(data, { merge: true });
+    dirty = false;
+    await loadPosts();
+    current = posts.find((p) => p.slug === slug) || null;
+    slugTouched = true;
+    refreshState();
+    setMsg('appMsg', status === 'published'
+      ? 'Published. It is live at masudppc.com/blog/' + slug + ' (the public page can take about 2 minutes to refresh).'
+      : 'Saved as a draft. Drafts are not visible on the website.', true);
+  } catch (e) { showError(e); }
+  btns.forEach((b) => { b.disabled = false; });
+}
+$('publishBtn').addEventListener('click', () => save('published'));
+$('draftBtn').addEventListener('click', () => {
+  if (current && current.status === 'published' && !window.confirm('Take this post off the website and turn it back into a draft?')) return;
+  save('draft');
+});
+$('deleteBtn').addEventListener('click', async () => {
+  if (!current) return;
+  if (!window.confirm('Delete “' + (current.title || current.slug) + '” permanently? This cannot be undone.')) return;
+  try {
+    await col.doc(current.slug).delete();
+    await loadPosts();
+    newPost();
+    setMsg('appMsg', 'Post deleted.', true);
+  } catch (e) { showError(e); }
+});
+</script>
+</body>
+</html>
