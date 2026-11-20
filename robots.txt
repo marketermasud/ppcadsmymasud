@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Disallow: /blog-admin
+Disallow: /client-management/
+Disallow: /masudinvoice/
+Disallow: /money-management/
+
+Sitemap: https://masudppc.com/sitemap.xml
+Sitemap: https://masudppc.com/blog/sitemap.xml
