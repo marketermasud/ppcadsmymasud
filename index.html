@@ -111,6 +111,26 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <span>3 yrs exp.</span>
       </div>
     </div>
+
+    <!-- Live search ad: a search is typed, the ad shows, the call is tracked as a lead -->
+    <div class="ad-sim" id="adSim" aria-hidden="true">
+      <div class="ad-sim-search">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <span class="ad-sim-q" id="adSimQ">junk removal near me</span><i class="ad-sim-caret"></i>
+      </div>
+      <div class="ad-sim-result" id="adSimResult">
+        <div class="ad-sim-url"><b>Sponsored</b><span>yourcompany.com</span></div>
+        <div class="ad-sim-head" id="adSimHead">Same-Day Junk Removal | Upfront Pricing</div>
+        <div class="ad-sim-desc" id="adSimDesc">Licensed &amp; insured crews. Book online in 60 seconds.</div>
+        <div class="ad-sim-ext"><span class="ad-sim-call"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8a15 15 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1z"/></svg>Call now</span><span>Get a free quote</span></div>
+        <span class="ad-sim-tap"></span>
+      </div>
+      <div class="ad-sim-lead" id="adSimLead">
+        <span class="ad-sim-ping"></span>
+        <span><b>Call lead tracked</b><small id="adSimLeadSub">2:41 min · counted as a conversion</small></span>
+        <em id="adSimCount">+1</em>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -189,6 +209,18 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <div class="divider"></div>
 
+<!-- LATEST CASE STUDIES (posted from the admin page; stays hidden until there is at least one) -->
+<div id="recentCasesWrap" hidden>
+<section class="section" id="recent-cases">
+  <div class="section-label">Latest Case Studies</div>
+  <h2 class="section-title">Fresh from the<br>ad accounts.</h2>
+  <p class="section-sub">Screenshots from real client campaigns, added as the results come in.</p>
+  <div class="screenshots-grid" id="recentCasesGrid"></div>
+  <div style="margin-top:2.5rem;"><a href="case-studies.html" class="btn-primary">See all case studies &rarr;</a></div>
+</section>
+<div class="divider"></div>
+</div>
+
 <!-- ABOUT (SEO) -->
 <section class="section" id="about">
   <div class="section-label">About Md Masud Rana</div>
@@ -255,5 +287,30 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </div>
 
 <script src="main.js"></script>
+<script type="module">
+import { BLOG_CONFIG as C, docsUrl, listQuery, decodeCases, caseItemHtml } from '/blog-settings.js';
+fetch(docsUrl(C) + ':runQuery?key=' + encodeURIComponent(C.firebase.apiKey), {
+  method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(listQuery(C))
+})
+  .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+  .then(function (rows) {
+    var cases = decodeCases(rows).slice(0, 3);
+    if (!cases.length) return;
+    var grid = document.getElementById('recentCasesGrid');
+    grid.innerHTML = cases.map(function (p) { return caseItemHtml(p, true); }).join('');
+    document.getElementById('recentCasesWrap').hidden = false;
+    Array.prototype.forEach.call(grid.children, function (el, i) {
+      var cats = (el.getAttribute('data-cats') || '').split('|').filter(Boolean);
+      if (cats.length) {
+        var t = document.createElement('div'); t.className = 'screenshot-tags';
+        cats.forEach(function (c) { var s = document.createElement('span'); s.textContent = c; t.appendChild(s); });
+        el.appendChild(t);
+      }
+      el.style.setProperty('--i', i);
+      if (window.__masudReveal) window.__masudReveal(el, 'rise');
+    });
+  })
+  .catch(function () {});
+</script>
 </body>
 </html>

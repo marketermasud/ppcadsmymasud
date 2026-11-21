@@ -245,7 +245,7 @@ if (article) {
         .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
         .then(function (doc) {
           var p = decodeDoc(doc);
-          if (p.status !== 'published') return notFound();
+          if (p.status !== 'published' || p.type === 'case') return notFound();
           renderPost(p);
         })
         .catch(notFound);

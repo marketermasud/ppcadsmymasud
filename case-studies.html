@@ -72,6 +72,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   
   
 
+  <div class="case-filters" id="caseFilters" role="group" aria-label="Filter case studies" hidden></div>
+
   <div class="screenshots-grid" id="screenshotsGrid">
 <!--GALLERY:START-->
      <div class="screenshot-item" onclick="openLightbox(this)"><img src="Junk Removal Service.png" alt="Junk Removal Service" loading="lazy"><div class="screenshot-caption">LSA</div></div>
@@ -214,5 +216,18 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </div>
 
 <script src="main.js"></script>
+<script type="module">
+/* Case studies posted from the admin page (masudppc.com/blog-admin → Case study) appear first, newest on top. */
+import { BLOG_CONFIG as C, docsUrl, listQuery, decodeCases, caseItemHtml } from '/blog-settings.js';
+fetch(docsUrl(C) + ':runQuery?key=' + encodeURIComponent(C.firebase.apiKey), {
+  method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(listQuery(C))
+})
+  .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+  .then(function (rows) {
+    var cases = decodeCases(rows);
+    if (cases.length && window.MasudCases) window.MasudCases.add(cases.map(function (p) { return caseItemHtml(p); }).join(''));
+  })
+  .catch(function () { /* the screenshots already on the page still show */ });
+</script>
 </body>
 </html>
