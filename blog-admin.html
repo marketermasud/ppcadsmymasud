@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex, nofollow">
-<title>Blog Admin — PPC Ads by Masud</title>
+<title>Admin: Blog &amp; Case Studies — PPC Ads by Masud</title>
 <link rel="stylesheet" href="/style.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css">
 <style>
@@ -90,7 +90,30 @@ button:disabled { opacity: .55; cursor: wait; }
 .form-actions { display: flex; flex-wrap: wrap; align-items: center; gap: .8rem 1rem; margin-top: 1.6rem; }
 .form-actions .danger { margin-left: auto; }
 
+/* Post type switch: Blog post / Case study */
+.type-switch { display: inline-grid; grid-template-columns: 1fr 1fr; margin-top: 1.2rem; padding: 4px; background: var(--paper); border: 1px solid var(--rule); border-radius: 8px; }
+.type-switch label { margin: 0; }
+.type-switch input { position: absolute; opacity: 0; pointer-events: none; }
+.type-switch span { display: block; padding: .55rem 1.2rem; border-radius: 5px; font-weight: 800; font-size: .95rem; color: var(--muted); text-align: center; cursor: pointer; transition: background .2s, color .2s; }
+.type-switch input:checked + span { background: var(--pine); color: #fff; }
+.type-switch input:focus-visible + span { outline: 3px solid var(--orange); outline-offset: 2px; }
+.type-switch input:disabled + span { cursor: not-allowed; }
+.type-switch input:disabled:not(:checked) + span { opacity: .4; }
+#postForm[data-type="case"] .only-blog, #postForm[data-type="blog"] .only-case { display: none !important; }
+#postForm[data-type="case"] .cover-row { grid-template-columns: minmax(0, 1fr); }
+#postForm[data-type="case"] .cover-preview { aspect-ratio: 16 / 10; max-width: 34rem; border-style: dashed; cursor: pointer; }
+#postForm[data-type="case"] .cover-preview img { object-fit: contain; background: #fff; }
+.case-meta { display: grid; grid-template-columns: 1fr 1fr; gap: 0 1rem; }
+.case-preview-note { margin-top: 1.4rem; padding: .8rem 1rem; background: var(--mint); border-radius: var(--r); font-size: .92rem; color: var(--pine); }
+
+.list-tabs { display: flex; gap: .3rem; margin-bottom: .8rem; }
+.list-tabs button { flex: 1; padding: .45rem .3rem; background: none; border: 1px solid var(--rule); border-radius: var(--r); font: inherit; font-size: .85rem; font-weight: 700; color: var(--muted); cursor: pointer; }
+.list-tabs button[aria-pressed="true"] { background: var(--sheet); border-color: var(--pine); color: var(--pine); }
+.post-item-thumb { float: right; width: 3.2rem; height: 2.2rem; margin-left: .6rem; object-fit: cover; border: 1px solid var(--rule); border-radius: 3px; }
+.badge.case { background: #ffe1d4; color: var(--orange-ink); }
+
 @media (max-width: 860px) {
+  .case-meta { grid-template-columns: 1fr; }
   .admin-body { grid-template-columns: 1fr; padding: 1rem; }
   .post-list { position: static; max-height: 16rem; }
   .cover-row { grid-template-columns: 1fr; }
@@ -105,7 +128,7 @@ button:disabled { opacity: .55; cursor: wait; }
 <!-- LOGIN -->
 <main class="login" id="loginView" hidden>
   <form class="login-card" id="loginForm" autocomplete="on">
-    <div class="admin-brand">Masud Rana <span>Blog Admin</span></div>
+    <div class="admin-brand">Masud Rana <span>Admin</span></div>
     <p class="login-note">Sign in with the email and password you created in Firebase.</p>
     <label for="loginEmail">Email</label>
     <input id="loginEmail" type="email" autocomplete="username" required>
@@ -120,9 +143,10 @@ button:disabled { opacity: .55; cursor: wait; }
 <!-- APP -->
 <div class="app" id="appView" hidden>
   <header class="admin-bar">
-    <div class="admin-brand">Masud Rana <span>Blog Admin</span></div>
+    <div class="admin-brand">Masud Rana <span>Admin</span></div>
     <div class="admin-bar-actions">
       <a class="link-btn" href="/blog" target="_blank" rel="noopener">View blog</a>
+      <a class="link-btn" href="/case-studies" target="_blank" rel="noopener">View case studies</a>
       <span class="who" id="who"></span>
       <button class="link-btn" type="button" id="logoutBtn">Sign out</button>
     </div>
@@ -130,34 +154,62 @@ button:disabled { opacity: .55; cursor: wait; }
 
   <div class="admin-body">
     <aside class="post-list">
-      <button class="btn-primary new-btn" type="button" id="newBtn">+ New post</button>
+      <button class="btn-primary new-btn" type="button" id="newBtn">+ New blog post</button>
+      <div class="list-tabs" role="group" aria-label="Show">
+        <button type="button" data-filter="all" aria-pressed="true">All</button>
+        <button type="button" data-filter="blog" aria-pressed="false">Blog</button>
+        <button type="button" data-filter="case" aria-pressed="false">Case studies</button>
+      </div>
       <div id="postList"><p class="hint">Loading…</p></div>
     </aside>
 
     <section class="editor" id="editorPane">
       <p class="msg" id="appMsg" role="status"></p>
-      <form id="postForm" novalidate>
+      <form id="postForm" novalidate data-type="blog">
         <div class="editor-head">
-          <h1 id="formTitle">New post</h1>
+          <h1 id="formTitle">New blog post</h1>
           <span class="badge" id="statusBadge">Draft</span>
         </div>
 
-        <label for="fTitle">Title</label>
+        <div class="type-switch" role="radiogroup" aria-label="Post to">
+          <label><input type="radio" name="ptype" value="blog" checked><span>Blog post</span></label>
+          <label><input type="radio" name="ptype" value="case"><span>Case study</span></label>
+        </div>
+        <p class="hint" id="typeHint">Blog post: title, summary, cover and full text. Case study: one screenshot, a caption and its category.</p>
+
+        <label class="only-case">Case study image</label>
+        <label for="fTitle" class="only-blog">Title</label>
+        <div class="only-case cover-slot" id="caseCoverSlot"></div>
+        <label for="fTitle" class="only-case">Caption <span class="hint" style="display:inline">(shown under the image)</span></label>
         <input id="fTitle" type="text" maxlength="140" placeholder="e.g. How we cut cost per lead by 38% for a junk removal company">
 
-        <label for="fSlug">Post link</label>
-        <div class="slug-row"><span>masudppc.com/blog/</span><input id="fSlug" type="text" maxlength="80" placeholder="made-from-the-title"></div>
-        <p class="hint" id="slugHint">Made from the title. It cannot be changed after the first save.</p>
+        <div class="case-meta only-case">
+          <div>
+            <label for="fCategory">Industry</label>
+            <input id="fCategory" type="text" list="industryList" maxlength="40" placeholder="Choose or type, e.g. Junk Removal">
+          </div>
+          <div>
+            <label for="fService">Service</label>
+            <input id="fService" type="text" list="serviceList" maxlength="40" placeholder="Choose or type, e.g. Local Service Ads">
+          </div>
+        </div>
+        <p class="hint only-case">Visitors can filter the case studies by these labels. Pick from the list or type a new one.</p>
+        <datalist id="industryList"></datalist>
+        <datalist id="serviceList"></datalist>
 
-        <label for="fExcerpt">Short summary <span class="count" id="excerptCount">0/160</span></label>
-        <textarea id="fExcerpt" rows="2" maxlength="200" placeholder="One or two sentences. Shown on the blog page, on Google and in Facebook / WhatsApp previews."></textarea>
+        <label for="fSlug" class="only-blog">Post link</label>
+        <div class="slug-row only-blog"><span>masudppc.com/blog/</span><input id="fSlug" type="text" maxlength="80" placeholder="made-from-the-title"></div>
+        <p class="hint only-blog" id="slugHint">Made from the title. It cannot be changed after the first save.</p>
 
-        <label>Cover image</label>
-        <div class="cover-row">
+        <label for="fExcerpt" class="only-blog">Short summary <span class="count" id="excerptCount">0/160</span></label>
+        <textarea id="fExcerpt" class="only-blog" rows="2" maxlength="200" placeholder="One or two sentences. Shown on the blog page, on Google and in Facebook / WhatsApp previews."></textarea>
+
+        <label class="only-blog">Cover image</label>
+        <div class="cover-row" id="coverRow">
           <div class="cover-preview" id="coverPreview"><span>No image</span></div>
           <div class="cover-fields">
             <input id="fCover" type="url" placeholder="Image link (filled in automatically after upload)">
-            <input id="fCoverAlt" type="text" maxlength="140" placeholder="Image description (e.g. Google Ads dashboard showing 64 leads)">
+            <input id="fCoverAlt" class="only-blog" type="text" maxlength="140" placeholder="Image description (e.g. Google Ads dashboard showing 64 leads)">
             <div class="cover-actions">
               <button class="btn-line" type="button" id="coverUploadBtn">Upload image</button>
               <button class="link-btn" type="button" id="coverClearBtn">Remove</button>
@@ -165,12 +217,15 @@ button:disabled { opacity: .55; cursor: wait; }
           </div>
         </div>
 
-        <label for="fTags">Tags</label>
-        <input id="fTags" type="text" placeholder="Case Study, Junk Removal">
-        <p class="hint">Separate with commas. The first tag is shown on the blog card.</p>
+        <div class="only-blog">
+          <label for="fTags">Tags</label>
+          <input id="fTags" type="text" placeholder="Google Ads, Junk Removal">
+          <p class="hint">Separate with commas. The first tag is shown on the blog card.</p>
 
-        <label>Content</label>
-        <div class="quill-wrap"><div id="editor"></div></div>
+          <label>Content</label>
+          <div class="quill-wrap"><div id="editor"></div></div>
+        </div>
+        <p class="case-preview-note only-case">Publish puts it at the top of masudppc.com/case-studies (and on the home page). Nothing is posted to the blog.</p>
 
         <div class="form-actions">
           <button class="btn-primary" type="button" id="publishBtn">Publish</button>
@@ -193,7 +248,7 @@ button:disabled { opacity: .55; cursor: wait; }
 <script type="module">
 /* Blog admin: email + password sign-in (Firebase Auth), write/edit/publish posts (Firestore), image upload (Cloudinary).
    Who may write is decided by the Firestore rules, not by this page — see BLOG-SETUP.md. */
-import { BLOG_CONFIG as C, slugify, fmtDate, esc, IMG_TRANSFORM, hqImages } from '/blog-settings.js';
+import { BLOG_CONFIG as C, slugify, fmtDate, esc, IMG_TRANSFORM, hqImages, CASE_INDUSTRIES, CASE_SERVICES } from '/blog-settings.js';
 
 const $ = (id) => document.getElementById(id);
 const boot = $('bootMsg');
@@ -213,6 +268,31 @@ let posts = [];          // all posts (drafts + published)
 let current = null;      // the post being edited, or null for a new one
 let slugTouched = false;
 let dirty = false;
+let listFilter = 'all';  // sidebar: all | blog | case
+
+/* ── Post type (blog post / case study) ───────────────── */
+const typeOf = (p) => (p && p.type === 'case' ? 'case' : 'blog');
+const formType = () => $('postForm').getAttribute('data-type');
+const coverRow = $('coverRow');
+const coverHome = coverRow.parentNode, coverNext = coverRow.nextSibling;
+function setType(t) {
+  $('postForm').setAttribute('data-type', t);
+  document.querySelectorAll('input[name="ptype"]').forEach((r) => { r.checked = r.value === t; });
+  /* In case-study mode the image block sits at the top, right under the type switch. */
+  if (t === 'case') $('caseCoverSlot').appendChild(coverRow);
+  else coverHome.insertBefore(coverRow, coverNext);
+  $('coverUploadBtn').textContent = t === 'case' ? 'Upload screenshot' : 'Upload image';
+  $('fTitle').placeholder = t === 'case' ? 'e.g. Junk Removal: 64 booked jobs in 30 days' : 'e.g. How we cut cost per lead by 38% for a junk removal company';
+}
+document.querySelectorAll('input[name="ptype"]').forEach((r) => r.addEventListener('change', () => {
+  setType(r.value); dirty = true; refreshState();
+}));
+function fillLists() {
+  const uniq = (base, key) => Array.from(new Set(base.concat(posts.map((p) => p[key]).filter(Boolean))));
+  $('industryList').innerHTML = uniq(CASE_INDUSTRIES, 'category').map((v) => '<option value="' + esc(v) + '">').join('');
+  $('serviceList').innerHTML = uniq(CASE_SERVICES, 'service').map((v) => '<option value="' + esc(v) + '">').join('');
+}
+$('coverPreview').addEventListener('click', () => { if (formType() === 'case') $('coverUploadBtn').click(); });
 
 /* ── Sign in / out ─────────────────────────────────────── */
 const AUTH_ERRORS = {
@@ -367,6 +447,7 @@ async function loadPosts() {
     posts = snap.docs.map((d) => Object.assign({ slug: d.id }, d.data()));
     posts.sort((a, b) => (toIso(b.updatedAt) || '').localeCompare(toIso(a.updatedAt) || ''));
     renderList();
+    fillLists();
   } catch (e) {
     $('postList').innerHTML = '<p class="hint">Posts could not be loaded.</p>';
     showError(e);
@@ -375,12 +456,19 @@ async function loadPosts() {
 
 function renderList() {
   const box = $('postList');
-  if (!posts.length) { box.innerHTML = '<p class="hint">No posts yet. Write your first one.</p>'; return; }
-  box.innerHTML = posts.map((p) => {
+  const shown = posts.filter((p) => listFilter === 'all' || typeOf(p) === listFilter);
+  if (!shown.length) {
+    box.innerHTML = '<p class="hint">' + (listFilter === 'case' ? 'No case studies yet. Press “+ New case study” to add the first one.' : 'Nothing here yet. Write your first post.') + '</p>';
+    return;
+  }
+  box.innerHTML = shown.map((p) => {
     const live = p.status === 'published';
+    const isCase = typeOf(p) === 'case';
     return '<button type="button" class="post-item' + (current && current.slug === p.slug ? ' is-current' : '') + '" data-slug="' + esc(p.slug) + '">' +
+      (isCase && p.cover ? '<img class="post-item-thumb" src="' + esc(p.cover) + '" alt="" loading="lazy">' : '') +
       '<span class="post-item-title">' + esc(p.title || '(no title)') + '</span>' +
-      '<span class="post-item-meta"><span class="badge' + (live ? ' live' : '') + '">' + (live ? 'Published' : 'Draft') + '</span> ' +
+      '<span class="post-item-meta"><span class="badge' + (isCase ? ' case' : '') + '">' + (isCase ? 'Case study' : 'Blog') + '</span> ' +
+      '<span class="badge' + (live ? ' live' : '') + '">' + (live ? 'Published' : 'Draft') + '</span> ' +
       esc(fmtDate(toIso(live ? p.publishedAt : p.updatedAt))) + '</span></button>';
   }).join('');
 }
@@ -390,7 +478,13 @@ $('postList').addEventListener('click', (ev) => {
   const p = posts.find((x) => x.slug === btn.getAttribute('data-slug'));
   if (p && leaveOk()) openPost(p);
 });
-$('newBtn').addEventListener('click', () => { if (leaveOk()) newPost(); });
+$('newBtn').addEventListener('click', () => { if (leaveOk()) newPost(listFilter === 'case' ? 'case' : 'blog'); });
+document.querySelectorAll('.list-tabs button').forEach((b) => b.addEventListener('click', () => {
+  listFilter = b.getAttribute('data-filter');
+  document.querySelectorAll('.list-tabs button').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+  $('newBtn').textContent = listFilter === 'case' ? '+ New case study' : '+ New blog post';
+  renderList();
+}));
 const leaveOk = () => !dirty || window.confirm('You have unsaved changes. Leave without saving?');
 
 /* ── Form ──────────────────────────────────────────────── */
@@ -401,13 +495,22 @@ function fillForm(p) {
   $('fCover').value = p.cover || '';
   $('fCoverAlt').value = p.coverAlt || '';
   $('fTags').value = (p.tags || []).join(', ');
+  $('fCategory').value = p.category || '';
+  $('fService').value = p.service || '';
   setContent(p.content || '');
   showCover();
   countExcerpt();
 }
 function refreshState() {
   const live = !!current && current.status === 'published';
-  $('formTitle').textContent = current ? 'Edit post' : 'New post';
+  const isCase = formType() === 'case';
+  const noun = isCase ? 'case study' : 'blog post';
+  $('formTitle').textContent = (current ? 'Edit ' : 'New ') + noun;
+  /* The type is fixed once saved, so a shared blog link never turns into a case study (or the other way round). */
+  document.querySelectorAll('input[name="ptype"]').forEach((r) => { r.disabled = !!current; });
+  $('typeHint').textContent = current
+    ? 'This is a ' + noun + '. The type cannot be changed after saving. To post it as the other type, start a new one.'
+    : 'Blog post: title, summary, cover and full text. Case study: one screenshot, a caption and its category.';
   $('statusBadge').textContent = live ? 'Published' : 'Draft';
   $('statusBadge').classList.toggle('live', live);
   $('fSlug').disabled = !!current;
@@ -416,11 +519,13 @@ function refreshState() {
   $('draftBtn').textContent = live ? 'Unpublish (back to draft)' : 'Save draft';
   $('deleteBtn').hidden = !current;
   $('viewLink').hidden = !live;
-  if (live) $('viewLink').href = '/blog/' + current.slug;
+  if (live) $('viewLink').href = isCase ? '/case-studies' : '/blog/' + current.slug;
+  $('viewLink').textContent = isCase ? 'Open case studies' : 'Open post';
   renderList();
 }
-function newPost() {
+function newPost(type) {
   current = null; slugTouched = false;
+  setType(type || 'blog');
   fillForm({});
   dirty = false;
   setMsg('appMsg', '');
@@ -428,6 +533,7 @@ function newPost() {
 }
 function openPost(p) {
   current = p; slugTouched = true;
+  setType(typeOf(p));
   fillForm(p);
   dirty = false;
   setMsg('appMsg', '');
@@ -435,7 +541,7 @@ function openPost(p) {
   window.scrollTo({ top: 0 });
 }
 
-$('fTitle').addEventListener('input', () => { if (!current && !slugTouched) $('fSlug').value = slugify($('fTitle').value); });
+$('fTitle').addEventListener('input', () => { if (formType() === 'blog' && !current && !slugTouched) $('fSlug').value = slugify($('fTitle').value); });
 $('fSlug').addEventListener('input', () => { slugTouched = true; });
 $('fSlug').addEventListener('blur', () => { $('fSlug').value = slugify($('fSlug').value); });
 function countExcerpt() {
@@ -456,7 +562,11 @@ function showError(e) {
   $('appMsg').scrollIntoView({ block: 'nearest' });
 }
 
+function caseSlug(title) {
+  return ('case-' + slugify(title).slice(0, 55)).replace(/-+$/, '') + '-' + Date.now().toString(36).slice(-5);
+}
 async function save(status) {
+  if (formType() === 'case') return saveCase(status);
   const title = $('fTitle').value.trim();
   const slug = current ? current.slug : slugify($('fSlug').value || title);
   const content = hqImages(getContent());
@@ -484,6 +594,7 @@ async function save(status) {
       coverAlt: $('fCoverAlt').value.trim(),
       tags: $('fTags').value.split(',').map((t) => t.trim()).filter(Boolean).slice(0, 8),
       author: 'Md Masud Rana',
+      type: 'blog',
       status, updatedAt: now()
     };
     if (!current) data.createdAt = now();
@@ -500,9 +611,46 @@ async function save(status) {
   } catch (e) { showError(e); }
   btns.forEach((b) => { b.disabled = false; });
 }
+/* Case study: just the screenshot, a caption and two labels. No blog page, no summary, no text. */
+async function saveCase(status) {
+  const title = $('fTitle').value.trim();
+  const cover = hqImages($('fCover').value.trim());
+  const category = $('fCategory').value.trim();
+  const service = $('fService').value.trim();
+  try {
+    if (!cover) throw new Error('Upload the case study screenshot first.');
+    if (!/^https?:\/\//i.test(cover)) throw new Error('The image link must start with https://');
+    if (!title) throw new Error('Add a caption. It is shown under the image.');
+    if (status === 'published' && !category) throw new Error('Choose an industry so visitors can filter by it.');
+  } catch (e) { return showError(e); }
+
+  const slug = current ? current.slug : caseSlug(title);
+  const btns = [$('publishBtn'), $('draftBtn'), $('deleteBtn')];
+  btns.forEach((b) => { b.disabled = true; });
+  setMsg('appMsg', 'Saving…', true);
+  try {
+    const data = {
+      type: 'case', title, slug, cover, coverAlt: title, category, service,
+      excerpt: '', content: '', tags: [category, service].filter(Boolean),
+      author: 'Md Masud Rana', status, updatedAt: now()
+    };
+    if (!current) data.createdAt = now();
+    if (status === 'published' && !(current && current.publishedAt)) data.publishedAt = now();
+    await col.doc(slug).set(data, { merge: true });
+    dirty = false;
+    await loadPosts();
+    current = posts.find((p) => p.slug === slug) || null;
+    refreshState();
+    setMsg('appMsg', status === 'published'
+      ? 'Published. It is now at the top of masudppc.com/case-studies.'
+      : 'Saved as a draft. Drafts are not visible on the website.', true);
+  } catch (e) { showError(e); }
+  btns.forEach((b) => { b.disabled = false; });
+}
+
 $('publishBtn').addEventListener('click', () => save('published'));
 $('draftBtn').addEventListener('click', () => {
-  if (current && current.status === 'published' && !window.confirm('Take this post off the website and turn it back into a draft?')) return;
+  if (current && current.status === 'published' && !window.confirm('Take this off the website and turn it back into a draft?')) return;
   save('draft');
 });
 $('deleteBtn').addEventListener('click', async () => {
@@ -511,8 +659,8 @@ $('deleteBtn').addEventListener('click', async () => {
   try {
     await col.doc(current.slug).delete();
     await loadPosts();
-    newPost();
-    setMsg('appMsg', 'Post deleted.', true);
+    newPost(formType());
+    setMsg('appMsg', 'Deleted.', true);
   } catch (e) { showError(e); }
 });
 </script>

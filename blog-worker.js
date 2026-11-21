@@ -47,7 +47,7 @@ async function fetchPost(env, slug) {
   if (r.status === 404 || r.status === 403) return null;          // missing, or not published
   if (!r.ok) throw new Error('post HTTP ' + r.status);
   const p = decodeDoc(await r.json());
-  return p.status === 'published' ? p : null;
+  return p.status === 'published' && p.type !== 'case' ? p : null;   // case studies have no blog page
 }
 function asset(env, url, pathname) {
   return env.ASSETS.fetch(new Request(new URL(pathname, url).toString()));

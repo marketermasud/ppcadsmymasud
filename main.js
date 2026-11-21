@@ -126,6 +126,7 @@
   function reveal(el) {
     if (io) io.observe(el); else el.classList.add('in');
   }
+  window.__masudReveal = function (el, type) { el.setAttribute('data-r', type || 'rise'); reveal(el); };
   function mark(sel, type, mode) {
     var own = sel.split('>').pop().trim();
     qsa(sel).forEach(function (el) {
@@ -326,6 +327,68 @@
     });
   }
 
+  /* ── Hero: a live search ad ──────────────────────────────
+     Someone searches, the ad shows, they tap Call, the call is tracked as a lead.
+     Cycles through the trades I work with. Pauses off-screen; static for reduced motion. */
+  var sim = qs('#adSim');
+  if (sim) (function () {
+    var SCENES = [
+      ['junk removal near me', 'Same-Day Junk Removal | Upfront Pricing', 'Licensed & insured crews. Book online in 60 seconds.', 'Call lead tracked', '2:41 min call · counted as a conversion'],
+      ['ac repair near me', 'AC Repair Today | Licensed Technicians', 'Fast diagnosis, fixed price before we start. 7 days a week.', 'Call lead tracked', '3:12 min call · counted as a conversion'],
+      ['emergency plumber', '24/7 Emergency Plumber | On Site Fast', 'Burst pipes, leaks and blocked drains. No call-out surprises.', 'Quote form lead tracked', 'Form submitted · counted as a conversion'],
+      ['house cleaning service', 'Deep House Cleaning | Book Online', 'Vetted cleaners, flexible times, 100% satisfaction promise.', 'Booking lead tracked', 'Online booking · counted as a conversion']
+    ];
+    var q = qs('#adSimQ', sim), head = qs('#adSimHead', sim), desc = qs('#adSimDesc', sim);
+    var leadT = qs('#adSimLead b', sim), leadS = qs('#adSimLeadSub', sim), count = qs('#adSimCount', sim);
+    if (reduceMotion) return;
+    sim.classList.add('is-live', 'has-result', 'tapped', 'has-lead');
+    var n = 0, total = 0, timer = 0, visible = true, running = false;
+    function later(fn, ms) { timer = window.setTimeout(fn, ms); }
+    function scene() {
+      if (!visible || doc.hidden) { running = false; return; }
+      running = true;
+      var sc = SCENES[n % SCENES.length];
+      sim.classList.remove('has-result', 'tapped', 'has-lead', 'out');
+      head.textContent = sc[1]; desc.textContent = sc[2]; leadT.textContent = sc[3]; leadS.textContent = sc[4];
+      q.textContent = '';
+      sim.classList.add('typing');
+      var i = 0;
+      (function type() {
+        q.textContent = sc[0].slice(0, ++i);
+        if (i < sc[0].length) return later(type, 45 + Math.random() * 55);
+        later(function () {
+          sim.classList.remove('typing');
+          sim.classList.add('has-result');
+          later(function () {
+            sim.classList.add('tapped');
+            later(function () {
+              total++;
+              count.textContent = '+' + total;
+              sim.classList.add('has-lead');
+              later(function () {
+                sim.classList.add('out');
+                n++;
+                later(scene, 500);
+              }, 2900);
+            }, 650);
+          }, 1300);
+        }, 420);
+      })();
+    }
+    function wake() { if (!running && visible && !doc.hidden) { window.clearTimeout(timer); later(scene, 300); running = true; } }
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (es) {
+        visible = es[0].isIntersecting;
+        if (visible) wake();
+      }, { threshold: 0.2 }).observe(sim);
+    }
+    doc.addEventListener('visibilitychange', wake);
+    /* start after the hero entrance has played */
+    window.clearTimeout(timer);
+    running = true;
+    later(scene, 1700);
+  })();
+
   /* ── FAQ accordion ───────────────────────────────────────── */
   qsa('.faq-item').forEach(function (item) {
     var question = qs('.faq-question', item);
@@ -429,8 +492,117 @@
   var lbIndex = -1;
   var ssExpanded = false;
 
+  /* Case studies are filterable by industry / service. Items come from two places:
+     screenshots uploaded to GitHub (built into the page) and case studies posted from the admin
+     (added by case-studies.html through window.MasudCases.add). Max 6 show until "Show More". */
+  var grid = qs('#screenshotsGrid');
   var wrap = qs('#ssToggleWrap');
-  if (wrap && qsa('.screenshot-item.ss-hidden').length) wrap.style.display = 'block';
+  var chipsBox = qs('#caseFilters');
+  var PAGE = 6;
+  var activeCat = 'All';
+
+  var GUESS = [
+    [/junk/i, 'Junk Removal'], [/clean/i, 'Cleaning'], [/hvac|\bac\b|air ?con/i, 'HVAC'],
+    [/plumb/i, 'Plumbing'], [/roof/i, 'Roofing'],
+    [/\blsa\b|local service ads?/i, 'Local Service Ads'], [/lead (ad|form)/i, 'Lead Form Ads'],
+    [/conversion|tracking/i, 'Conversion Tracking'], [/search term|search campaign/i, 'Search Campaign']
+  ];
+  function guessCats(text) {
+    var out = [];
+    GUESS.forEach(function (g) { if (g[0].test(text) && out.indexOf(g[1]) < 0) out.push(g[1]); });
+    return out.length ? out : ['Google Ads'];
+  }
+  function catsOf(el) { return (el.getAttribute('data-cats') || '').split('|').filter(Boolean); }
+  function addTags(el) {
+    if (qs('.screenshot-tags', el)) return;
+    var cats = catsOf(el);
+    if (!cats.length) return;
+    var t = doc.createElement('div');
+    t.className = 'screenshot-tags';
+    cats.forEach(function (c) { var s = doc.createElement('span'); s.textContent = c; t.appendChild(s); });
+    el.appendChild(t);
+  }
+
+  function caseItems() { return grid ? qsa('.screenshot-item', grid) : []; }
+
+  function buildChips() {
+    if (!chipsBox) return;
+    var counts = {}, order = [];
+    var items = caseItems();
+    items.forEach(function (el) {
+      catsOf(el).forEach(function (c) { if (!counts[c]) { counts[c] = 0; order.push(c); } counts[c]++; });
+    });
+    if (activeCat !== 'All' && !counts[activeCat]) activeCat = 'All';
+    chipsBox.textContent = '';
+    [['All', items.length]].concat(order.map(function (c) { return [c, counts[c]]; })).forEach(function (pair) {
+      var b = doc.createElement('button');
+      b.type = 'button';
+      b.className = 'case-chip';
+      b.setAttribute('aria-pressed', String(pair[0] === activeCat));
+      b.innerHTML = '<span></span><small></small>';
+      b.firstChild.textContent = pair[0];
+      b.lastChild.textContent = pair[1];
+      b.addEventListener('click', function () {
+        activeCat = pair[0];
+        ssExpanded = false;
+        qsa('.case-chip', chipsBox).forEach(function (x) { x.setAttribute('aria-pressed', String(x === b)); });
+        applyCases(true);
+      });
+      chipsBox.appendChild(b);
+    });
+    chipsBox.hidden = items.length < 2;
+  }
+
+  function applyCases(animate) {
+    if (!grid) return;
+    var match = caseItems().filter(function (el) { return activeCat === 'All' || catsOf(el).indexOf(activeCat) > -1; });
+    caseItems().forEach(function (el) {
+      el.classList.remove('ss-hidden');
+      var i = match.indexOf(el);
+      var on = i > -1 && (ssExpanded || i < PAGE);
+      el.classList.toggle('is-off', !on);
+      if (on && animate && !reduceMotion) {
+        el.classList.remove('flash');
+        void el.offsetWidth;
+        el.style.setProperty('--i', Math.min(i % PAGE, 5));
+        el.classList.add('flash', 'in');
+      }
+    });
+    if (wrap) wrap.style.display = match.length > PAGE ? 'block' : 'none';
+    var btn = qs('#ssToggleBtn'), txt = qs('#ssToggleText');
+    if (txt) txt.textContent = ssExpanded ? 'Show Less' : 'Show More (' + (match.length - PAGE) + ')';
+    if (btn) btn.classList.toggle('expanded', ssExpanded);
+  }
+
+  function prepItem(el) {
+    if (!el.hasAttribute('data-cats')) {
+      var cap = qs('.screenshot-caption', el);
+      el.setAttribute('data-cats', guessCats(cap ? cap.textContent : '').join('|'));
+    }
+    addTags(el);
+    if (!el.hasAttribute('tabindex')) el.setAttribute('tabindex', '0');
+  }
+  caseItems().forEach(prepItem);
+  buildChips();
+  applyCases(false);
+
+  window.MasudCases = {
+    /* html: markup of one or more .screenshot-item elements, newest first */
+    add: function (html) {
+      if (!grid || !html) return;
+      var holder = doc.createElement('div');
+      holder.innerHTML = html;
+      var fresh = qsa('.screenshot-item', holder);
+      var first = grid.firstChild;
+      fresh.forEach(function (el) { prepItem(el); grid.insertBefore(el, first); });
+      buildChips();
+      applyCases(true);
+    }
+  };
+  if (grid) grid.addEventListener('keydown', function (e) {
+    var it = e.target.closest && e.target.closest('.screenshot-item');
+    if (it && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); window.openLightbox(it); }
+  });
 
   function shown(el) { return window.getComputedStyle(el).display !== 'none'; }
 
@@ -441,7 +613,7 @@
     var cap = qs('.screenshot-caption', el);
     lbImg.src = img.getAttribute('data-full') || img.src;
     lbImg.alt = img.alt;
-    if (lbCap) lbCap.textContent = cap ? cap.textContent : '';
+    if (lbCap) lbCap.textContent = (cap ? cap.textContent : '') + (catsOf(el).length ? '  ·  ' + catsOf(el).join(', ') : '');
     lbIndex = i;
     lbImg.style.animation = 'none';
     void lbImg.offsetWidth;
@@ -450,13 +622,8 @@
 
   window.toggleScreenshots = function () {
     ssExpanded = !ssExpanded;
-    qsa('#screenshotsGrid .screenshot-item:nth-child(n+7)').forEach(function (el) {
-      el.style.display = ssExpanded ? 'block' : 'none';
-    });
-    var btn = qs('#ssToggleBtn');
-    var txt = qs('#ssToggleText');
-    if (txt) txt.textContent = ssExpanded ? 'Show Less' : 'Show More';
-    if (btn) btn.classList.toggle('expanded', ssExpanded);
+    applyCases(ssExpanded);
+    if (!ssExpanded && grid) grid.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
   };
 
   window.openLightbox = function (el) {

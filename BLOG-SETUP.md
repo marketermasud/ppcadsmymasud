@@ -78,3 +78,19 @@ Cloudflare নিজে থেকে ১–২ মিনিটে ডিপ্�
 - **"This account is not allowed to manage the blog"** — ধাপ ২-এর rules বসেনি বা ইমেইল মেলেনি।
 - **"Email/password sign-in is not turned on"** — ধাপ ১.১ বাকি।
 - **Facebook পুরনো প্রিভিউ দেখাচ্ছে** — developers.facebook.com/tools/debug-এ লিংক দিয়ে "Scrape Again" চাপুন।
+
+---
+
+## কেস স্টাডি পোস্ট করা (নতুন)
+একই অ্যাডমিন পেজ — `masudppc.com/blog-admin` — একই লগইন। **Firebase-এ নতুন কোনো সেটআপ লাগবে না**, আগের rules দিয়েই চলবে।
+
+1. লগইন করে বাম পাশে **Case studies** ট্যাব → **+ New case study** (অথবা ফর্মের উপরে **Case study** বাটন)।
+2. **Upload screenshot** চাপুন (বা ছবির বক্সে ক্লিক) → ছবি সিলেক্ট করুন।
+3. **Caption** — ছবির নিচে যে নাম দেখাবে (যেমন `Junk Removal: 64 booked jobs in 30 days`)।
+4. **Industry** আর **Service** — লিস্ট থেকে বেছে নিন বা নতুন লিখুন। ভিজিটর এগুলো দিয়ে ফিল্টার করতে পারবে।
+5. **Publish** → ১ মিনিটের মধ্যে `masudppc.com/case-studies`-এর সবার উপরে, আর হোম পেজের "Latest Case Studies" অংশে (সর্বশেষ ৩টা) চলে আসবে।
+
+- কেস স্টাডিতে টাইটেল-লিংক, সামারি, ট্যাগ, লেখা — কিছুই লাগে না; ব্লগে কিছু যায় না।
+- একবার সেভ করার পর টাইপ (Blog / Case study) আর বদলানো যায় না।
+- Unpublish করলে সাইট থেকে সরে যায়, Delete করলে একেবারে মুছে যায়।
+- GitHub-এ ছবি আপলোড করার পুরনো পদ্ধতিও আগের মতো কাজ করবে — ওই ছবিগুলো নিচে থাকে, অ্যাডমিন থেকে দেওয়াগুলো উপরে।

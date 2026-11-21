@@ -1471,3 +1471,179 @@ html:not(.js) .split .w > span { translate: none; transition: none; }
     scroll-behavior: auto !important;
   }
 }
+
+/* ══════════════════════════════════════════════════════════════════════
+   v4 additions
+   ══════════════════════════════════════════════════════════════════════ */
+
+/* ── HERO: live search ad slip ───────────────────────────────────────
+   A search is typed, the ad shows, Call is tapped, the lead is tracked.
+   Search-result vernacular (link blue headline, "Sponsored") on a paper slip. */
+.hero-visual { position: relative; }
+.ad-sim {
+  --link: #1a3fb4;
+  position: absolute;
+  z-index: 3;
+  left: -5.5rem;
+  bottom: -.6rem;
+  width: 272px;
+  padding: .7rem;
+  background: var(--sheet);
+  color: var(--ink);
+  border-radius: 10px;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, .06), 0 24px 46px rgba(0, 0, 0, .42);
+  rotate: -2.5deg;
+  font-size: .82rem;
+  line-height: 1.35;
+  animation: adIn 1s var(--ease) 1.25s backwards;
+}
+.ad-sim-search {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  padding: .55rem .8rem;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  color: var(--muted);
+  font-weight: 600;
+  font-size: .86rem;
+}
+.ad-sim-q { color: var(--ink); white-space: nowrap; overflow: hidden; }
+.ad-sim-caret {
+  width: 2px; height: 1.05em;
+  margin-left: -.35rem;
+  background: var(--orange);
+  animation: caret 1s steps(1) infinite;
+}
+.ad-sim-result {
+  position: relative;
+  margin-top: .65rem;
+  padding: .2rem .35rem .1rem;
+  transition: opacity .45s var(--ease), translate .55s var(--ease);
+}
+.ad-sim-url { display: flex; gap: .45rem; align-items: baseline; font-size: .76rem; color: var(--muted); }
+.ad-sim-url b { color: var(--ink); font-weight: 800; }
+.ad-sim-head {
+  margin-top: .2rem;
+  font-weight: 700;
+  font-size: .98rem;
+  line-height: 1.25;
+  color: var(--link);
+}
+.ad-sim-desc { margin-top: .25rem; color: var(--muted); }
+.ad-sim-ext { display: flex; flex-wrap: wrap; gap: .4rem .8rem; align-items: center; margin-top: .55rem; font-weight: 700; color: var(--link); }
+.ad-sim-call {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: .3rem;
+  padding: .28rem .65rem;
+  border: 1.5px solid var(--orange);
+  border-radius: 999px;
+  color: var(--orange-ink);
+  transition: background .2s, color .2s;
+}
+.ad-sim-tap {
+  position: absolute;
+  left: 2.5rem; bottom: .5rem;
+  width: 26px; height: 26px;
+  margin: -13px 0 0 -13px;
+  border-radius: 50%;
+  background: rgba(255, 90, 31, .35);
+  opacity: 0;
+  pointer-events: none;
+}
+.ad-sim-lead {
+  position: absolute;
+  right: -12.2rem;
+  bottom: -1.8rem;
+  width: 228px;
+  box-shadow: 0 16px 30px rgba(0, 0, 0, .35);
+  rotate: 3deg;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: .65rem;
+  padding: .6rem .75rem;
+  background: var(--pine-deep);
+  outline: 1.5px solid rgba(255, 255, 255, .18);
+  color: #fff;
+  border-radius: 7px;
+  transition: opacity .45s var(--ease), translate .6s cubic-bezier(.2, 1.4, .4, 1), scale .6s cubic-bezier(.2, 1.4, .4, 1);
+}
+.ad-sim-lead b { display: block; font-size: .86rem; }
+.ad-sim-lead small { display: block; font-size: .72rem; color: rgba(255, 255, 255, .7); }
+.ad-sim-lead em {
+  font-style: normal;
+  font-family: var(--f-display);
+  font-weight: 800;
+  font-stretch: 120%;
+  font-size: 1.05rem;
+  color: var(--orange);
+  font-variant-numeric: tabular-nums;
+}
+.ad-sim-ping { position: relative; width: 9px; height: 9px; border-radius: 50%; background: #4ade80; }
+.ad-sim-ping::after { content: ""; position: absolute; inset: 0; border-radius: 50%; background: #4ade80; animation: live 1.6s ease-out infinite; }
+
+/* states (only while the script runs; without it the slip shows its finished state) */
+.ad-sim.is-live:not(.typing) .ad-sim-caret { opacity: 0; animation: none; }
+.ad-sim.is-live:not(.has-result) .ad-sim-result { opacity: 0; translate: 0 10px; }
+.ad-sim.is-live:not(.has-lead) .ad-sim-lead { opacity: 0; translate: 0 12px; scale: .94; }
+.ad-sim.is-live.tapped .ad-sim-call { background: var(--orange); color: var(--ink); }
+.ad-sim.is-live.tapped:not(.has-lead) .ad-sim-tap { animation: tap .65s ease-out; }
+.ad-sim.is-live.out .ad-sim-result,
+.ad-sim.is-live.out .ad-sim-lead { opacity: 0; transition-duration: .35s; }
+
+@keyframes adIn { from { opacity: 0; translate: -24px 30px; rotate: -8deg; } }
+@keyframes caret { 50% { opacity: 0; } }
+@keyframes tap { 0% { opacity: 1; scale: .4; } 100% { opacity: 0; scale: 2.2; } }
+
+/* the platform tag moves to the right edge so the ad slip can sit bottom-left */
+.hero-visual .photo-badge { left: auto; right: -18px; bottom: auto; top: 1.6rem; translate: none; rotate: 3deg; }
+@media (max-width: 1180px) { .ad-sim { left: -2.5rem; } .ad-sim-lead { right: -6rem; } }
+@media (max-width: 980px) {
+  .hero-visual { flex-direction: column; align-items: center; padding-bottom: 3.4rem; }
+  .ad-sim { position: relative; left: -.8rem; bottom: auto; width: min(300px, 92%); margin-top: 2.6rem; rotate: -1.5deg; }
+  .ad-sim-lead { right: -1rem; bottom: -3.4rem; width: 216px; }
+}
+
+/* ── CASE STUDIES: filters, labels, admin-posted items ──────────────── */
+.case-filters { display: flex; flex-wrap: wrap; gap: .5rem; margin: -.4rem 0 2rem; }
+.case-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  min-height: 40px;
+  padding: .45rem .95rem;
+  background: var(--sheet);
+  border: 1.5px solid var(--rule);
+  border-radius: 999px;
+  font: inherit;
+  font-weight: 700;
+  font-size: .92rem;
+  color: var(--ink);
+  cursor: pointer;
+  transition: border-color .2s, background .2s, color .2s;
+}
+.case-chip small { font-size: .78rem; font-weight: 800; color: var(--muted); font-variant-numeric: tabular-nums; }
+.case-chip:hover { border-color: var(--pine); }
+.case-chip[aria-pressed="true"] { background: var(--pine); border-color: var(--pine); color: #fff; }
+.case-chip[aria-pressed="true"] small { color: var(--orange); }
+
+a.screenshot-item { display: block; text-decoration: none; }
+.screenshot-item.is-off { display: none !important; }
+.screenshot-item { display: flex; flex-direction: column; }
+.screenshot-caption { flex: 1; }
+.screenshot-tags { display: flex; flex-wrap: wrap; gap: .35rem; padding: 0 1rem .9rem; margin-top: -.35rem; }
+.screenshot-tags span {
+  padding: .14rem .55rem;
+  background: var(--mint);
+  border-radius: 3px;
+  font-size: .76rem;
+  font-weight: 700;
+  color: var(--pine);
+}
+.screenshot-tags span + span { background: #ffe9df; color: var(--orange-ink); }
+.screenshot-item:focus-visible { outline: 3px solid var(--orange); outline-offset: 3px; }
+.js .screenshot-item.flash { animation: caseIn .6s var(--ease) backwards; animation-delay: calc(var(--i, 0) * 60ms); }
+@keyframes caseIn { from { opacity: 0; translate: 0 14px; scale: .98; } }

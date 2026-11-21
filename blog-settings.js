@@ -73,16 +73,28 @@ export function listQuery(cfg) {
     structuredQuery: {
       from: [{ collectionId: cfg.collection }],
       where: { fieldFilter: { field: { fieldPath: 'status' }, op: 'EQUAL', value: { stringValue: 'published' } } },
-      select: { fields: ['title', 'slug', 'excerpt', 'cover', 'coverAlt', 'tags', 'publishedAt', 'updatedAt'].map(function (f) { return { fieldPath: f }; }) },
+      select: { fields: ['title', 'slug', 'excerpt', 'cover', 'coverAlt', 'tags', 'publishedAt', 'updatedAt', 'type', 'category', 'service'].map(function (f) { return { fieldPath: f }; }) },
       limit: 300
     }
   };
 }
-export function decodeList(rows) {
+function decodeAll(rows) {
   return (rows || []).filter(function (r) { return r && r.document; })
     .map(function (r) { return decodeDoc(r.document); })
     .sort(function (a, b) { return String(b.publishedAt || '').localeCompare(String(a.publishedAt || '')); });
 }
+/* Blog posts only. Case studies live in the same collection with type: 'case' and never show on the blog. */
+export function decodeList(rows) {
+  return decodeAll(rows).filter(function (p) { return p.type !== 'case'; });
+}
+/* Case studies only (newest first). */
+export function decodeCases(rows) {
+  return decodeAll(rows).filter(function (p) { return p.type === 'case' && p.cover; });
+}
+
+/* Suggested labels in the admin. You can also type a new one there; it appears on the site automatically. */
+export const CASE_INDUSTRIES = ['Junk Removal', 'Cleaning', 'HVAC', 'Plumbing', 'Roofing', 'Home Services', 'Other Local Service'];
+export const CASE_SERVICES = ['Search Campaign', 'Local Service Ads', 'Performance Max', 'Call Ads', 'Lead Form Ads', 'Conversion Tracking', 'Account Audit', 'Optimization'];
 
 export function cardHtml(p) {
   var img = p.cover
@@ -101,4 +113,14 @@ export function cardHtml(p) {
 export function listHtml(posts) {
   if (!posts.length) return '<p class="blog-state">No posts yet. Check back soon.</p>';
   return posts.map(cardHtml).join('');
+}
+
+/* One case study in the same "browser frame" card the Case Studies page already uses. */
+export function caseItemHtml(p, asLink) {
+  var cats = [p.category, p.service].filter(Boolean);
+  var inner = '<img src="' + esc(p.cover) + '" alt="' + esc(p.coverAlt || p.title) + '" loading="lazy">' +
+    '<div class="screenshot-caption">' + esc(p.title) + '</div>';
+  return asLink
+    ? '<a class="screenshot-item" href="/case-studies" data-cats="' + esc(cats.join('|')) + '">' + inner + '</a>'
+    : '<div class="screenshot-item" onclick="openLightbox(this)" data-cats="' + esc(cats.join('|')) + '">' + inner + '</div>';
 }
